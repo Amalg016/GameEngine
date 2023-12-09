@@ -1,0 +1,53 @@
+﻿using GameEngine.editor;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Security.Policy;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GameEngine.components
+{
+    public class TranslateGizmo : Gizmo
+    {
+
+
+
+        public TranslateGizmo(Sprite sprite, PropertiesWindow properties) : base( sprite,  properties)
+        {
+             
+        }
+       
+        public override void Load()
+        {
+            base.Load();
+        }
+
+        public override void EditorUpdate()
+        {
+            if(activeGameObject == null)
+            {
+                Window.gl.ClearColor(1, 0, 0, 1);
+            }
+            else
+            {
+                Window.gl.ClearColor(1, 1, 1, 1);
+            }
+            if(activeGameObject!= null)
+            {
+                if (xAxisActive && !yAxisActive)
+                {
+                    activeGameObject.transform.position.X += InputManager.getWorldDx();
+                }
+                if (yAxisActive && !xAxisActive)
+                {
+                    activeGameObject.transform.position.Y += InputManager.getWorldDy();
+                }
+            }
+            base.EditorUpdate();
+        }
+
+    }
+}
