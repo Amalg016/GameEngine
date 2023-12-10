@@ -73,7 +73,7 @@ namespace GameEngine
             //ImGui.ShowDemoWindow();
             GameViewWindow.imgui();
             // Make sure ImGui renders too!
-            ImGui.ShowDemoWindow();
+            //ImGui.ShowDemoWindow();
          //s   ImGui.ShowFontSelector();
             propertiesWindow.update(currentScene);
             propertiesWindow.imgui();
@@ -81,7 +81,7 @@ namespace GameEngine
             animationWindow.imgui();
             contentBrowser.imgui();
             debugWindow.imgui();
-            ImGui.End();
+            //ImGui.End();
             controller.Render();
 
         }

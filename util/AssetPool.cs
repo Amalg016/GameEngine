@@ -131,6 +131,48 @@ namespace GameEngine.util
                   Console.WriteLine(ex.ToString());
                 }
             }
+            
+            
+            public static void LoadResources(bool legacy)
+            {
+                string serializedInfo = null;
+
+                string folderPath = "Assets/Animations";
+                if (Directory.Exists(folderPath))
+                {
+                    // Get only JSON files in the folder
+                    string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
+
+                    // Display the list of JSON files
+                    Console.WriteLine("JSON files in the folder:");
+                    foreach (string jsonFile in jsonFiles)
+                    {
+                        Console.WriteLine(jsonFile);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Folder does not exist: " + folderPath);
+                }
+                try
+                {
+                    serializedInfo = File.ReadAllText("Assets.json");
+                    if(serializedInfo != "")
+                    {
+                        Console.WriteLine(serializedInfo);
+                    
+                        List<Animation> animations = JsonConvert.DeserializeObject<List<Animation>>(serializedInfo,new AssetDeserializer());
+                        if (animations.Count > 0)
+                        {
+                            allAnimations = animations;
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
 
             public static void SaveResources()
             {

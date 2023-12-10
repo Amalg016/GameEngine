@@ -12,12 +12,20 @@ namespace GameEngine.components
     {
         public string Name = "default";
        //  public Dictionary<Sprite,float> frames=new Dictionary<Sprite, float>();
-    [JsonRequired]    public List<Frame> frames = new List<Frame>();
+        [JsonRequired] public List<Frame> frames = [];
+        [JsonRequired] float speed = 1;
+        public bool Loop = true;
+        int currentIndex = 0;
+        float timeTracker=0;
+        [JsonIgnore] public Sprite currentSprite;
+        
         public void AddFrame(Sprite sprite,float frameRate)
         {
-            Frame frame = new Frame();
-            frame.sprite = sprite;
-            frame.frameRate = frameRate;
+            var frame = new Frame
+            {
+                sprite = sprite,
+                frameRate = frameRate
+            };
             frames.Add(frame);
         }
         public void AddFrame(Frame frame)
@@ -30,18 +38,17 @@ namespace GameEngine.components
         }
         public void AddFrame(Spritesheet sheet, int index, float frameRate)
         {
-            Frame frame = new Frame();
-            frame.sprite = sheet.GetSprite(index);
-            frame.frameRate = frameRate;
+            var frame = new Frame
+            {
+                sprite = sheet.GetSprite(index),
+                frameRate = frameRate
+            };
             frames.Add(frame);
         }
-        public bool Loop = true;
-        int currentIndex = 0;
-        float timeTracker=0;
-    [JsonIgnore]    public Sprite currentSprite;
+        
         public void Update(GameObject obj)
         {            
-                timeTracker -= Time.deltaTime;
+                timeTracker -= Time.deltaTime*speed;
                 if(timeTracker <= 0)
                 {
                     if (currentIndex < frames.Count-1)

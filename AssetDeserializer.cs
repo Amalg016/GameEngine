@@ -70,6 +70,7 @@ namespace GameEngine
             //   JObject transform = jo["transform"].Value<JObject>();
             //    Transform t = serializer.Deserialize<Transform>(transform.CreateReader());
             bool Zindex = jo["Loop"].Value<bool>();
+            float speed = jo["speed"].Value<float>();
             Animation go = new Animation();
                 go.Loop = Zindex;
                 go.Name = name;

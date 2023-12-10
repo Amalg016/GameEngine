@@ -13,6 +13,9 @@ namespace GameEngine.components
     {
        [JsonRequired]   public string Name { get { return this.ToString(); } }
      [JsonRequired]   public AnimationController controller;
+     string label;
+     bool open=false;
+     Animation anim = null;
         public void RefreshTextures()
         {   
             if (controller == null) return;    
@@ -36,9 +39,7 @@ namespace GameEngine.components
     //    {
     //        allAnimations.Add(animation);
     //    }
-        string label;
-        bool open=false;
-        Animation anim = null;
+        
      //   public List<Animation> getAllAnimations()
      //   {
      //       return animations;  
@@ -50,7 +51,7 @@ namespace GameEngine.components
             string[] names=GetNames(allControllers);
             int index = 0;
             
-                if (AssetPool.animationControllers.Count > 0)
+                if (allControllers.Count > 0)
                 {
                     controller = allControllers[index];
                     index = indexof(controller.Name, names);
