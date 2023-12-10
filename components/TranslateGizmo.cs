@@ -1,12 +1,4 @@
 ﻿using GameEngine.editor;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.components
 {

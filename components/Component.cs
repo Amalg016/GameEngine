@@ -1,15 +1,8 @@
-﻿using GameEngine.components;
-using GameEngine.editor;
+﻿using GameEngine.editor;
 using ImGuiNET;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Numerics;
 using System.Reflection;
-using System.Security.AccessControl;
-using System.Xml.Serialization;
 
 namespace GameEngine.components
 {

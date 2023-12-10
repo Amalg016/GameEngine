@@ -1,5 +1,6 @@
 ﻿using Silk.NET.Input;
 using System.Numerics;
+using Silk.NET.Windowing.Glfw;
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
@@ -17,6 +18,8 @@ using GameEngine.observers.events;
 using GameEngine.scenes;
 using GameEngine.components;
 using System.IO;
+
+using WINDOW=Silk.NET.Windowing.Window;
 
 namespace GameEngine
 {
@@ -36,11 +39,11 @@ namespace GameEngine
         public  void Init(params string[] args)
         {
             EventSystem.addObserver(this);
-            WindowOptions options = WindowOptions.Default;
+            var options = WindowOptions.Default;
             options.Title = "AJEngine";
             options.Size = new Vector2D<int>(Width, Height);
-            options.API = GraphicsAPI.Default;
-            window = Silk.NET.Windowing.Window.Create(options);
+            options.API = GraphicsAPI.DefaultVulkan;
+            window = WINDOW.Create(options);
 
 
 
@@ -48,7 +51,7 @@ namespace GameEngine
 
             window.Update += OnWindowUpdate;
             window.Closing += OnWindowClosed;
-            window.Resize += swkwk;
+            window.Resize += Resize;
             //    window.FramebufferResize += s =>
             //    {
             //        // Adjust the viewport to the new window size
@@ -86,7 +89,7 @@ namespace GameEngine
 
             }
         }
-        private static void swkwk(Vector2D<int> obj)
+        private static void Resize(Vector2D<int> obj)
         {
             Height = obj.Y;
             Width = obj.X;

@@ -1,12 +1,5 @@
-﻿using GameEngine.editor;
-using GameEngine.util;
-using Silk.NET.SDL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GameEngine.util;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.components
 {
