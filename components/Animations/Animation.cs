@@ -7,7 +7,7 @@ namespace GameEngine.components
     {
         public string Name = "default";
        //  public Dictionary<Sprite,float> frames=new Dictionary<Sprite, float>();
-        [JsonRequired] public List<Frame> frames = [];
+        [JsonRequired] public List<Frame> frames = new List<Frame>();
         [JsonRequired] float speed = 1;
         public bool Loop = true;
         int currentIndex = 0;

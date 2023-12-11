@@ -6,23 +6,28 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-        <RestoreProjectPath>$(MSBuildProjectDirectory)\Packages</RestoreProjectPath>
-    </PropertyGroup>
+      
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
 
+    </PropertyGroup>
+    
     <ItemGroup>
+        <FunctionsPreservedDependencies Include="Microsoft.Extensions.DependencyModel.dll" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" /> <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
       <PackageReference Include="Aether.Physics2D" Version="2.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Silk.NET" Version="2.19.0" />
-      <PackageReference Include="Silk.NET.Input.Extensions" Version="2.19.0" />
+    
       <PackageReference Include="Silk.NET.OpenGL.Extensions.ImGui" Version="2.19.0" />
       <PackageReference Include="SixLabors.ImageSharp" Version="3.1.0" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-  <Exec Command="xcopy /e /y /I $(ProjectDir)Data\Assets $(TargetDir)Assets" />  
-  <Exec Command="xcopy /e /y /I $(ProjectDir)Data\AssetPool $(TargetDir)" />  
-  <Exec Command="xcopy /e /y /I $(ProjectDir)Data\EditorData $(TargetDir)Editor" />  
+        <Exec Command="xcopy /e /y /I $(ProjectDir)Data\runtimes\win-x64 $(TargetDir)runtimes\win-x64\native" />     
+        <Exec Command="xcopy /e /y /I $(ProjectDir)Data\Assets $(TargetDir)Assets" />
+        <Exec Command="xcopy /e /y /I $(ProjectDir)Data\AssetPool $(TargetDir)" />  
+        <Exec Command="xcopy /e /y /I $(ProjectDir)Data\EditorData $(TargetDir)Editor" />  
     </Target>
 
 </Project>

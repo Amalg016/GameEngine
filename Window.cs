@@ -1,24 +1,18 @@
 ﻿using Silk.NET.Input;
 using System.Numerics;
-using Silk.NET.Windowing.Glfw;
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
-using System;
-using System.Linq;
 using System.Diagnostics;
 using GameEngine.util;
 using GameEngine.renderer;
 using Shader = GameEngine.renderer.Shader;
 using Texture = GameEngine.renderer.Texture;
-using System.Runtime.CompilerServices;
 using FrameBuffer = GameEngine.renderer.FrameBuffer;
 using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;
 using GameEngine.components;
-using System.IO;
-
 using WINDOW=Silk.NET.Windowing.Window;
 
 namespace GameEngine
@@ -42,7 +36,7 @@ namespace GameEngine
             var options = WindowOptions.Default;
             options.Title = "AJEngine";
             options.Size = new Vector2D<int>(Width, Height);
-            options.API = GraphicsAPI.DefaultVulkan;
+             options.API = GraphicsAPI.Default;
             window = WINDOW.Create(options);
 
 

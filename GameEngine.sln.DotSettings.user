@@ -1,0 +1,15 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=290E7539_002DCED2_002D46D6_002DBA74_002D7619189AAFCD_002Fd_003Acomponents_002Fd_003AAnimations_002Ff_003AAnimation_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=290E7539_002DCED2_002D46D6_002DBA74_002D7619189AAFCD_002Fd_003AIMGUI_002Ff_003AIMGuiLayer_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=290E7539_002DCED2_002D46D6_002DBA74_002D7619189AAFCD_002Fd_003AIMGUI_002Ff_003AShader_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=290E7539_002DCED2_002D46D6_002DBA74_002D7619189AAFCD_002Fd_003Arenderer_002Ff_003ATexture_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=290E7539_002DCED2_002D46D6_002DBA74_002D7619189AAFCD_002Ff_003AWindow_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\amalg\.nuget\packages\silk.net.windowing.common\2.19.0\lib\netstandard2.1\Silk.NET.Windowing.Common.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/Build/BuildTool/MsBuildSolutionLoadingOrderingEnabled/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Hierarchy/Build/SolutionBuilderNext/InvokeBeforeBuildAndAfterBuildTargetsForSkippedProjects/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolutionBuilderNext/OutputVerbosityLevel/@EntryValue">Diagnostic</s:String>
+	
+	
+	</wpf:ResourceDictionary>
