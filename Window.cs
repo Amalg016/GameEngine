@@ -74,14 +74,6 @@ namespace GameEngine
                     currentScene.SaveResources();
                     return; 
             }
-
-            if (_event.Type == EventType.GameEngineStartPlay)
-            {
-            }
-            else if (_event.Type == EventType.GameEngineStopPlay)
-            {
-
-            }
         }
         private static void Resize(Vector2D<int> obj)
         {
