@@ -21,14 +21,20 @@ namespace GameEngine
         static IWindow window = null;
         static IInputContext input;
         public static GL gl;
-        private static IKeyboard primaryKeyboard;
         static uint program;
-        static Camera Camera;
         static GUISystem guicontroller;
         public static int Height = 1080, Width = 1920;
         private static FrameBuffer framebuffer;
         public static PickingTexture pickingTexture;
         private static SceneManager sceneManager;
+
+        static Stopwatch stopwatch;
+        static float BeginTime;
+        static Shader defaultShader;
+        static Shader pickingShader;
+        static Texture texture;
+        public static Camera camera;
+
         public void Init(params string[] args)
         {
             EventSystem.addObserver(this);
@@ -36,13 +42,11 @@ namespace GameEngine
             options.Title = "AJEngine";
             options.Size = new Vector2D<int>(Width, Height);
             options.API = GraphicsAPI.Default;
-            window = WINDOW.Create(options);
             sceneManager = new SceneManager();
-
+            window = WINDOW.Create(options);
 
 
             window.Load += OnWindowLoad;
-
             window.Update += OnWindowUpdate;
             window.Closing += OnWindowClosed;
             window.Resize += Resize;
@@ -66,17 +70,10 @@ namespace GameEngine
         }
 
 
-        static Stopwatch stopwatch;
-        static float BeginTime;
-        static Shader defaultShader;
-        static Shader pickingShader;
-        public static DirectoryInfo scenePath = new DirectoryInfo("Assets/Scenes/Lvl1.json");
-        static Texture texture;
         // public static void ChangeScene(sceneInitializer sceneInitializer)
         // {
         //     guicontroller.GetPropertiesWindow().setActiveGameObject(null);
         // }
-        public static Camera camera;
 
         private static void OnWindowLoad()
         {
@@ -87,20 +84,7 @@ namespace GameEngine
             input = window.CreateInput();
             gl = window.CreateOpenGL();
 
-            primaryKeyboard = input.Keyboards.FirstOrDefault();
-
-            InputManager.keyboard = primaryKeyboard;
-            InputManager.mouse = input.Mice.FirstOrDefault();
-            foreach (IMouse mouse in input.Mice)
-            {
-                mouse.Click += (cursor, button, pos) => { Console.WriteLine($"Clicked {pos} {cursor.Cursor}"); };
-            }
-
-            foreach (IKeyboard keyboard in input.Keyboards)
-            {
-                keyboard.KeyDown += InputManager.kls;
-            }
-
+            InputManager.onLoad(input);
             AssetPool assetPool = new AssetPool(gl);
             gl.ClearColor(1, 1, 1, 1);
 
@@ -117,11 +101,6 @@ namespace GameEngine
             //     gl.Viewport(0, 0, 1920, 1080);
             guicontroller = new GUISystem(gl, window, input, pickingTexture);
             sceneManager.ChangeScene(new LevelEditorSceneInitializer());
-            // if (scenePath != null)
-            // {
-            //     ChangeScene(new LevelEditorSceneInitializer());
-
-            // }
 
             guicontroller.Load(SceneManager.CurrentScene);
             pickingShader = AssetPool.getShader("Assets/Shader/pickingShader.vert", "Assets/Shader/pickingShader.frag", "pickingShader");
@@ -179,23 +158,6 @@ namespace GameEngine
             BeginTime = Time.time;
         }
 
-        private static readonly float[] Vertices =
-        {
-            //X    Y      Z        R  G  B  A    u v
-             0.5f,  0.5f, 0.0f,    1, 1, 1, 1,   1,0,
-             0.5f, -0.5f, 0.0f,    1, 1, 1, 1,   1,1,
-            -0.5f, -0.5f, 0.0f,    1, 1, 1, 1,   0,1,
-            -0.5f,  0.5f, 0.5f,    1, 1, 1, 1,   0,0
-        };
-
-        private static readonly uint[] Indices =
-        {
-            0, 1, 3,
-            1, 2, 3
-        };
-
-
-
         private static void OnWindowClosed()
         {
             guicontroller.Exit();
@@ -211,18 +173,12 @@ namespace GameEngine
         }
         public static float getTargetAspectRatio()
         {
-
-
-            // GameviewWindow Script doesnt uses this function it can be integrated
             return 16 / 9;
-            return 1;
-            return Width / Height;
         }
         public static GUISystem GetGUISystem()
         {
             return guicontroller;
         }
-
 
     }
 }

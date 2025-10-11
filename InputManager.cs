@@ -44,6 +44,21 @@ namespace GameEngine
         public static bool[] keyPressed = new bool[350];
         public static bool[] keyBeginPressed = new bool[350];
 
+        public static void onLoad(IInputContext input)
+        {
+            keyboard = input.Keyboards.FirstOrDefault();
+            mouse = input.Mice.FirstOrDefault();
+            foreach (IMouse mouse in input.Mice)
+            {
+                mouse.Click += (cursor, button, pos) => { Console.WriteLine($"Clicked {pos} {cursor.Cursor}"); };
+            }
+
+            foreach (IKeyboard keyboard in input.Keyboards)
+            {
+                keyboard.KeyDown += kls;
+            }
+        }
+
         public static void kls(IKeyboard arg1, Key arg2, int arg3)
         {
             keyPressed[(int)arg2] = keyboard.IsKeyPressed(arg2) ? true : false; ;
