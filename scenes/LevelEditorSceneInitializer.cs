@@ -1,5 +1,4 @@
-﻿using System;
-using System.Numerics;
+﻿using System.Numerics;
 using GameEngine.components;
 using GameEngine.util;
 using ImGuiNET;
@@ -12,15 +11,15 @@ namespace GameEngine.scenes
 {
     public class LevelEditorSceneInitializer : sceneInitializer
     {
-        
+
         private const int Width = 800;
         private const int Height = 700;
         static Texture texture;
         Shader shader;
-        
-        private  BufferObject<float> Vbo;
-        private  BufferObject<uint> Ebo;
-        private  VertexArrayObject<float, uint> Vao;
+
+        private BufferObject<float> Vbo;
+        private BufferObject<uint> Ebo;
+        private VertexArrayObject<float, uint> Vao;
 
         GameObject go2;
         Spritesheet spritesheet;
@@ -30,7 +29,7 @@ namespace GameEngine.scenes
         public override void Init(Scene scene)
         {
 
-            LevelEditorStuff.Iniit("LevelEditor",1);
+            LevelEditorStuff.Iniit("LevelEditor", 1);
             LevelEditorStuff.AddComponent(new MouseControls());
             LevelEditorStuff.AddComponent(new GridLines());
             LevelEditorStuff.AddComponent(new TranslateGizmo(gizmos.GetSprite(1), Window.GetGUISystem().GetPropertiesWindow()));
@@ -39,34 +38,34 @@ namespace GameEngine.scenes
             LevelEditorStuff.dontSerialize();
             LevelEditorStuff.AddComponent(new GizmoSystem(gizmos));
             scene.addGameObjectToScene(LevelEditorStuff);
-            
+
         }
         Spritesheet gizmos;
-         public override void loadResources (Scene scene)
-         {
+        public override void loadResources(Scene scene)
+        {
 
             //Sprite sprite= new Sprite();
             // sprite.SetTexture();
             AssetPool.getShader("Assets/Shader/shader.vert", "Assets/Shader/shader.frag", "DefaultShader");
-            AssetPool.getSpriteSheet("Editor/Images/gizmos.png","Arrows",24,48,3,0);
+            AssetPool.getSpriteSheet("Editor/Images/gizmos.png", "Arrows", 24, 48, 3, 0);
             //  spritesheet = new Spritesheet(AssetPool.getTexture("tileset.png", "Lvlsheet"),16f,16,240,0);
-          //  spritesheet = new Spritesheet(AssetPool.getTexture("Scavengers_SpriteSheet.png", "sheet1"), 32f, 32f, 56, 0);
+            //  spritesheet = new Spritesheet(AssetPool.getTexture("Scavengers_SpriteSheet.png", "sheet1"), 32f, 32f, 56, 0);
             spritesheet = AssetPool.getSpriteSheet("Assets/Images/Scavengers_SpriteSheet.png", "sheet1", 32f, 32f, 55, 0);
             AssetPool.getTexture("Assets/Images/ezgif.com-gif-maker (1).png", "Player1");
-           
+
             AssetPool.getTexture("Assets/Images/silk.png", "Player2");
 
             gizmos = AssetPool.TryFindSpriteSheet("Arrows");
-            
+
             spritesheet = AssetPool.TryFindSpriteSheet("sheet1");
-         }
+        }
 
         private int spriteIndex = 0;
         float spriteFlipTime = .2f;
         float spriteFlipTimeLeft = 0;
 
 
-      
+
 
 
 
@@ -87,19 +86,19 @@ namespace GameEngine.scenes
         };
 
 
-     //   public unsafe void Render()
-     //   {
-     //     gl.Clear(ClearBufferMask.ColorBufferBit);
-     //     Vao.Bind();
-     //
-     //     shader.Use();
-     //   //  texture.Bind();
-     //     shader.SetUniform("uProjection", Camera.GetProjectionMatrix());
-     //     shader.SetUniform("uView", Camera.GetViewMatrix());
-     //   //  shader.SetUniform("uTexture0", 0);
-     //   
-     //     gl.DrawElements(PrimitiveType.Triangles, (uint)Indices.Length, DrawElementsType.UnsignedInt, null);
-     //   }
+        //   public unsafe void Render()
+        //   {
+        //     gl.Clear(ClearBufferMask.ColorBufferBit);
+        //     Vao.Bind();
+        //
+        //     shader.Use();
+        //   //  texture.Bind();
+        //     shader.SetUniform("uProjection", Camera.GetProjectionMatrix());
+        //     shader.SetUniform("uView", Camera.GetViewMatrix());
+        //   //  shader.SetUniform("uTexture0", 0);
+        //   
+        //     gl.DrawElements(PrimitiveType.Triangles, (uint)Indices.Length, DrawElementsType.UnsignedInt, null);
+        //   }
 
         public override void imgui()
         {
@@ -128,11 +127,11 @@ namespace GameEngine.scenes
                         Vector2 uv0 = new Vector2(texCoords[1].X, texCoords[1].Y);
                         Vector2 uv1 = new Vector2(texCoords[3].X, texCoords[3].Y);
                         ImGui.PushID(i);
-                        if (ImGui.ImageButton(uv1.ToString()+uv0.ToString(),(IntPtr)id , spriteSize,uv1, uv0))
+                        if (ImGui.ImageButton(uv1.ToString() + uv0.ToString(), (IntPtr)id, spriteSize, uv1, uv0))
                         {
                             GameObject block = Prefab.generateSpriteObject(spritesheet.GetSprite(i), 0.25f, 0.25f, 0);
                             block.dontSerialize();
-                         
+
                             LevelEditorStuff.GetComponent<MouseControls>().pickUpObject(block);
                             //    block.AddComponent(new Rigidbody2D());
                         }
@@ -162,14 +161,14 @@ namespace GameEngine.scenes
         }
 
         public override void Exit(Scene scene)
-        {   
-           foreach (var item in scene.renderer.batches)
-           {
-                item.OnExit();  
-           }
-         //  Console.WriteLine(scene.sceneGameObjects.Count);
+        {
+            foreach (var item in scene.renderer.batches)
+            {
+                item.OnExit();
+            }
+            //  Console.WriteLine(scene.sceneGameObjects.Count);
         }
-        
-        
+
+
     }
 }

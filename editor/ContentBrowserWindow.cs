@@ -1,14 +1,5 @@
-﻿using GameEngine.components;
-using GameEngine.util;
+﻿using GameEngine.util;
 using ImGuiNET;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.editor
 {
@@ -20,8 +11,8 @@ namespace GameEngine.editor
         DirectoryInfo currentInfo;
         public ContentBrowserWindow()
         {
-               directoryInfo = new DirectoryInfo(Path);
-              currentInfo = directoryInfo; 
+            directoryInfo = new DirectoryInfo(Path);
+            currentInfo = directoryInfo;
             //   Directory.SetCurrentDirectory(directoryInfo.FullName);
         }
         public unsafe void imgui()
@@ -30,11 +21,11 @@ namespace GameEngine.editor
             //  var files = from file in
             //   Directory.EnumerateFiles(Path)
             //              select file;
-            if(currentInfo.FullName != directoryInfo.FullName)
+            if (currentInfo.FullName != directoryInfo.FullName)
             {
                 if (ImGui.Button("<-"))
                 {
-                    currentInfo=currentInfo.Parent;
+                    currentInfo = currentInfo.Parent;
                 }
             }
             ImGui.NewLine();
@@ -48,7 +39,7 @@ namespace GameEngine.editor
             {
                 columnCount = 1;
             }
-            ImGui.Columns(columnCount,"s",false);
+            ImGui.Columns(columnCount, "s", false);
             foreach (var item in Directory.GetFileSystemEntries(currentInfo.FullName))
             {
                 DirectoryInfo file = new DirectoryInfo(item);
@@ -58,7 +49,8 @@ namespace GameEngine.editor
 
                     uint id = AssetPool.getTexture("Editor/Images/File.png", "File").getTexID();
                     ImGui.PushID(file.Name.ToString());
-                    if (ImGui.ImageButton(file.Name.ToString(),(IntPtr)id, new System.Numerics.Vector2(50, 50))){
+                    if (ImGui.ImageButton(file.Name.ToString(), (IntPtr)id, new System.Numerics.Vector2(50, 50)))
+                    {
                         currentInfo = file;
                     }
                     ImGui.PopID();
@@ -69,21 +61,22 @@ namespace GameEngine.editor
                 }
                 else
                 {
-                   // Console.WriteLine(file.Extension.ToString());
-                    uint id = AssetPool.getTexture("Editor/Images/FileItem.png", "FileItem").getTexID();                   
+                    // Console.WriteLine(file.Extension.ToString());
+                    uint id = AssetPool.getTexture("Editor/Images/FileItem.png", "FileItem").getTexID();
                     ImGui.PushID(file.Name.ToString());
-                    if(ImGui.ImageButton(file.Name.ToString(),(IntPtr)id,new System.Numerics.Vector2(50, 50))){
+                    if (ImGui.ImageButton(file.Name.ToString(), (IntPtr)id, new System.Numerics.Vector2(50, 50)))
+                    {
 
                     }
-                   // if (ImGui.Button(file.Name.ToString()))
-                   // {
-                   //
-                   // }
+                    // if (ImGui.Button(file.Name.ToString()))
+                    // {
+                    //
+                    // }
                     ImGui.PopID();
                     if (ImGui.BeginDragDropSource())
                     {
-                   
-                        ImGui.SetDragDropPayload("Content Browser Item", IntPtr.Zero,0);
+
+                        ImGui.SetDragDropPayload("Content Browser Item", IntPtr.Zero, 0);
 
                         if (file.Extension == ".scene")
                         {
@@ -93,18 +86,18 @@ namespace GameEngine.editor
                         ImGui.EndDragDropSource();
                     }
                 }
-                    ImGui.TextWrapped(file.Name.ToString());
+                ImGui.TextWrapped(file.Name.ToString());
 
 
                 ImGui.NextColumn();
             }
             ImGui.Columns(1);
-            ImGui.End();          
+            ImGui.End();
         }
 
 
-        
+
     }
-    
+
 }
 

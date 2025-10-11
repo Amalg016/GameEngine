@@ -1,8 +1,6 @@
 ﻿using GameEngine.observers;
 using GameEngine.observers.events;
 using ImGuiNET;
-using System.IO;
-using System.Security.Permissions;
 
 namespace GameEngine.editor
 {
@@ -24,7 +22,7 @@ namespace GameEngine.editor
                 }
                 if (ImGui.MenuItem("Open", "Ctrl+O"))
                 {
-                       
+
                 }
                 ImGui.EndMenu();
             }
