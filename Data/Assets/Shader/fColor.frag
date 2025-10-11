@@ -1,4 +1,4 @@
-﻿#version 330
+﻿#version 400
 
 uniform sampler2D uTextureSampler;
 uniform float uTextureFlag;

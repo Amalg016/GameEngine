@@ -1,4 +1,4 @@
-﻿#version 330 core
+﻿#version 400
 //These lines specify the location and type of our attributes,
 //the attributes here are prefixed with a "v" as they are our inputs to the vertex shader
 //this isn't strictly necessary though, but a good habit.

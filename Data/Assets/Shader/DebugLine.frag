@@ -1,4 +1,4 @@
-﻿#version 330 core
+﻿#version 400
 //The input variables, again prefixed with an f as they are the input variables of our fragment shader.
 //These have to share name for now even though there is a way around this later on.
 in vec3 fColor;
