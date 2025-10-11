@@ -4,12 +4,6 @@ using GameEngine.renderer;
 using GameEngine.util;
 using Newtonsoft.Json;
 using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Policy;
 
 namespace GameEngine.scenes
 {
@@ -17,20 +11,20 @@ namespace GameEngine.scenes
     {
         internal bool isRunning = false;
         public List<GameObject> sceneGameObjects = new List<GameObject>();
-       // public Camera Camera;
+        // public Camera Camera;
         public Renderer renderer;
         protected GL gl { get { return Window.gl; } }
-       // protected bool LevelLoaded = false;
+        // protected bool LevelLoaded = false;
         sceneInitializer SceneInitializer;
         physics2D physics2D;
         static bool played = false;
         public Scene(sceneInitializer sceneInitializer)
         {
-            this.SceneInitializer=sceneInitializer;
+            this.SceneInitializer = sceneInitializer;
         }
-        public virtual void init() 
+        public virtual void init()
         {
-          //  Camera = new Camera(new Vector3(0, 0, 0), 16/9);
+            //  Camera = new Camera(new Vector3(0, 0, 0), 16/9);
 
             SceneInitializer.loadResources(this);
             if (!played)
@@ -45,7 +39,7 @@ namespace GameEngine.scenes
             SceneInitializer.Init(this);
             physics2D = new physics2D();
             renderer = new Renderer(gl);
-         
+
             foreach (GameObject go in sceneGameObjects)
             {
                 go.Load();
@@ -68,46 +62,45 @@ namespace GameEngine.scenes
                 this.physics2D.Add(g);
             }
         }
-      //  public Camera camera()
-     //   {
-         //   return Camera;
-     //   }
-       
+        //  public Camera camera()
+        //   {
+        //   return Camera;
+        //   }
+
         public virtual void Gui()
         {
             this.SceneInitializer.imgui();
         }
-       
+
         public void LoadLevelResources(string path)
         {
-            
             Path = path;
             string s;
             try
             {
-                s=File.ReadAllText(path);
+                s = File.ReadAllText(path);
                 if (s != null)
                 {
                     int maxGoId = -1;
                     int maxCompId = -1;
-                    List<GameObject> ss = JsonConvert.DeserializeObject<List<GameObject>>(s, new GameObjectDeserializer(), new ComponentDeserializer(),new ColliderDeserializer());
+                    List<GameObject> ss = JsonConvert.DeserializeObject<List<GameObject>>(s, new GameObjectDeserializer(), new ComponentDeserializer(), new ColliderDeserializer());
                     foreach (GameObject go in ss)
                     {
 
                         foreach (var c in go.getAllComponents())
                         {
-                       //   Console.WriteLine("cou"  +item.getAllComponents().Count);
+                            //   Console.WriteLine("cou"  +item.getAllComponents().Count);
                             if (c.getUid() > maxCompId)
                             {
-                                maxCompId=c.getUid();   
+                                maxCompId = c.getUid();
                             }
                         }
-                        if(go.getUid() > maxGoId)
+                        if (go.getUid() > maxGoId)
                         {
-                            maxGoId=go.getUid();
+                            maxGoId = go.getUid();
                         }
                         addGameObjectToScene(go);
-                        
+
                     }
                     maxGoId++;
                     maxCompId++;
@@ -115,16 +108,16 @@ namespace GameEngine.scenes
                     Component.init(maxCompId);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-         
+
         }
 
 
         static int no = 1;
-        string Path="";
+        string Path = "";
         public void SaveResources()
         {
             string lvlSource;
@@ -150,11 +143,11 @@ namespace GameEngine.scenes
                 if (Path == null)
                 {
                     Path = "default";
-                }               
-                        // Write JSON to file
-                    File.WriteAllText(Path, lvlSource);
-                    Console.WriteLine(lvlSource);
-                
+                }
+                // Write JSON to file
+                File.WriteAllText(Path, lvlSource);
+                Console.WriteLine(lvlSource);
+
             }
             catch (Exception e)
             {
@@ -178,14 +171,14 @@ namespace GameEngine.scenes
             }
 
             for (int i = 0; i < sceneGameObjects.Count; i++)
-           {
-               
-                   sceneGameObjects[i].EditorUpdate();
-               
-           }
+            {
+
+                sceneGameObjects[i].EditorUpdate();
+
+            }
             var moveSpeed = 10f * (float)Time.deltaTime;
 
-          
+
         }
 
         public virtual void Update()
@@ -211,16 +204,17 @@ namespace GameEngine.scenes
             var moveSpeed = 100f * (float)Time.deltaTime;
 
         }
-        public virtual void Render() 
+        public virtual void Render()
         {
             this.renderer.render();
         }
-        
-        public virtual void Exit() {
+
+        public virtual void Exit()
+        {
             SceneInitializer.Exit(this);
             physics2D.Dispose();
         }
-        
+
         public void Destroy()
         {
             foreach (var item in sceneGameObjects)
@@ -245,10 +239,10 @@ namespace GameEngine.scenes
         {
             foreach (GameObject go in sceneGameObjects)
             {
-               if(go.getUid() == v)
-               {
+                if (go.getUid() == v)
+                {
                     return go;
-               }
+                }
             }
             return null;
             //throw new Exception("null GameObject with that id");

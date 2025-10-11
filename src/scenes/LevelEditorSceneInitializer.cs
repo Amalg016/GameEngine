@@ -29,7 +29,7 @@ namespace GameEngine.scenes
         public override void Init(Scene scene)
         {
 
-            LevelEditorStuff.Iniit("LevelEditor", 1);
+            LevelEditorStuff.Load("LevelEditor", 1);
             LevelEditorStuff.AddComponent(new MouseControls());
             LevelEditorStuff.AddComponent(new GridLines());
             LevelEditorStuff.AddComponent(new TranslateGizmo(gizmos.GetSprite(1), Window.GetGUISystem().GetPropertiesWindow()));
@@ -44,12 +44,9 @@ namespace GameEngine.scenes
         public override void loadResources(Scene scene)
         {
 
-            //Sprite sprite= new Sprite();
-            // sprite.SetTexture();
             AssetPool.getShader("Assets/Shader/shader.vert", "Assets/Shader/shader.frag", "DefaultShader");
             AssetPool.getSpriteSheet("Editor/Images/gizmos.png", "Arrows", 24, 48, 3, 0);
             //  spritesheet = new Spritesheet(AssetPool.getTexture("tileset.png", "Lvlsheet"),16f,16,240,0);
-            //  spritesheet = new Spritesheet(AssetPool.getTexture("Scavengers_SpriteSheet.png", "sheet1"), 32f, 32f, 56, 0);
             spritesheet = AssetPool.getSpriteSheet("Assets/Images/Scavengers_SpriteSheet.png", "sheet1", 32f, 32f, 55, 0);
             AssetPool.getTexture("Assets/Images/ezgif.com-gif-maker (1).png", "Player1");
 

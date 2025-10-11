@@ -1,11 +1,12 @@
-﻿using GameEngine.util;
+﻿using GameEngine.scenes;
+using GameEngine.util;
 using System.Numerics;
 
 namespace GameEngine.components
 {
     public class MouseControls : Component
     {
-        GameObject holdingObject=null;
+        GameObject holdingObject = null;
         private float debounceTime = .05f;
         private float debounce;
         Vector4 color;
@@ -19,35 +20,35 @@ namespace GameEngine.components
             {
                 this.holdingObject.Destroy();
             }
-            
+
             holdingObject = go;
             color = holdingObject.GetComponent<SpriteRenderer>().GetColor();
             Vector4 vector = color;
             vector.W = 0.8f;
             holdingObject.GetComponent<SpriteRenderer>().setColor(vector);
-           Window.GetScene().addGameObjectToScene(holdingObject);
-        } 
+            SceneManager.CurrentScene.addGameObjectToScene(holdingObject);
+        }
         void Place()
         {
-            GameObject newObj=this.holdingObject.Copy();
+            GameObject newObj = this.holdingObject.Copy();
             newObj.GetComponent<SpriteRenderer>().setColor(color);
             newObj.Serialize();
         }
         public override void Load()
         {
-            
+
         }
 
         public override void EditorUpdate()
         {
-            debounce-=Time.deltaTime;
-            if(holdingObject != null&&debounce<=0)
+            debounce -= Time.deltaTime;
+            if (holdingObject != null && debounce <= 0)
             {
                 holdingObject.transform.position.X = InputManager.GetOrthoX();
                 holdingObject.transform.position.Y = InputManager.GetOrthoY();
 
-                holdingObject.transform.position.X = ((int)(holdingObject.transform.position.X /Settings.Grid_Width)*Settings.Grid_Width)-Settings.Grid_Width/2;
-                holdingObject.transform.position.Y = ((int)(holdingObject.transform.position.Y / Settings.Grid_Height) * Settings.Grid_Height)+ Settings.Grid_Height/2;
+                holdingObject.transform.position.X = ((int)(holdingObject.transform.position.X / Settings.Grid_Width) * Settings.Grid_Width) - Settings.Grid_Width / 2;
+                holdingObject.transform.position.Y = ((int)(holdingObject.transform.position.Y / Settings.Grid_Height) * Settings.Grid_Height) + Settings.Grid_Height / 2;
                 if (InputManager.LMisPressed)
                 {
                     Place();

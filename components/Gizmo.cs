@@ -1,9 +1,10 @@
 ﻿using GameEngine.editor;
+using GameEngine.scenes;
 using System.Numerics;
 
 namespace GameEngine.components
 {
-    public class Gizmo:Component
+    public class Gizmo : Component
     {
         private Vector4 xAxisColor = new Vector4(1, 0.3f, 0.3f, 1);
         private Vector4 xAxisColorHover = new Vector4(1, 0, 0, 1);
@@ -11,7 +12,7 @@ namespace GameEngine.components
         private Vector4 yAxisColorHover = new Vector4(0, 1, 0, 1);
         private Vector2 position;
 
-        private Vector2 xAxisOffset = new Vector2(.3f, -6f/80);
+        private Vector2 xAxisOffset = new Vector2(.3f, -6f / 80);
         private Vector2 yAxisOffset = new Vector2(-0f, .25f);
 
         private GameObject xAxixObject;
@@ -21,13 +22,13 @@ namespace GameEngine.components
         protected GameObject activeGameObject = null;
         private PropertiesWindow propertiesWindow;
 
-        private float gizmoWidth = 16/80f;
-        private float gizmoHeight = 48/80f;
+        private float gizmoWidth = 16 / 80f;
+        private float gizmoHeight = 48 / 80f;
 
         protected bool xAxisActive = false;
         protected bool yAxisActive = false;
 
-        private bool Using=false;
+        private bool Using = false;
         public Gizmo(Sprite sprite, PropertiesWindow properties)
         {
             this.xAxixObject = Prefab.generateSpriteObject(sprite, gizmoWidth, gizmoHeight, 100);
@@ -39,8 +40,8 @@ namespace GameEngine.components
             this.yAxisObject.AddComponent(new NonPickable());
             propertiesWindow = properties;
 
-            Window.GetScene().addGameObjectToScene(this.xAxixObject);
-            Window.GetScene().addGameObjectToScene(this.yAxisObject);
+            SceneManager.CurrentScene.addGameObjectToScene(this.xAxixObject);
+            SceneManager.CurrentScene.addGameObjectToScene(this.yAxisObject);
         }
         public override void Load()
         {
@@ -55,7 +56,7 @@ namespace GameEngine.components
             if (!Using)
             {
                 this.setInactive();
-            }           
+            }
         }
 
         public override void EditorUpdate()
@@ -73,7 +74,7 @@ namespace GameEngine.components
                 if (InputManager.duplPressed)
                 {
                     GameObject newObj = this.activeGameObject.Copy();
-                    Window.GetScene().addGameObjectToScene(newObj);
+                    SceneManager.CurrentScene.addGameObjectToScene(newObj);
                     newObj.transform.position += new Vector2(0.1f, 0.1f);
                     this.propertiesWindow.setActiveGameObject(newObj);
                     return;
@@ -85,7 +86,7 @@ namespace GameEngine.components
                     this.propertiesWindow.setActiveGameObject(null);
                 }
             }
-            
+
             if (this.activeGameObject != null)
             {
                 this.setActive();
@@ -109,10 +110,10 @@ namespace GameEngine.components
                 xAxisActive = false;
                 yAxisActive = true;
             }
-            else if(!InputManager.isDragging)
+            else if (!InputManager.isDragging)
             {
                 xAxisActive = false;
-                yAxisActive = false; 
+                yAxisActive = false;
             }
 
             if (activeGameObject != null)
@@ -124,14 +125,14 @@ namespace GameEngine.components
                 this.xAxixObject.transform.position.Y = this.activeGameObject.transform.position.Y;
                 xAxixObject.transform.position += xAxisOffset;
             }
-            
+
 
         }
 
         private bool CheckYhoverState()
         {
             Vector2 mousePos = new Vector2(InputManager.GetOrthoX(), InputManager.GetOrthoY());
-            if (mousePos.X <= yAxisObject.transform.position.X +(gizmoWidth/2f)&& mousePos.X >= yAxisObject.transform.position.X - (gizmoWidth / 2f) && mousePos.Y <= yAxisObject.transform.position.Y + (gizmoHeight / 2f) && mousePos.Y >= yAxisObject.transform.position.Y - (gizmoHeight / 2f))
+            if (mousePos.X <= yAxisObject.transform.position.X + (gizmoWidth / 2f) && mousePos.X >= yAxisObject.transform.position.X - (gizmoWidth / 2f) && mousePos.Y <= yAxisObject.transform.position.Y + (gizmoHeight / 2f) && mousePos.Y >= yAxisObject.transform.position.Y - (gizmoHeight / 2f))
             {
                 yAxisSprite.setColor(yAxisColorHover);
                 return true;
@@ -144,7 +145,7 @@ namespace GameEngine.components
         {
 
             Vector2 mousePos = new Vector2(InputManager.GetOrthoX(), InputManager.GetOrthoY());
-            if (mousePos.X <= xAxixObject.transform.position.X+(gizmoHeight/2f) && mousePos.X >= xAxixObject.transform.position.X - (gizmoWidth/2.0f) && mousePos.Y >= xAxixObject.transform.position.Y - (gizmoHeight / 2f) && mousePos.Y <= xAxixObject.transform.position.Y + (gizmoWidth/2f))
+            if (mousePos.X <= xAxixObject.transform.position.X + (gizmoHeight / 2f) && mousePos.X >= xAxixObject.transform.position.X - (gizmoWidth / 2.0f) && mousePos.Y >= xAxixObject.transform.position.Y - (gizmoHeight / 2f) && mousePos.Y <= xAxixObject.transform.position.Y + (gizmoWidth / 2f))
             {
                 xAxisSprite.setColor(xAxisColorHover);
                 return true;
@@ -161,17 +162,17 @@ namespace GameEngine.components
 
         private void setInactive()
         {
-           activeGameObject = null;
+            activeGameObject = null;
             xAxisSprite.setColor(new Vector4(0, 0, 0, 0));
             yAxisSprite.setColor(new Vector4(0, 0, 0, 0));
         }
         public void setUsing()
         {
-            Using= true;
+            Using = true;
         }
         public void setNotUsing()
         {
-            Using= false;
+            Using = false;
             this.setInactive();
         }
     }

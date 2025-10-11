@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameEngine.scenes
+﻿namespace GameEngine.scenes
 {
     public abstract class sceneInitializer
     {
@@ -12,6 +6,5 @@ namespace GameEngine.scenes
         public abstract void loadResources(Scene scene);
         public abstract void imgui();
         public abstract void Exit(Scene scene);
-
     }
 }

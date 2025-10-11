@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using GameEngine.components;
 using ImGuiNET;
 using GameEngine.editor;
+using GameEngine.scenes;
 
 namespace GameEngine
 {
@@ -29,28 +30,28 @@ namespace GameEngine
 
 
         [JsonIgnore][NonSerialized] public Transform transform;
-        [NonSerialized]  private  bool serialize = true;
+        [NonSerialized] private bool serialize = true;
         //  [XmlInclude(ty)]
         //  [XmlElement]
         [JsonRequired]
         private int ZIndex { get; set; }
-        [JsonIgnore] public bool isDead=false;
-       [JsonRequired] public bool isPrefab=false;
+        [JsonIgnore] public bool isDead = false;
+        [JsonRequired] public bool isPrefab = false;
         public GameObject()
         {
             transform = new Transform();
             AddComponent(transform);
         }
-        
-        public void Iniit(String name, int zind)
+
+        public void Load(String name, int zind)
         {
             this.name = name;
-           // this.transform = transform;
-         
+            // this.transform = transform;
+
             this.ZIndex = zind;
-            this.uid = ID_Counter++;   
+            this.uid = ID_Counter++;
         }
-        public void LoadInit(String name, int zind,int id)
+        public void Load(String name, int zind, int id)
         {
             this.name = name;
             // this.transform = transform;
@@ -68,17 +69,17 @@ namespace GameEngine
                 {
                     if (component is T)
                     {
-                        return (T)component ;
+                        return (T)component;
                     }
                 }
-                return null ;   
+                return null;
 
             }
-              catch(Exception e)
+            catch (Exception e)
             {
                 //Debug.log()
             }
-                return null;
+            return null;
 
         }
 
@@ -86,7 +87,7 @@ namespace GameEngine
         {
             foreach (var item in components)
             {
-                if ( item is T)
+                if (item is T)
                 {
                     components.Remove(item);
                     return;
@@ -98,13 +99,13 @@ namespace GameEngine
         {
             c.generateId();
             this.components.Add(c);
-            c.gameObject = this;    
+            c.gameObject = this;
         }
 
         public void LoadAddComponent(Component c)
         {
             this.components.Add(c);
-            c.gameObject = this;    
+            c.gameObject = this;
         }
 
 
@@ -132,21 +133,21 @@ namespace GameEngine
         public void IMGUI()
         {
             name = AJGui.inputText("Name", name);
-           // var val =ZIndex;
+            // var val =ZIndex;
             ZIndex = AJGui.dragInt("Layer:", ZIndex);
-          //  if(ImGui.DragInt("Layer:",ref val))
-          //  {
-          //      ZIndex = val;
-          //  }
-           
+            //  if(ImGui.DragInt("Layer:",ref val))
+            //  {
+            //      ZIndex = val;
+            //  }
+
             foreach (var item in components)
             {
-                ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.FramePadding|ImGuiTreeNodeFlags.AllowOverlap;
-               if(ImGui.CollapsingHeader(item.GetType().Name,treeNodeFlags))
-                item.gui();
+                ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags.Framed | ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.FramePadding | ImGuiTreeNodeFlags.AllowOverlap;
+                if (ImGui.CollapsingHeader(item.GetType().Name, treeNodeFlags))
+                    item.gui();
             }
         }
-      
+
         public static void setIdCounter(int maxId)
         {
             ID_Counter = maxId;
@@ -170,7 +171,7 @@ namespace GameEngine
         }
         public bool doSerialize()
         {
-           return serialize;
+            return serialize;
         }
 
         public void Destroy()
@@ -192,15 +193,15 @@ namespace GameEngine
 
         public GameObject Copy()
         {
-            string  blueprint = JsonConvert.SerializeObject(this);
-            GameObject clone= JsonConvert.DeserializeObject<GameObject>(blueprint, new GameObjectDeserializer(), new ComponentDeserializer(), new ColliderDeserializer());
+            string blueprint = JsonConvert.SerializeObject(this);
+            GameObject clone = JsonConvert.DeserializeObject<GameObject>(blueprint, new GameObjectDeserializer(), new ComponentDeserializer(), new ColliderDeserializer());
             clone.uid = ID_Counter++;
             foreach (var item in clone.getAllComponents())
             {
                 item.generateId();
             }
-            Window.GetScene().addGameObjectToScene(clone);  
-            return clone;   
+            SceneManager.CurrentScene.addGameObjectToScene(clone);
+            return clone;
         }
     }
 }

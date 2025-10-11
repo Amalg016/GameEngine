@@ -12,7 +12,6 @@ using FrameBuffer = GameEngine.renderer.FrameBuffer;
 using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;
-using GameEngine.components;
 using WINDOW = Silk.NET.Windowing.Window;
 
 namespace GameEngine
@@ -29,7 +28,7 @@ namespace GameEngine
         public static int Height = 1080, Width = 1920;
         private static FrameBuffer framebuffer;
         public static PickingTexture pickingTexture;
-        private static bool RuntimePlaying = false;
+        private static SceneManager sceneManager;
         public void Init(params string[] args)
         {
             EventSystem.addObserver(this);
@@ -38,6 +37,7 @@ namespace GameEngine
             options.Size = new Vector2D<int>(Width, Height);
             options.API = GraphicsAPI.Default;
             window = WINDOW.Create(options);
+            sceneManager = new SceneManager();
 
 
 
@@ -46,29 +46,11 @@ namespace GameEngine
             window.Update += OnWindowUpdate;
             window.Closing += OnWindowClosed;
             window.Resize += Resize;
-
             window.Run();
         }
         public void onNotify(GameObject obj, Event _event)
         {
-            switch (_event.Type)
-            {
-                case EventType.GameEngineStartPlay:
-                    RuntimePlaying = true;
-                    currentScene.SaveResources();
-                    Window.ChangeScene(new LevelEditorSceneInitializer());
-                    return;
-                case EventType.GameEngineStopPlay:
-                    RuntimePlaying = false;
-                    Window.ChangeScene(new LevelEditorSceneInitializer());
-                    return;
-                case EventType.LoadLevel:
-                    Window.ChangeScene(new LevelEditorSceneInitializer());
-                    return;
-                case EventType.SaveLevel:
-                    currentScene.SaveResources();
-                    return;
-            }
+            sceneManager.HandleEngineEvent(_event);
         }
         private static void Resize(Vector2D<int> obj)
         {
@@ -81,7 +63,6 @@ namespace GameEngine
 
             // Update viewport
             gl.Viewport(0, 0, (uint)Width, (uint)Height);
-            //   Console.WriteLine(Height + "w" + Width);
         }
 
 
@@ -89,29 +70,12 @@ namespace GameEngine
         static float BeginTime;
         static Shader defaultShader;
         static Shader pickingShader;
-        static Scene currentScene = null;
         public static DirectoryInfo scenePath = new DirectoryInfo("Assets/Scenes/Lvl1.json");
         static Texture texture;
-        public static void ChangeScene(sceneInitializer sceneInitializer)
-        {
-
-            if (currentScene != null)
-            {
-                currentScene.Destroy();
-                // Console.WriteLine("mem" + currentScene.sceneGameObjects[1].name);
-                currentScene = null;
-            }
-            guicontroller.GetPropertiesWindow().setActiveGameObject(null);
-            Component.ID_Counter = 0;
-            currentScene = new Scene(sceneInitializer);
-            currentScene.init();
-            currentScene.LoadLevelResources(scenePath.FullName);
-            currentScene.Start();
-        }
-        public static Scene GetScene()
-        {
-            return Window.currentScene;
-        }
+        // public static void ChangeScene(sceneInitializer sceneInitializer)
+        // {
+        //     guicontroller.GetPropertiesWindow().setActiveGameObject(null);
+        // }
         public static Camera camera;
 
         private static void OnWindowLoad()
@@ -152,12 +116,14 @@ namespace GameEngine
             pickingTexture = new PickingTexture((uint)Width, (uint)Height);
             //     gl.Viewport(0, 0, 1920, 1080);
             guicontroller = new GUISystem(gl, window, input, pickingTexture);
-            if (scenePath != null)
-            {
-                ChangeScene(new LevelEditorSceneInitializer());
-            }
+            sceneManager.ChangeScene(new LevelEditorSceneInitializer());
+            // if (scenePath != null)
+            // {
+            //     ChangeScene(new LevelEditorSceneInitializer());
 
-            guicontroller.Load(currentScene);
+            // }
+
+            guicontroller.Load(SceneManager.CurrentScene);
             pickingShader = AssetPool.getShader("Assets/Shader/pickingShader.vert", "Assets/Shader/pickingShader.frag", "pickingShader");
 
         }
@@ -175,9 +141,9 @@ namespace GameEngine
 
             // bind shader
             Renderer.bindShader(pickingShader);
-            if (currentScene != null)
+            if (SceneManager.CurrentScene != null)
             {
-                currentScene.Render();
+                SceneManager.CurrentScene.Render();
             }
 
 
@@ -189,25 +155,25 @@ namespace GameEngine
             framebuffer.Bind();
             gl.ClearColor(1, 1, 1, 1);
             gl.Clear(ClearBufferMask.ColorBufferBit);
-            if (currentScene != null)
+            if (SceneManager.CurrentScene != null)
             {
 
 
                 DebugDraw.Draw();
                 Renderer.bindShader(defaultShader);
-                if (RuntimePlaying)
+                if (SceneManager.RuntimePlaying)
                 {
-                    currentScene.Update();
+                    SceneManager.CurrentScene.Update();
                 }
                 else
                 {
-                    currentScene.EditorUpdate();
+                    SceneManager.CurrentScene.EditorUpdate();
                 }
-                currentScene.Render();
+                SceneManager.CurrentScene.Render();
             }
 
             framebuffer.UnBind();
-            guicontroller.Update(currentScene);
+            guicontroller.Update(SceneManager.CurrentScene);
             Time.time = (float)stopwatch.Elapsed.TotalSeconds;
             Time.deltaTime = Time.time - BeginTime;
             BeginTime = Time.time;
@@ -233,16 +199,9 @@ namespace GameEngine
         private static void OnWindowClosed()
         {
             guicontroller.Exit();
-            if (currentScene != null)
-            {
-                if (!RuntimePlaying)
-                {
-                    currentScene.SaveResources();
-                }
-                currentScene.Exit();
-                AssetPool.SaveResources();
-                DebugDraw.OnExit();
-            }
+            sceneManager.ExitScene();
+            AssetPool.SaveResources();
+            DebugDraw.OnExit();
             gl?.Dispose();
         }
 
