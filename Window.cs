@@ -13,11 +13,11 @@ using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;
 using GameEngine.components;
-using WINDOW=Silk.NET.Windowing.Window;
+using WINDOW = Silk.NET.Windowing.Window;
 
 namespace GameEngine
 {
-    public class Window:Observer
+    public class Window : Observer
     {
         static IWindow window = null;
         static IInputContext input;
@@ -30,13 +30,13 @@ namespace GameEngine
         private static FrameBuffer framebuffer;
         public static PickingTexture pickingTexture;
         private static bool RuntimePlaying = false;
-        public  void Init(params string[] args)
+        public void Init(params string[] args)
         {
             EventSystem.addObserver(this);
             var options = WindowOptions.Default;
             options.Title = "AJEngine";
             options.Size = new Vector2D<int>(Width, Height);
-             options.API = GraphicsAPI.Default;
+            options.API = GraphicsAPI.Default;
             window = WINDOW.Create(options);
 
 
@@ -46,24 +46,19 @@ namespace GameEngine
             window.Update += OnWindowUpdate;
             window.Closing += OnWindowClosed;
             window.Resize += Resize;
-            //    window.FramebufferResize += s =>
-            //    {
-            //        // Adjust the viewport to the new window size
-            //        gl.Viewport(s);
-            //    };
 
             window.Run();
         }
         public void onNotify(GameObject obj, Event _event)
         {
-            switch (_event.Type) 
+            switch (_event.Type)
             {
                 case EventType.GameEngineStartPlay:
-                    RuntimePlaying=true;
+                    RuntimePlaying = true;
                     currentScene.SaveResources();
                     Window.ChangeScene(new LevelEditorSceneInitializer());
                     return;
-                case EventType.GameEngineStopPlay: 
+                case EventType.GameEngineStopPlay:
                     RuntimePlaying = false;
                     Window.ChangeScene(new LevelEditorSceneInitializer());
                     return;
@@ -72,13 +67,20 @@ namespace GameEngine
                     return;
                 case EventType.SaveLevel:
                     currentScene.SaveResources();
-                    return; 
+                    return;
             }
         }
         private static void Resize(Vector2D<int> obj)
         {
             Height = obj.Y;
             Width = obj.X;
+
+            // Resize framebuffer and picking texture
+            framebuffer?.Resize((uint)Width, (uint)Height);
+            pickingTexture?.Resize((uint)Width, (uint)Height);
+
+            // Update viewport
+            gl.Viewport(0, 0, (uint)Width, (uint)Height);
             //   Console.WriteLine(Height + "w" + Width);
         }
 
@@ -92,19 +94,19 @@ namespace GameEngine
         static Texture texture;
         public static void ChangeScene(sceneInitializer sceneInitializer)
         {
-            
-            if(currentScene != null)
+
+            if (currentScene != null)
             {
                 currentScene.Destroy();
-               // Console.WriteLine("mem" + currentScene.sceneGameObjects[1].name);
+                // Console.WriteLine("mem" + currentScene.sceneGameObjects[1].name);
                 currentScene = null;
             }
-                    guicontroller.GetPropertiesWindow().setActiveGameObject(null);
-                    Component.ID_Counter = 0;
-                    currentScene = new Scene(sceneInitializer);
-                    currentScene.init();
-                    currentScene.LoadLevelResources(scenePath.FullName);
-                    currentScene.Start();            
+            guicontroller.GetPropertiesWindow().setActiveGameObject(null);
+            Component.ID_Counter = 0;
+            currentScene = new Scene(sceneInitializer);
+            currentScene.init();
+            currentScene.LoadLevelResources(scenePath.FullName);
+            currentScene.Start();
         }
         public static Scene GetScene()
         {
@@ -128,10 +130,11 @@ namespace GameEngine
             foreach (IMouse mouse in input.Mice)
             {
                 mouse.Click += (cursor, button, pos) => { Console.WriteLine($"Clicked {pos} {cursor.Cursor}"); };
-            };
+            }
+
             foreach (IKeyboard keyboard in input.Keyboards)
             {
-                keyboard.KeyDown +=InputManager.kls;
+                keyboard.KeyDown += InputManager.kls;
             }
 
             AssetPool assetPool = new AssetPool(gl);
@@ -145,11 +148,11 @@ namespace GameEngine
 
             camera = new Camera(new Vector3(0, 0, 0), 1);
             //Camera = Camera.Main;
-            framebuffer = new FrameBuffer(1920, 1080);
-            pickingTexture = new PickingTexture(1920, 1080);
+            framebuffer = new FrameBuffer((uint)Width, (uint)Height);
+            pickingTexture = new PickingTexture((uint)Width, (uint)Height);
             //     gl.Viewport(0, 0, 1920, 1080);
             guicontroller = new GUISystem(gl, window, input, pickingTexture);
-            if(scenePath != null)
+            if (scenePath != null)
             {
                 ChangeScene(new LevelEditorSceneInitializer());
             }
@@ -166,8 +169,8 @@ namespace GameEngine
             gl.Disable(GLEnum.Blend);
             pickingTexture.enableWriting();
 
-          //  gl.Viewport(0, 0, 1920, 1100);
-         //   gl.ClearColor(0, 0, 0, 0);
+            //  gl.Viewport(0, 0, 1920, 1100);
+            //   gl.ClearColor(0, 0, 0, 0);
             gl.Clear((uint)GLEnum.ColorBufferBit | (uint)GLEnum.DepthBufferBit);
 
             // bind shader
@@ -194,7 +197,7 @@ namespace GameEngine
                 Renderer.bindShader(defaultShader);
                 if (RuntimePlaying)
                 {
-                currentScene.Update();
+                    currentScene.Update();
                 }
                 else
                 {
@@ -202,7 +205,7 @@ namespace GameEngine
                 }
                 currentScene.Render();
             }
-            
+
             framebuffer.UnBind();
             guicontroller.Update(currentScene);
             Time.time = (float)stopwatch.Elapsed.TotalSeconds;
@@ -234,7 +237,7 @@ namespace GameEngine
             {
                 if (!RuntimePlaying)
                 {
-                  currentScene.SaveResources();
+                    currentScene.SaveResources();
                 }
                 currentScene.Exit();
                 AssetPool.SaveResources();
@@ -261,7 +264,7 @@ namespace GameEngine
             return guicontroller;
         }
 
-        
+
     }
 }
 
