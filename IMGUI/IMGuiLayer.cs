@@ -100,8 +100,8 @@ namespace GameEngine.IMGUI
             iO.BackendFlags |= ImGuiBackendFlags.HasMouseCursors;
             iO.BackendFlags |= ImGuiBackendFlags.HasSetMousePos;
             iO.BackendFlags |= ImGuiBackendFlags.HasMouseHoveredViewport;
-           
-            iO.DisplaySize = new Vector2((float)Window.Width, (float)Window.Height);
+
+            iO.DisplaySize = new Vector2((float)view.Size.X, (float)view.Size.Y);
             //  if(props)
 
 
@@ -132,7 +132,7 @@ namespace GameEngine.IMGUI
             Context = ImGuiNET.ImGui.CreateContext();
             ImGuiNET.ImGui.SetCurrentContext(Context);
             ImGui.StyleColorsClassic();
-            var D=ImGui.GetStyle().Colors;
+            var D = ImGui.GetStyle().Colors;
             D[(int)ImGuiCol.Header] = new Vector4(0.201f, 0.189f, .184f, 1f);
             D[(int)ImGuiCol.FrameBg] = new Vector4(0.201f, 0.189f, .184f, 1f);
             D[(int)ImGuiCol.MenuBarBg] = new Vector4(0.201f, 0.189f, .184f, 1f);
@@ -140,16 +140,16 @@ namespace GameEngine.IMGUI
             D[(int)ImGuiCol.TitleBg] = new Vector4(0.201f, 0.189f, .184f, 1f);
             D[(int)ImGuiCol.TitleBgActive] = new Vector4(0.22f, 0.19f, .19f, 1f);
 
-         //   D[(int)ImGuiCol.WindowBg] = new Vector4(0.201f, 0.189f, .184f, 1f);
+            //   D[(int)ImGuiCol.WindowBg] = new Vector4(0.201f, 0.189f, .184f, 1f);
             // ImGuiNET.ImGui.StyleColorsDark();
         }
 
         private void BeginFrame()
         {
-              ImGui.NewFrame();
+            ImGui.NewFrame();
             _frameBegun = true;
             _keyboard = _input.Keyboards[0];
-           _view.Resize += new Action<Vector2D<int>>(WindowResized);
+            _view.Resize += new Action<Vector2D<int>>(WindowResized);
             _keyboard.KeyChar += new Action<IKeyboard, char>(OnKeyChar);
         }
 
@@ -181,7 +181,7 @@ namespace GameEngine.IMGUI
                 }
 
                 _frameBegun = false;
-               ImGui.Render();
+                ImGui.Render();
                 RenderImDrawData(ImGui.GetDrawData());
                 if (currentContext != Context)
                 {
@@ -505,7 +505,7 @@ namespace GameEngine.IMGUI
             _gl.GetInteger(GLEnum.VertexArrayBinding, out var data3);
             string vertexShader = "#version 330\n        layout (location = 0) in vec2 Position;\n        layout (location = 1) in vec2 UV;\n        layout (location = 2) in vec4 Color;\n        uniform mat4 ProjMtx;\n        out vec2 Frag_UV;\n        out vec4 Frag_Color;\n        void main()\n        {\n            Frag_UV = UV;\n            Frag_Color = Color;\n            gl_Position = ProjMtx * vec4(Position.xy,0,1);\n        }";
             string fragmentShader = "#version 330\n        in vec2 Frag_UV;\n        in vec4 Frag_Color;\n        uniform sampler2D Texture;\n        layout (location = 0) out vec4 Out_Color;\n        void main()\n        {\n            Out_Color = Frag_Color * texture(Texture, Frag_UV.st);\n        }";
-            _shader = new   Shader(_gl, vertexShader, fragmentShader);
+            _shader = new Shader(_gl, vertexShader, fragmentShader);
             _attribLocationTex = _shader.GetUniformLocation("Texture");
             _attribLocationProjMtx = _shader.GetUniformLocation("ProjMtx");
             _attribLocationVtxPos = _shader.GetAttribLocation("Position");
@@ -536,7 +536,7 @@ namespace GameEngine.IMGUI
         }
 
 
-   
+
         //
         // Summary:
         //     Frees all graphics resources used by the renderer.
