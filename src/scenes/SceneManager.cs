@@ -7,8 +7,9 @@ namespace GameEngine.scenes
     {
         private static Scene _currentScene;
         private static bool _runtimePlaying = false;
-        private DirectoryInfo _scenePath = new DirectoryInfo("Assets/Scenes/Lvl1.json");
+        private static DirectoryInfo _scenePath = new DirectoryInfo("Assets/Scenes/Lvl1.json");
 
+        public static DirectoryInfo scenePath => _scenePath;
         public static Scene CurrentScene => _currentScene;
         public static bool RuntimePlaying => _runtimePlaying;
 
@@ -57,6 +58,11 @@ namespace GameEngine.scenes
         {
             SaveCurrentScene();
             _currentScene?.Exit();
+        }
+
+        public static void ChangeScenePath(DirectoryInfo scenePath)
+        {
+            _scenePath = scenePath;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameEngine.util;
+﻿using GameEngine.scenes;
+using GameEngine.util;
 using ImGuiNET;
 
 namespace GameEngine.editor
@@ -80,7 +81,7 @@ namespace GameEngine.editor
 
                         if (file.Extension == ".scene")
                         {
-                            Window.scenePath = file;
+                            SceneManager.ChangeScenePath(file);
                         }
                         ImGui.Text(file.Name);
                         ImGui.EndDragDropSource();

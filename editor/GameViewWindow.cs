@@ -1,5 +1,6 @@
 ﻿using GameEngine.observers;
 using GameEngine.observers.events;
+using GameEngine.scenes;
 using ImGuiNET;
 using System.Numerics;
 
@@ -46,7 +47,7 @@ namespace GameEngine.editor
 
             InputManager.setGameViewPos(new Vector2(topLeft.X, topLeft.Y));
             InputManager.setGameViewsize(new Vector2(windowSize.X, windowSize.Y));
-            if (Window.scenePath.Extension == ".scene")
+            if (SceneManager.scenePath.Extension == ".scene")
             {
                 if (ImGui.BeginDragDropTarget())
                 {
@@ -55,7 +56,7 @@ namespace GameEngine.editor
                     {
                         EventSystem.notify(null, new Event(EventType.SaveLevel));
                         EventSystem.notify(null, new Event(EventType.LoadLevel));
-                        Console.WriteLine("Payload accepted" + Window.scenePath + "_");
+                        Console.WriteLine("Payload accepted" + SceneManager.scenePath + "_");
                     }
 
                     ImGui.EndDragDropTarget();
