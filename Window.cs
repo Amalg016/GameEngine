@@ -62,8 +62,8 @@ namespace GameEngine
             Width = obj.X;
 
             // Resize framebuffer and picking texture
-            framebuffer?.Resize((uint)Width, (uint)Height);
-            pickingTexture?.Resize((uint)Width, (uint)Height);
+            // framebuffer?.Resize((uint)Width, (uint)Height);
+            // pickingTexture?.Resize((uint)Width, (uint)Height);
 
             // Update viewport
             gl.Viewport(0, 0, (uint)Width, (uint)Height);
