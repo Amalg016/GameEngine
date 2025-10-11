@@ -11,6 +11,15 @@
         <Platforms>x64</Platforms>
     </PropertyGroup>
     
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DefineConstants>DEBUG;IMGUI_EDITOR</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DefineConstants>RELEASE</DefineConstants>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
     <ItemGroup>
         <FunctionsPreservedDependencies Include="Microsoft.Extensions.DependencyModel.dll" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
