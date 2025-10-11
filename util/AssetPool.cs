@@ -1,17 +1,8 @@
 ﻿using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameEngine.renderer;
 using Shader = GameEngine.renderer.Shader;
 using Texture = GameEngine.renderer.Texture;
 using GameEngine.components;
 using Newtonsoft.Json;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.ConstrainedExecution;
 using GameEngine.components.Animations;
 
 namespace GameEngine.util
@@ -25,12 +16,12 @@ namespace GameEngine.util
             //   AssetPool.shader = new Shader(AssetPool.GL, "Assets/Shader/shader.vert", "Assets/Shader/shader.frag");
         }
         // public static Shader shader;
-     [JsonIgnore]  private static Dictionary<string, Shader> shaders = new Dictionary<string, Shader>();
-     [JsonIgnore]  private static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
-     [JsonIgnore]  public static Dictionary<string, Spritesheet> spritesheets = new Dictionary<string, Spritesheet>();
-     [JsonRequired]    public static List<Animation> allAnimations = new List<Animation>();
-        public static List<AnimationController> animationControllers=new List<AnimationController>();
-        public static Dictionary<string,string> Prefabs=new Dictionary<string ,string>();
+        [JsonIgnore] private static Dictionary<string, Shader> shaders = new Dictionary<string, Shader>();
+        [JsonIgnore] private static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+        [JsonIgnore] public static Dictionary<string, Spritesheet> spritesheets = new Dictionary<string, Spritesheet>();
+        [JsonRequired] public static List<Animation> allAnimations = new List<Animation>();
+        public static List<AnimationController> animationControllers = new List<AnimationController>();
+        public static Dictionary<string, string> Prefabs = new Dictionary<string, string>();
         public static Shader getShader(string vertexpath, string fragmentpath, string resourceName)
         {
             // var root=Path.GetPathRoot(resourceName);
@@ -83,7 +74,7 @@ namespace GameEngine.util
             {
                 if (animation.Name == Name)
                 {
-                    return animation;   
+                    return animation;
                 }
             }
             return null;
@@ -108,79 +99,60 @@ namespace GameEngine.util
             AssetPool.spritesheets.Add(resourceName, sprite);
             return sprite;
         }
-        
-            public static void LoadResources()
+
+        private static void LoadAnimations(String fileName)
+        {
+            string serializedInfo = null;
+            try
             {
-                string serializedInfo = null;
-                try
+                serializedInfo = File.ReadAllText("Assets.json");
+                if (serializedInfo != "")
                 {
-                    serializedInfo = File.ReadAllText("Assets.json");
-                    if(serializedInfo != "")
-                    {
-                       Console.WriteLine(serializedInfo);
-                    
-                      List<Animation> animations = JsonConvert.DeserializeObject<List<Animation>>(serializedInfo,new AssetDeserializer());
+                    Console.WriteLine(serializedInfo);
+
+                    List<Animation> animations = JsonConvert.DeserializeObject<List<Animation>>(serializedInfo, new AssetDeserializer());
                     if (animations.Count > 0)
                     {
                         allAnimations = animations;
                     }
-                    }
-                }
-                catch(Exception ex)
-                {
-                  Console.WriteLine(ex.ToString());
                 }
             }
-            
-            
-            public static void LoadResources(bool legacy)
+            catch (Exception ex)
             {
-                string serializedInfo = null;
-
-                string folderPath = "Assets/Animations";
-                if (Directory.Exists(folderPath))
-                {
-                    // Get only JSON files in the folder
-                    string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
-
-                    // Display the list of JSON files
-                    Console.WriteLine("JSON files in the folder:");
-                    foreach (string jsonFile in jsonFiles)
-                    {
-                        Console.WriteLine(jsonFile);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Folder does not exist: " + folderPath);
-                }
-                try
-                {
-                    serializedInfo = File.ReadAllText("Assets.json");
-                    if(serializedInfo != "")
-                    {
-                        Console.WriteLine(serializedInfo);
-                    
-                        List<Animation> animations = JsonConvert.DeserializeObject<List<Animation>>(serializedInfo,new AssetDeserializer());
-                        if (animations.Count > 0)
-                        {
-                            allAnimations = animations;
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                Console.WriteLine(ex.ToString());
             }
+        }
 
-            public static void SaveResources()
+
+        public static void LoadResources()
+        {
+            string folderPath = "Assets/Animations";
+            if (Directory.Exists(folderPath))
             {
-                string serializedInfo = null;
-                serializedInfo = JsonConvert.SerializeObject(allAnimations);
-                    // Write JSON to file
-                File.WriteAllText("Assets.json", serializedInfo);
+                // Get only JSON files in the folder
+                string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
+
+                // Display the list of JSON files
+                Console.WriteLine("JSON files in the folder:");
+                foreach (string jsonFile in jsonFiles)
+                {
+                    Console.WriteLine(jsonFile);
+                    LoadAnimations(folderPath + "/" + jsonFile);
+                }
             }
-        
+            else
+            {
+                Console.WriteLine("Folder does not exist: " + folderPath);
+            }
+        }
+
+        public static void SaveResources()
+        {
+            string serializedInfo = null;
+            serializedInfo = JsonConvert.SerializeObject(allAnimations);
+            // Write JSON to file
+            File.WriteAllText("Assets.json", serializedInfo);
+        }
+
     }
 }
