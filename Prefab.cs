@@ -1,33 +1,28 @@
 ﻿using GameEngine.components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine
 {
     public class Prefab
     {
         static int no = 0;
-        public static GameObject generateSpriteObject(Sprite sprite,float sizeX,float sizeY,int zindex)
+        public static GameObject generateSpriteObject(Sprite sprite, float sizeX, float sizeY, int zindex)
         {
-            
+
             GameObject block = new GameObject();
             Console.WriteLine("prefab");
-            block.Iniit( $"Sprite_Objeet_Gen {no}",  zindex);
+            block.Load($"Sprite_Objeet_Gen {no}", zindex);
             SpriteRenderer renderer = new SpriteRenderer();
             block.transform.position = new Vector2(200, 200);
-            block.transform.scale =new Vector2(sizeX, sizeY);
+            block.transform.scale = new Vector2(sizeX, sizeY);
             // block.transform.rotation = 0;
             renderer.init(sprite);
             block.AddComponent(renderer);
             no++;
-            return block;   
+            return block;
         }
 
 
-        
+
     }
 }
