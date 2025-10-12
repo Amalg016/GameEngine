@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using GameEngine.ECS;
 
 namespace GameEngine.Serialization
 {

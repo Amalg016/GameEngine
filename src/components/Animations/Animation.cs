@@ -1,4 +1,5 @@
 ﻿using GameEngine.Core.Utilities;
+using GameEngine.ECS;
 using Newtonsoft.Json;
 
 namespace GameEngine.components

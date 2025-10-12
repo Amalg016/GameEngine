@@ -4,6 +4,7 @@ using GameEngine.observers.events;
 using GameEngine.Core.Utilities;
 using ImGuiNET;
 using Newtonsoft.Json;
+using GameEngine.ECS;
 
 namespace GameEngine.components
 {

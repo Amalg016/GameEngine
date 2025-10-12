@@ -1,7 +1,7 @@
 ﻿using GameEngine.components;
 using System.Numerics;
 
-namespace GameEngine
+namespace GameEngine.ECS
 {
     public class Prefab
     {

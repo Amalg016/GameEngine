@@ -3,6 +3,7 @@ using nkast.Aether.Physics2D.Common;
 using nkast.Aether.Physics2D.Dynamics;
 using Transform = GameEngine.components.Transform;
 using GameEngine.Core.Math;
+using GameEngine.ECS;
 
 namespace GameEngine.Physics2D
 {

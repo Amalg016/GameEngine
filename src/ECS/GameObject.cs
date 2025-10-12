@@ -5,7 +5,7 @@ using GameEngine.editor;
 using GameEngine.scenes;
 using GameEngine.Serialization;
 
-namespace GameEngine
+namespace GameEngine.ECS
 {
     [System.Serializable]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]

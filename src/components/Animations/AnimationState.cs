@@ -1,4 +1,6 @@
-﻿namespace GameEngine.components.Animations
+﻿using GameEngine.ECS;
+
+namespace GameEngine.components.Animations
 {
     public class AnimationState
     {

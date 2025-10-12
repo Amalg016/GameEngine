@@ -1,16 +1,16 @@
-﻿using GameEngine.observers.events;
-using System.Collections.Generic;
+﻿using GameEngine.ECS;
+using GameEngine.observers.events;
 
 namespace GameEngine.observers
 {
     public class EventSystem
     {
-        static List<Observer> observers = new List<Observer>(); 
+        static List<Observer> observers = new List<Observer>();
         public static void addObserver(Observer observer)
         {
-            observers.Add(observer);    
+            observers.Add(observer);
         }
-        public static void notify(GameObject obj,Event _event)
+        public static void notify(GameObject obj, Event _event)
         {
             foreach (var observer in observers)
             {

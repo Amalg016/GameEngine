@@ -1,4 +1,5 @@
 ﻿using GameEngine.Core.Platform;
+using GameEngine.ECS;
 using GameEngine.editor;
 using GameEngine.scenes;
 using System.Numerics;

@@ -5,6 +5,7 @@ using GameEngine.Serialization;
 using GameEngine.Core.Utilities;
 using Newtonsoft.Json;
 using Silk.NET.OpenGL;
+using GameEngine.ECS;
 
 namespace GameEngine.scenes
 {

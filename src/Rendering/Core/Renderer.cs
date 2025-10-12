@@ -1,4 +1,5 @@
 ﻿using GameEngine.components;
+using GameEngine.ECS;
 using Silk.NET.OpenGL;
 
 namespace GameEngine.Rendering.Core
