@@ -1,7 +1,7 @@
 ﻿using ImGuiNET;
 using System.Numerics;
 
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public class Debug : IEditorWindow
     {

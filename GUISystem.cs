@@ -1,4 +1,4 @@
-﻿using GameEngine.editor;
+﻿using GameEngine.Editor.Window;
 using GameEngine.Rendering.IMGUI;
 using GameEngine.Rendering.Core;
 using GameEngine.scenes;

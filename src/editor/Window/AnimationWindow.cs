@@ -7,7 +7,7 @@ using System.Numerics;
 using ImGuiTreeNodeFlags = ImGuiNET.ImGuiTreeNodeFlags;
 using ImGuiWindowFlags = ImGuiNET.ImGuiWindowFlags;
 
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public class AnimationWindow : IEditorWindow
     {

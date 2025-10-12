@@ -1,7 +1,7 @@
 ﻿using GameEngine.scenes;
 using GameEngine.Core.Utilities;
 using System.Numerics;
-using GameEngine.editor;
+using GameEngine.Editor.Window;
 using GameEngine.Core.Platform;
 using GameEngine.ECS;
 namespace GameEngine.components

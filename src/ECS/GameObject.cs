@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using GameEngine.components;
 using ImGuiNET;
-using GameEngine.editor;
+using GameEngine.Editor.Window;
 using GameEngine.scenes;
 using GameEngine.Serialization;
+using GameEngine.Editor;
 
 namespace GameEngine.ECS
 {

@@ -1,6 +1,6 @@
 ﻿using GameEngine.Core.Platform;
 using GameEngine.ECS;
-using GameEngine.editor;
+using GameEngine.Editor.Window;
 using GameEngine.scenes;
 using System.Numerics;
 

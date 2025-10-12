@@ -1,6 +1,6 @@
 using GameEngine.observers.events;
 using GameEngine.components;
-using GameEngine.editor;
+using GameEngine.Editor.Window;
 namespace GameEngine.scenes
 {
     public class SceneManager

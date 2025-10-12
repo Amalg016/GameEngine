@@ -6,7 +6,7 @@ using GameEngine.Rendering.Core;
 using GameEngine.scenes;
 using ImGuiNET;
 
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public class PropertiesWindow : IEditorWindow
     {

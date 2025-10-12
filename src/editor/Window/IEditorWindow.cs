@@ -1,4 +1,4 @@
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public interface IEditorWindow
     {

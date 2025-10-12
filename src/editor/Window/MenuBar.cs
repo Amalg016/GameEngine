@@ -2,7 +2,7 @@
 using GameEngine.observers.events;
 using ImGuiNET;
 
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public class MenuBar : IEditorWindow
     {

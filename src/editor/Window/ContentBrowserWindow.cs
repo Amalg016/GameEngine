@@ -2,7 +2,7 @@
 using GameEngine.Core.Utilities;
 using ImGuiNET;
 
-namespace GameEngine.editor
+namespace GameEngine.Editor.Window
 {
     public class ContentBrowserWindow : IEditorWindow
     {

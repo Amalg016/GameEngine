@@ -1,5 +1,6 @@
 ﻿using GameEngine.ECS;
-using GameEngine.editor;
+using GameEngine.Editor;
+using GameEngine.Editor.Window;
 using GameEngine.Serialization;
 using ImGuiNET;
 using Newtonsoft.Json;

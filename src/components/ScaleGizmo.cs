@@ -1,5 +1,5 @@
 ﻿using GameEngine.Core.Platform;
-using GameEngine.editor;
+using GameEngine.Editor.Window;
 
 namespace GameEngine.components
 {
