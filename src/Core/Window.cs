@@ -26,7 +26,7 @@ namespace GameEngine
         static Stopwatch stopwatch;
         static float BeginTime;
         public static Camera camera;
-        static RenderSystem renderSystem;
+        RenderSystem renderSystem;
 
         public void Init(params string[] args)
         {
@@ -49,7 +49,7 @@ namespace GameEngine
         {
             sceneManager.HandleEngineEvent(_event);
         }
-        private static void Resize(Vector2D<int> obj)
+        private void Resize(Vector2D<int> obj)
         {
             Height = obj.Y;
             Width = obj.X;
@@ -57,7 +57,7 @@ namespace GameEngine
             gl.Viewport(0, 0, (uint)Width, (uint)Height);
         }
 
-        private static void OnWindowLoad()
+        private void OnWindowLoad()
         {
             stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -78,7 +78,7 @@ namespace GameEngine
         }
 
 
-        private static void OnWindowUpdate(double obj)
+        private void OnWindowUpdate(double obj)
         {
             InputManager.Update();
             renderSystem.RenderFrame(SceneManager.CurrentScene, SceneManager.RuntimePlaying);
@@ -97,7 +97,7 @@ namespace GameEngine
             BeginTime = Time.time;
         }
 
-        private static void OnWindowClosed()
+        private void OnWindowClosed()
         {
             guicontroller.Exit();
             sceneManager.ExitScene();
@@ -114,7 +114,6 @@ namespace GameEngine
         {
             return guicontroller;
         }
-
     }
 }
 
