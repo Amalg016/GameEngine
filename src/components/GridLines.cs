@@ -14,7 +14,7 @@ namespace GameEngine.components
 
         public override void EditorUpdate()
         {
-            Camera camera = Window.camera;
+            Camera camera = RenderSystem.MainCamera;
             Vector3 cameraPos = camera.Position;
             Vector2 projectionSize = camera.getProjectionSize();
 

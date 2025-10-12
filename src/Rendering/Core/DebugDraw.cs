@@ -92,8 +92,8 @@ namespace GameEngine.Rendering.Core
             // Vbo.BindBuffer(vertexArray);
             shader.Use();
 
-            shader.SetUniform("uProjection", Window.camera.GetProjectionMatrix());
-            shader.SetUniform("uView", Window.camera.getViewMatrix());
+            shader.SetUniform("uProjection", RenderSystem.MainCamera.GetProjectionMatrix());
+            shader.SetUniform("uView", RenderSystem.MainCamera.getViewMatrix());
 
             Vao.Bind();
             gL.EnableVertexAttribArray(0);

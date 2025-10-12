@@ -11,7 +11,7 @@ namespace GameEngine.components
         private float sensitiviity = 30f;
         float scrollSensitivity = 1f;
         float lerpTime = 0;
-        Camera levelEditorCamera = Window.camera;
+        Camera levelEditorCamera = RenderSystem.MainCamera;
         private Vector2 clickOrgin;
         private bool reset;
         public EditorCamera(Camera LevelEditorCamera)
@@ -21,7 +21,7 @@ namespace GameEngine.components
         }
         public override void Load()
         {
-            levelEditorCamera = Window.camera;
+            levelEditorCamera = RenderSystem.MainCamera;
         }
         public override void Update()
         {
@@ -38,8 +38,7 @@ namespace GameEngine.components
             Vector4 tmp = new Vector4(currentX, 0, 0, 1);
             Matrix4x4 viewProjection = new Matrix4x4();
 
-            Camera camera = Window.camera;
-            viewProjection = camera.GetInverseProj() * camera.GetInverseView();
+            viewProjection = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
             tmp = Mathf.Multiply(viewProjection, tmp);
             InputManager.setOrthoX(tmp.X);
         }
@@ -51,8 +50,7 @@ namespace GameEngine.components
             Vector4 tmp = new Vector4(0, currentY, 0, 1);
 
             Matrix4x4 viewProjection = new Matrix4x4();
-            Camera camera = Window.camera;
-            viewProjection = camera.GetInverseProj() * camera.GetInverseView();
+            viewProjection = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
             tmp = Mathf.Multiply(viewProjection, tmp);
             InputManager.setOrthoY(tmp.Y);
         }

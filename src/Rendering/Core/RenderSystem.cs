@@ -1,26 +1,30 @@
 using GameEngine.scenes;
 using GameEngine.Core.Utilities;
 using Silk.NET.OpenGL;
+using System.Numerics;
 
 namespace GameEngine.Rendering.Core
 {
     public class RenderSystem
     {
+        private GL gl;
         private static FrameBuffer _frameBuffer;
         private static PickingTexture _pickingTexture;
         private Shader _defaultShader;
         private Shader _pickingShader;
+        private static Camera _mainCamera;
 
         public static FrameBuffer FrameBuffer => _frameBuffer;
         public static PickingTexture PickingTexture => _pickingTexture;
-        private GL gl;
+        public static Camera MainCamera => _mainCamera;
+
         public void Initialize(GL gl, int width, int height)
         {
             this.gl = gl;
             gl.ClearColor(1, 1, 1, 1);
             gl.Enable(GLEnum.Blend);
             gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
-
+            _mainCamera = new Camera(new Vector3(0, 0, 0), 1);
             _frameBuffer = new FrameBuffer(gl, (uint)width, (uint)height);
             _pickingTexture = new PickingTexture(gl, (uint)width, (uint)height);
 

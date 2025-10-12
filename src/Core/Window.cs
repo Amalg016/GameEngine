@@ -3,7 +3,6 @@ using System.Numerics;
 using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
-using System.Diagnostics;
 using GameEngine.Core.Utilities;
 using GameEngine.observers;
 using GameEngine.observers.events;
@@ -13,6 +12,7 @@ using GameEngine.Rendering.Core;
 using GameEngine.Core.Platform;
 using GameEngine.ECS;
 using GameEngine.Editor;
+using GameEngine.Core;
 
 namespace GameEngine
 {
@@ -21,13 +21,11 @@ namespace GameEngine
         static IWindow window = null;
         static IInputContext input;
         public static GL gl;
-        static uint program;
         public static int Height = 1080, Width = 1920;
-        private static SceneManager sceneManager;
 
-        static Stopwatch stopwatch;
-        static float BeginTime;
-        public static Camera camera;
+        private SceneManager sceneManager;
+        private TimeManager timeManager;
+
         GUISystem guiSystem;
         RenderSystem renderSystem;
 
@@ -39,6 +37,7 @@ namespace GameEngine
             options.Size = new Vector2D<int>(Width, Height);
             options.API = GraphicsAPI.Default;
             sceneManager = new SceneManager();
+            timeManager = new TimeManager();
             window = WINDOW.Create(options);
 
 
@@ -48,10 +47,12 @@ namespace GameEngine
             window.Resize += Resize;
             window.Run();
         }
+
         public void onNotify(GameObject obj, Event _event)
         {
             sceneManager.HandleEngineEvent(_event);
         }
+
         private void Resize(Vector2D<int> obj)
         {
             Height = obj.Y;
@@ -62,9 +63,8 @@ namespace GameEngine
 
         private void OnWindowLoad()
         {
-            stopwatch = new Stopwatch();
-            stopwatch.Start();
-            BeginTime = 0;
+            timeManager.Initialize();
+
             input = window.CreateInput();
             gl = window.CreateOpenGL();
 
@@ -73,7 +73,6 @@ namespace GameEngine
             renderSystem = new RenderSystem();
             renderSystem.Initialize(gl, Width, Height);
 
-            camera = new Camera(new Vector3(0, 0, 0), 1);
             //Camera = Camera.Main;
 
             guiSystem = new GUISystem(gl, window, input, RenderSystem.PickingTexture);
@@ -95,9 +94,7 @@ namespace GameEngine
                 SceneManager.CurrentScene?.EditorUpdate();
             }
             guiSystem.Update(SceneManager.CurrentScene);
-            Time.time = (float)stopwatch.Elapsed.TotalSeconds;
-            Time.deltaTime = Time.time - BeginTime;
-            BeginTime = Time.time;
+            timeManager.Update();
         }
 
         private void OnWindowClosed()

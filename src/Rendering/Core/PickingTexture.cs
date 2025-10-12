@@ -11,16 +11,6 @@ namespace GameEngine.Rendering.Core
         private uint width, height;
         private bool initialized = false;
 
-        public PickingTexture(uint width, uint height)
-        {
-            this.width = width;
-            this.height = height;
-            if (!Initialize(width, height))
-            {
-                throw new Exception("Failed to initialize PickingTexture");
-            }
-        }
-
         public PickingTexture(GL gl, uint width, uint height)
         {
             this.width = width;
