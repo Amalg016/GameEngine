@@ -1,11 +1,7 @@
 ﻿using GameEngine.components;
+using GameEngine.Serialization;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.Physics2D.components
 {
@@ -14,6 +10,6 @@ namespace GameEngine.Physics2D.components
     [JsonConverter(typeof(ColliderDeserializer))]
     public abstract class Collider : Component
     {
-       [JsonRequired] public Vector2 Offset = new Vector2();       
+        [JsonRequired] public Vector2 Offset = new Vector2();
     }
 }

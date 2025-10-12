@@ -4,6 +4,7 @@ using Texture = GameEngine.renderer.Texture;
 using GameEngine.components;
 using Newtonsoft.Json;
 using GameEngine.components.Animations;
+using GameEngine.Serialization;
 
 namespace GameEngine.util
 {

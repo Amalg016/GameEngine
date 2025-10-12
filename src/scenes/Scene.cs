@@ -1,6 +1,7 @@
 ﻿using GameEngine.components;
 using GameEngine.Physics2D;
 using GameEngine.renderer;
+using GameEngine.Serialization;
 using GameEngine.util;
 using Newtonsoft.Json;
 using Silk.NET.OpenGL;

@@ -1,21 +1,14 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using GameEngine.components;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameEngine.components;
-using GameEngine.Physics2D.components;
-using GameEngine.util;
 
-namespace GameEngine
+namespace GameEngine.Serialization
 {
-    public class AssetDeserializer : JsonConverter
+    public class GameObjectDeserializer : JsonConverter<GameObject>
     {
         static JsonSerializerSettings serializerSettings = new JsonSerializerSettings()
-        { ContractResolver = new AssetSpecifiedClassConvertor() };
+        { ContractResolver = new GameObjectSpecifiedClassConvertor() };
         //   public override bool CanConvert(Type objectType)
         //   {
         //       return (objectType == typeof(GameObject));  
@@ -59,60 +52,50 @@ namespace GameEngine
 
 
 
-
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, GameObject value, JsonSerializer serializer)
         {
+            throw new NotImplementedException();
+        }
+
+        public override GameObject ReadJson(JsonReader reader, Type objectType, GameObject existingValue, bool hasExistingValue, JsonSerializer serializer)
+        {
+
             JObject jo = JObject.Load(reader);
             //     Console.WriteLine(jo["Name"].Value<string>());
-                string name = jo["Name"].Value<string>();
-            JArray objects = jo["frames"].Value<JArray>();
+            string name = jo["name"].Value<string>();
+            JArray objects = jo["components"].Value<JArray>();
             //   JObject transform = jo["transform"].Value<JObject>();
             //    Transform t = serializer.Deserialize<Transform>(transform.CreateReader());
-            bool Zindex = jo["Loop"].Value<bool>();
-            float speed = jo["speed"].Value<float>();
-            Animation go = new Animation();
-                go.Loop = Zindex;
-                go.Name = name;
-            go.frames = new List<Frame>();
+            int Zindex = jo["ZIndex"].Value<int>();
+            int uid = jo["uid"].Value<int>();
+            GameObject go = new GameObject();
+            go.Load(name, Zindex, uid);
             foreach (var item in objects)
             {
-                Frame frame=new Frame();
-                float frameRate = item["frameRate"].Value<float>();
-                frame.frameRate=frameRate;  
-                JObject sprite = item["sprite"].Value<JObject>();
-                string Sname = sprite["SpritesheetName"].Value<string>();
-                int index = sprite["Spritesheet_index"].Value<int>();
-                frame.sprite = (AssetPool.TryFindSpriteSheet(Sname)).GetSprite(index);
-                go.AddFrame(frame);
-
+                Component c = serializer.Deserialize<Component>((item.CreateReader()));
+                if (c is Transform)
+                {
+                    go.transform.position = ((Transform)c).position;
+                    go.transform.rotation = ((Transform)c).rotation;
+                    go.transform.scale = ((Transform)c).scale;
+                }
+                else
+                {
+                    go.LoadAddComponent(c);
+                }
             }
-
             return go;
 
-
         }
+    }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    public class GameObjectSpecifiedClassConvertor : DefaultContractResolver
+    {
+        protected override JsonConverter ResolveContractConverter(Type objectType)
         {
-
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(Animation));
-
-        }
-
-        public class AssetSpecifiedClassConvertor : DefaultContractResolver
-        {
-            protected override JsonConverter ResolveContractConverter(Type objectType)
-            {
-                if (typeof(Animation).IsAssignableFrom(objectType) && !objectType.IsAbstract)
-                    return null;
-                return base.ResolveContractConverter(objectType);
-            }
+            if (typeof(GameObject).IsAssignableFrom(objectType) && !objectType.IsAbstract)
+                return null;
+            return base.ResolveContractConverter(objectType);
         }
     }
 }
-

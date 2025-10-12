@@ -1,4 +1,5 @@
 ﻿using GameEngine.editor;
+using GameEngine.Serialization;
 using ImGuiNET;
 using Newtonsoft.Json;
 using System.Numerics;
@@ -9,21 +10,21 @@ namespace GameEngine.components
 
     // [JsonObject(MemberSerialization.OptIn)]
     //[JsonSubtypes.KnownSubType(typeof(FontRenderer), true)]
-     [System.Serializable]  
+    [System.Serializable]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [JsonConverter(typeof(ComponentDeserializer))]
     public abstract class Component
     {
 
-     //   [NonSerialized]
-        public static int ID_Counter=0;
-    [JsonRequired ] private int uid=-1;  
+        //   [NonSerialized]
+        public static int ID_Counter = 0;
+        [JsonRequired] private int uid = -1;
         [JsonIgnore]
         public GameObject gameObject = null;
         [JsonRequired]
         string Name { get { return this.ToString(); } }
         public virtual void Load() { }
-      
+
         public virtual void Update() { }
 
         public virtual void gui()
@@ -84,17 +85,18 @@ namespace GameEngine.components
                     {
                         Vector4 imColor = (Vector4)value;
 
-                        if(ImGui.ColorEdit4("Color Picker",ref imColor)){
+                        if (ImGui.ColorEdit4("Color Picker", ref imColor))
+                        {
                             field.SetValue(this, imColor);
                             this.gameObject.GetComponent<SpriteRenderer>().setDirty();
                         }
-                    //    if (ImGui.ColorPicker4("Color Picker: ", ref imColor))
-                    //    {
-                    //        field.SetValue(this, imColor);
-                    //        this.gameObject.GetComponent<SpriteRenderer>().setDirty();
-                    //    }
+                        //    if (ImGui.ColorPicker4("Color Picker: ", ref imColor))
+                        //    {
+                        //        field.SetValue(this, imColor);
+                        //        this.gameObject.GetComponent<SpriteRenderer>().setDirty();
+                        //    }
                     }
-                    else if (type == typeof(Vector4)&&name!="color")
+                    else if (type == typeof(Vector4) && name != "color")
                     {
                         Vector4 val = (Vector4)value;
                         //  float[] vec = { val.X, val.Y, val.Z ,val.W};
@@ -106,20 +108,20 @@ namespace GameEngine.components
                     else if (type.IsEnum)
                     {
                         string[] enumValues = getEnumValues(type);
-                        string enumType=((Enum)value).ToString();
+                        string enumType = ((Enum)value).ToString();
                         int index = (indexof(enumType, enumValues));
-                         Array s= type.GetEnumValues();
-                        if(ImGui.Combo(field.Name,ref index,enumValues, enumValues.Length))
+                        Array s = type.GetEnumValues();
+                        if (ImGui.Combo(field.Name, ref index, enumValues, enumValues.Length))
                         {
                             field.SetValue(this, s.GetValue(index));
                         }
                     }
-                    
-                    
+
+
                 }
 
-                    
-                
+
+
             }
             catch (Exception e)
             {
@@ -134,20 +136,20 @@ namespace GameEngine.components
             {
                 if (enumType == enumValues[i])
                 {
-                    return i;   
+                    return i;
                 }
             }
             return 0;
         }
 
-        private string[] getEnumValues(Type type) 
+        private string[] getEnumValues(Type type)
         {
             string[] enumValues = new string[type.GetEnumValues().Length];
-            int i=0;
-            foreach(var t in type.GetEnumNames())
+            int i = 0;
+            foreach (var t in type.GetEnumNames())
             {
                 enumValues[i] = t;
-                i++;    
+                i++;
             }
             return enumValues;
         }
@@ -156,7 +158,7 @@ namespace GameEngine.components
         {
             if (this.uid == -1)
             {
-                this.uid=ID_Counter++;
+                this.uid = ID_Counter++;
             }
         }
         public int getUid()
