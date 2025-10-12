@@ -112,10 +112,12 @@ namespace GameEngine.Editor.Window
                 aspectHeight = windowSize.Y;
                 aspectWidth = (aspectHeight) * targetAspect;
             }
-
-            RenderSystem.PickingTexture?.Resize((uint)aspectWidth, (uint)aspectHeight);
-            RenderSystem.FrameBuffer?.Resize((uint)aspectWidth, (uint)aspectHeight);
-
+            uint resizeWidth = (uint)aspectWidth;
+            uint resizeHeight = (uint)aspectHeight;
+            if (resizeWidth > 0 || resizeHeight > 0)
+            {
+                RenderSystem.Resize(resizeWidth, resizeHeight);
+            }
             return new Vector2(aspectWidth, aspectHeight);
         }
         private static Vector2 getCeneteredPositionForViewport(Vector2 aspectSIze)

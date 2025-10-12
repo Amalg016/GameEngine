@@ -33,10 +33,10 @@ namespace GameEngine.Rendering.Core
             _pickingShader = AssetPool.getShader("Assets/Shader/pickingShader.vert", "Assets/Shader/pickingShader.frag", "pickingShader");
         }
 
-        public void Resize(int width, int height)
+        public static void Resize(uint width, uint height)
         {
-            _frameBuffer?.Resize((uint)width, (uint)height);
-            _pickingTexture?.Resize((uint)width, (uint)height);
+            _frameBuffer?.Resize(width, height);
+            _pickingTexture?.Resize(width, height);
         }
 
         public void RenderFrame(Scene currentScene, bool runtimePlaying)
