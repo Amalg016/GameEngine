@@ -1,4 +1,4 @@
-﻿using GameEngine.util;
+﻿using GameEngine.Core.Utilities;
 using Silk.NET.OpenGL;
 using System.Numerics;
 

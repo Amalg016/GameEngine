@@ -1,4 +1,4 @@
-﻿namespace GameEngine.util
+﻿namespace GameEngine.Core.Utilities
 {
     public static class Settings
     {

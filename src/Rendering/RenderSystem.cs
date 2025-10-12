@@ -1,8 +1,6 @@
-using GameEngine.Rendering;
 using GameEngine.scenes;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using Silk.NET.OpenGL;
-using Shader = GameEngine.Rendering.Shader;
 
 namespace GameEngine.Rendering
 {

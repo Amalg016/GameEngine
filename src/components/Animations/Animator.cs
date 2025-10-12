@@ -1,63 +1,63 @@
 ﻿using GameEngine.components.Animations;
 using GameEngine.observers;
 using GameEngine.observers.events;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using ImGuiNET;
 using Newtonsoft.Json;
 
 namespace GameEngine.components
 {
-    public class Animator : Component,Observer
+    public class Animator : Component, Observer
     {
-       [JsonRequired]   public string Name { get { return this.ToString(); } }
-     [JsonRequired]   public AnimationController controller;
-     string label;
-     bool open=false;
-     Animation anim = null;
+        [JsonRequired] public string Name { get { return this.ToString(); } }
+        [JsonRequired] public AnimationController controller;
+        string label;
+        bool open = false;
+        Animation anim = null;
         public void RefreshTextures()
-        {   
-            if (controller == null) return;    
+        {
+            if (controller == null) return;
             for (int i = 0; i < controller.States.Count; i++)
             {
-                if(controller.States[i].animation != null)
+                if (controller.States[i].animation != null)
                 {
-                 controller.States[i].animation.refreshTextures();     
+                    controller.States[i].animation.refreshTextures();
                 }
             }
         }
-   //     public static List<Animation> GetBackUpAnimations()
-   //     {
-   //         return allAnimations;
-   //     }
-   //     public void AddClip(Animation animation)
-   //     {
-   //         animations.Add(animation);
-   //     }
-    //    public static void AddBackUp(Animation animation)
-    //    {
-    //        allAnimations.Add(animation);
-    //    }
-        
-     //   public List<Animation> getAllAnimations()
-     //   {
-     //       return animations;  
-     //   }
+        //     public static List<Animation> GetBackUpAnimations()
+        //     {
+        //         return allAnimations;
+        //     }
+        //     public void AddClip(Animation animation)
+        //     {
+        //         animations.Add(animation);
+        //     }
+        //    public static void AddBackUp(Animation animation)
+        //    {
+        //        allAnimations.Add(animation);
+        //    }
+
+        //   public List<Animation> getAllAnimations()
+        //   {
+        //       return animations;  
+        //   }
         public override void gui()
         {
             List<AnimationController> allControllers = AssetPool.animationControllers;
-           
-            string[] names=GetNames(allControllers);
+
+            string[] names = GetNames(allControllers);
             int index = 0;
-            
-                if (allControllers.Count > 0)
-                {
-                    controller = allControllers[index];
-                    index = indexof(controller.Name, names);
-                }            
-            if (ImGui.Combo("animations", ref index,names, names.Length))
+
+            if (allControllers.Count > 0)
             {
-                controller=allControllers[index];              
-            }                       
+                controller = allControllers[index];
+                index = indexof(controller.Name, names);
+            }
+            if (ImGui.Combo("animations", ref index, names, names.Length))
+            {
+                controller = allControllers[index];
+            }
         }
         private int indexof(string enumType, string[] enumValues)
         {
@@ -78,7 +78,7 @@ namespace GameEngine.components
                 names[i] = animations[i].Name;
             }
             return names;
-        }  
+        }
         public string[] GetNames(List<AnimationController> animations)
         {
             string[] names = new string[animations.Count];
@@ -97,34 +97,34 @@ namespace GameEngine.components
         {
 
             //   base.Update();
-           
-            if(controller == null)return;            
-                controller.Update(gameObject);
-            
+
+            if (controller == null) return;
+            controller.Update(gameObject);
+
             //animations[0].Update(gameObject);
         }
         public override void EditorUpdate()
         {
-          //  Console.WriteLine(AssetPool.allAnimations.Count);
+            //  Console.WriteLine(AssetPool.allAnimations.Count);
         }
-        
-        public void SetBool(string name,bool value)
+
+        public void SetBool(string name, bool value)
         {
-            if(controller.Bool.ContainsKey(name))
+            if (controller.Bool.ContainsKey(name))
             {
                 controller.Bool[name] = value;
             }
         }
-        public void SetInt(string name,int value)
+        public void SetInt(string name, int value)
         {
-            if(controller.Int.ContainsKey(name))
+            if (controller.Int.ContainsKey(name))
             {
                 controller.Int[name] = value;
             }
         }
-        public void Setfloat(string name,float value)
+        public void Setfloat(string name, float value)
         {
-            if(controller.Float.ContainsKey(name))
+            if (controller.Float.ContainsKey(name))
             {
                 controller.Float[name] = value;
             }

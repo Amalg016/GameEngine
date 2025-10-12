@@ -4,7 +4,7 @@ using Silk.NET.Windowing;
 using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using System.Diagnostics;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;

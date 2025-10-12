@@ -1,5 +1,5 @@
 ﻿using GameEngine.Rendering;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using System.Numerics;
 
 namespace GameEngine.components

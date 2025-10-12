@@ -1,6 +1,6 @@
 ﻿using GameEngine.components;
 using GameEngine.Physics2D.components;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;

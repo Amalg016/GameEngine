@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using GameEngine.components;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 
 namespace GameEngine.Serialization
 {

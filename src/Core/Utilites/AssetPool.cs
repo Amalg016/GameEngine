@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using GameEngine.components.Animations;
 using GameEngine.Serialization;
 
-namespace GameEngine.util
+namespace GameEngine.Core.Utilities
 {
     public class AssetPool
     {

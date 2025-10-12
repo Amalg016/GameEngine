@@ -1,6 +1,6 @@
 ﻿using GameEngine.components;
 using GameEngine.components.Animations;
-using GameEngine.util;
+using GameEngine.Core.Utilities;
 using ImGuiNET;
 using System.Numerics;
 using ImGuiTreeNodeFlags = ImGuiNET.ImGuiTreeNodeFlags;
