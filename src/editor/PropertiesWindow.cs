@@ -21,23 +21,6 @@ namespace GameEngine.editor
         }
         public void update(Scene currentScene)
         {
-            if (!InputManager.isDragging && InputManager.LMisPressed && GameViewWindow.getWantCapture())
-            {
-                var mousePos = GameViewWindow.GetFramebufferMousePos();
-                int x = (int)mousePos.X;
-                int y = (int)mousePos.Y;
-                Console.WriteLine(x + "x  " + y + "y " + pickingTexture.readPixel(x, y));
-                int ID = Window.pickingTexture.readPixel(x, y);
-                GameObject pickedObj = currentScene.getGameObject(ID);
-                if (pickedObj != null && pickedObj.GetComponent<NonPickable>() == null)
-                {
-                    activeGameobject = pickedObj;
-                }
-                else if (pickedObj == null & !InputManager.isDragging)
-                {
-                    activeGameobject = null;
-                }
-            }
         }
 
         public GameObject getActiveGameObject()
@@ -102,6 +85,24 @@ namespace GameEngine.editor
                     ImGui.EndPopup();
                 }
                 ImGui.End();
+            }
+
+            if (!InputManager.isDragging && InputManager.LMisPressed && GameViewWindow.getWantCapture())
+            {
+                var mousePos = GameViewWindow.GetFramebufferMousePos();
+                int x = (int)mousePos.X;
+                int y = (int)mousePos.Y;
+                Console.WriteLine(x + "x  " + y + "y " + pickingTexture.readPixel(x, y));
+                int ID = this.pickingTexture.readPixel(x, y);
+                GameObject pickedObj = SceneManager.CurrentScene.getGameObject(ID);
+                if (pickedObj != null && pickedObj.GetComponent<NonPickable>() == null)
+                {
+                    activeGameobject = pickedObj;
+                }
+                else if (pickedObj == null & !InputManager.isDragging)
+                {
+                    activeGameobject = null;
+                }
             }
 
         }

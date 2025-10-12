@@ -55,7 +55,6 @@ namespace GameEngine
                 window.Render();
             }
             currentScene?.Gui();
-            propertiesWindow.update(currentScene);
             controller.Render();
         }
         public void Exit()
