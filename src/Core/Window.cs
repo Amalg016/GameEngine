@@ -12,6 +12,7 @@ using WINDOW = Silk.NET.Windowing.Window;
 using GameEngine.Rendering.Core;
 using GameEngine.Core.Platform;
 using GameEngine.ECS;
+using GameEngine.Editor;
 
 namespace GameEngine
 {
