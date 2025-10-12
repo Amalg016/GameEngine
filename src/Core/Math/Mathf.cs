@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
-namespace GameEngine
+namespace GameEngine.Core.Math
 {
     public class Mathf
     {
@@ -36,11 +30,11 @@ namespace GameEngine
         }
         public static float DegreesToRadians(float degrees)
         {
-            return (float)((Math.PI / 180f) * degrees);
+            return (float)((System.Math.PI / 180f) * degrees);
         }
         public static float ToDegrees(float degrees)
         {
-            return (float)((180f / Math.PI) * degrees);
+            return (float)((180f / System.Math.PI) * degrees);
         }
         public static float Clamp01(float value)
         {
@@ -75,15 +69,15 @@ namespace GameEngine
             if (u == Vector2.Zero)
                 return point;
 
-            var a = (float)Math.Atan2(u.Y, u.X); //angle relative to origin  
+            var a = (float)System.Math.Atan2(u.Y, u.X); //angle relative to origin  
             a += rotation; //rotate  
 
-            double radians = rotation * Math.PI / 180;
+            double radians = rotation * System.Math.PI / 180;
 
             //float x = (float)  Math.Cos(radians) * u.Length() + u.X;
             //float y =  (float) Math.Sin(radians) * u.Length()+ u.Y;
-            double cos = Math.Cos(radians);
-            double sin = Math.Sin(radians);
+            double cos = System.Math.Cos(radians);
+            double sin = System.Math.Sin(radians);
             float x = (float)(u.X * cos - u.Y * sin);
             float y = (float)(u.Y * cos + u.X * sin);
 
@@ -131,8 +125,8 @@ namespace GameEngine
         {
             // if (dest == null)
             // Matrix4x4   dest = new Matrix4x4();
-            float c = (float)Math.Cos(angle);
-            float s = (float)Math.Sin(angle);
+            float c = (float)System.Math.Cos(angle);
+            float s = (float)System.Math.Sin(angle);
             float oneminusc = 1.0f - c;
             float xy = axis.X * axis.Y;
             float yz = axis.Y * axis.Z;
@@ -201,12 +195,12 @@ namespace GameEngine
         public static Matrix4x4 rotate(Matrix4x4 m, float x, float y, float z, float theta)
         {
             //   Matrix4x4 m = new Matrix4x4();
-            float invLen = 1 / (float)Math.Sqrt(x * x + y * y + z * z);
+            float invLen = 1 / (float)System.Math.Sqrt(x * x + y * y + z * z);
             x *= invLen;
             y *= invLen;
             z *= invLen;
-            float s = (float)Math.Sin(theta);
-            float c = (float)Math.Cos(theta);
+            float s = (float)System.Math.Sin(theta);
+            float c = (float)System.Math.Cos(theta);
             float t = 1 - c;
             m.M11 += t * x * x + c;
             m.M22 += t * y * y + c;
