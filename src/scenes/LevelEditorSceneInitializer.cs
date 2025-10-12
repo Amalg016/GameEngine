@@ -2,10 +2,7 @@
 using GameEngine.components;
 using GameEngine.Core.Utilities;
 using GameEngine.ECS;
-using GameEngine.Rendering.Core;
 using ImGuiNET;
-using Shader = GameEngine.Rendering.Core.Shader;
-using Texture = GameEngine.Rendering.Core.Texture;
 
 
 
@@ -13,36 +10,23 @@ namespace GameEngine.scenes
 {
     public class LevelEditorSceneInitializer : sceneInitializer
     {
-
-        private const int Width = 800;
-        private const int Height = 700;
-        static Texture texture;
-        Shader shader;
-
-        private BufferObject<float> Vbo;
-        private BufferObject<uint> Ebo;
-        private VertexArrayObject<float, uint> Vao;
-
-        GameObject go2;
         Spritesheet spritesheet;
-
         GameObject LevelEditorStuff = new GameObject();
+        Spritesheet gizmos;
 
         public override void Init(Scene scene)
         {
-
             LevelEditorStuff.Load("LevelEditor", 1);
             LevelEditorStuff.AddComponent(new MouseControls());
             LevelEditorStuff.AddComponent(new GridLines());
-            LevelEditorStuff.AddComponent(new TranslateGizmo(gizmos.GetSprite(1), Window.GetGUISystem().GetPropertiesWindow()));
-            LevelEditorStuff.AddComponent(new ScaleGizmo(gizmos.GetSprite(2), Window.GetGUISystem().GetPropertiesWindow()));
+            LevelEditorStuff.AddComponent(new TranslateGizmo(gizmos.GetSprite(1)));
+            LevelEditorStuff.AddComponent(new ScaleGizmo(gizmos.GetSprite(2)));
             LevelEditorStuff.AddComponent(new NonPickable());
             LevelEditorStuff.dontSerialize();
             LevelEditorStuff.AddComponent(new GizmoSystem(gizmos));
             scene.addGameObjectToScene(LevelEditorStuff);
-
         }
-        Spritesheet gizmos;
+
         public override void loadResources(Scene scene)
         {
 
@@ -58,32 +42,6 @@ namespace GameEngine.scenes
 
             spritesheet = AssetPool.TryFindSpriteSheet("sheet1");
         }
-
-        private int spriteIndex = 0;
-        float spriteFlipTime = .2f;
-        float spriteFlipTimeLeft = 0;
-
-
-
-
-
-
-        private static readonly float[] Vertices =
-        {
-            //X    Y      Z        R  G  B  A    u v
-             0.5f,  0.5f, 0.0f,    1, 1, 1, 1,   1,0,
-             0.5f, -0.5f, 0.0f,    1, 1, 1, 1,   1,1,
-            -0.5f, -0.5f, 0.0f,    1, 1, 1, 1,   0,1,
-            -0.5f,  0.5f, 0.0f,    1, 1, 1, 1,   0,0
-        };
-
-
-        private static readonly uint[] Indices =
-        {
-            0, 1, 3,
-            1, 2, 3
-        };
-
 
         //   public unsafe void Render()
         //   {

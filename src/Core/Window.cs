@@ -22,13 +22,13 @@ namespace GameEngine
         static IInputContext input;
         public static GL gl;
         static uint program;
-        static GUISystem guicontroller;
         public static int Height = 1080, Width = 1920;
         private static SceneManager sceneManager;
 
         static Stopwatch stopwatch;
         static float BeginTime;
         public static Camera camera;
+        GUISystem guiSystem;
         RenderSystem renderSystem;
 
         public void Init(params string[] args)
@@ -76,7 +76,7 @@ namespace GameEngine
             camera = new Camera(new Vector3(0, 0, 0), 1);
             //Camera = Camera.Main;
 
-            guicontroller = new GUISystem(gl, window, input, RenderSystem.PickingTexture);
+            guiSystem = new GUISystem(gl, window, input, RenderSystem.PickingTexture);
             sceneManager.ChangeScene(new LevelEditorSceneInitializer());
         }
 
@@ -94,7 +94,7 @@ namespace GameEngine
             {
                 SceneManager.CurrentScene?.EditorUpdate();
             }
-            guicontroller.Update(SceneManager.CurrentScene);
+            guiSystem.Update(SceneManager.CurrentScene);
             Time.time = (float)stopwatch.Elapsed.TotalSeconds;
             Time.deltaTime = Time.time - BeginTime;
             BeginTime = Time.time;
@@ -102,7 +102,7 @@ namespace GameEngine
 
         private void OnWindowClosed()
         {
-            guicontroller.Exit();
+            guiSystem.Exit();
             sceneManager.ExitScene();
             AssetPool.SaveResources();
             renderSystem.OnExit();
@@ -111,11 +111,6 @@ namespace GameEngine
         public static float getTargetAspectRatio()
         {
             return 16 / 9;
-        }
-
-        public static GUISystem GetGUISystem()
-        {
-            return guicontroller;
         }
     }
 }

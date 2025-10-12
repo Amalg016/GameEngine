@@ -22,7 +22,6 @@ namespace GameEngine.components
         private SpriteRenderer xAxisSprite;
         private SpriteRenderer yAxisSprite;
         protected GameObject activeGameObject = null;
-        private PropertiesWindow propertiesWindow;
 
         private float gizmoWidth = 16 / 80f;
         private float gizmoHeight = 48 / 80f;
@@ -31,7 +30,7 @@ namespace GameEngine.components
         protected bool yAxisActive = false;
 
         private bool Using = false;
-        public Gizmo(Sprite sprite, PropertiesWindow properties)
+        public Gizmo(Sprite sprite)
         {
             this.xAxixObject = Prefab.generateSpriteObject(sprite, gizmoWidth, gizmoHeight, 100);
             this.yAxisObject = Prefab.generateSpriteObject(sprite, gizmoWidth, gizmoHeight, 100);
@@ -40,7 +39,6 @@ namespace GameEngine.components
             this.yAxisSprite = this.yAxisObject.GetComponent<SpriteRenderer>();
             this.xAxixObject.AddComponent(new NonPickable());
             this.yAxisObject.AddComponent(new NonPickable());
-            propertiesWindow = properties;
 
             SceneManager.CurrentScene.addGameObjectToScene(this.xAxixObject);
             SceneManager.CurrentScene.addGameObjectToScene(this.yAxisObject);

@@ -1,11 +1,10 @@
 ﻿using GameEngine.Core.Platform;
-using GameEngine.Editor.Window;
 
 namespace GameEngine.components
 {
     public class ScaleGizmo : Gizmo
     {
-        public ScaleGizmo(Sprite sprite, PropertiesWindow properties) : base(sprite, properties)
+        public ScaleGizmo(Sprite sprite) : base(sprite)
         {
         }
         public override void Load()

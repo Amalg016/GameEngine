@@ -1,12 +1,11 @@
 ﻿using GameEngine.Core.Platform;
-using GameEngine.Editor.Window;
 
 namespace GameEngine.components
 {
     public class TranslateGizmo : Gizmo
     {
 
-        public TranslateGizmo(Sprite sprite, PropertiesWindow properties) : base(sprite, properties)
+        public TranslateGizmo(Sprite sprite) : base(sprite)
         {
 
         }
