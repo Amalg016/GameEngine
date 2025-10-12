@@ -12,52 +12,39 @@ namespace GameEngine
 {
     public class GUISystem
     {
-        GL GL;
-        IWindow window;
-        IInputContext input;
         private List<IEditorWindow> _editorWindows = new();
-        private GL _gl;
-        private IView _view;
-        private IInputContext _input;
-        public bool _frameBegun;
-        private readonly List<char> _pressedChars = new();
-        private IKeyboard _keyboard;
-        public IntPtr Context;
-        private PropertiesWindow propertiesWindow;
-        ImGuiLayer controller;
+        private PropertiesWindow _propertiesWindow;
+        ImGuiLayer _imGuiLayer;
 
         public GUISystem(GL gL, IWindow w, IInputContext inputContext, PickingTexture pickingTexture)
         {
-            GL = gL;
-            window = w;
-            input = inputContext;
-            this.propertiesWindow = new PropertiesWindow(pickingTexture);
+            this._propertiesWindow = new PropertiesWindow(pickingTexture);
             this._editorWindows.Add(new GameViewWindow());
-            this._editorWindows.Add(this.propertiesWindow);
+            this._editorWindows.Add(this._propertiesWindow);
             this._editorWindows.Add(new SceneHierarchyWindow());
             this._editorWindows.Add(new ContentBrowserWindow());
             this._editorWindows.Add(new AnimationWindow());
             this._editorWindows.Add(new Debug());
             this._editorWindows.Add(new MenuBar());
-            this.controller = new ImGuiLayer(GL, window, input);
+            this._imGuiLayer = new ImGuiLayer(gL, w, inputContext);
         }
 
         public void Update(Scene currentScene)
         {
-            controller.Update(Time.deltaTime);
+            _imGuiLayer.Update(Time.deltaTime);
             SetUpDockSpace();
             foreach (var window in _editorWindows)
             {
                 window.Render();
             }
             currentScene?.Gui();
-            controller.Render();
-        }
-        public void Exit()
-        {
-            controller.Dispose();
+            _imGuiLayer.Render();
         }
 
+        public void Exit()
+        {
+            _imGuiLayer.Dispose();
+        }
 
         private void SetUpDockSpace()
         {
@@ -69,17 +56,16 @@ namespace GameEngine
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
             s |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
 
-
             ImGui.Begin("dockSpace", s);
             ImGui.PopStyleVar(2);
 
             //DockSpace
             ImGui.DockSpace(ImGui.GetID("Dockspace"));
         }
+
         public PropertiesWindow GetPropertiesWindow()
         {
-            return this.propertiesWindow;
+            return this._propertiesWindow;
         }
-
     }
 }
