@@ -1,4 +1,5 @@
-﻿using Silk.NET.OpenGL;
+﻿using GameEngine.Core.Application;
+using Silk.NET.OpenGL;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -7,7 +8,7 @@ namespace GameEngine.Rendering.Core
     public class Texture : IDisposable
     {
         private uint textureID;
-        private GL _gl { get { return Window.gl; } }
+        private GL _gl { get { return WindowManger.gl; } }
         private int width;
         private int height;
         //    [JsonRequired]string path;

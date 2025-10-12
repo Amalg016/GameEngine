@@ -1,4 +1,5 @@
-﻿using GameEngine.Core.Platform;
+﻿using GameEngine.Core.Application;
+using GameEngine.Core.Platform;
 
 namespace GameEngine.components
 {
@@ -19,11 +20,11 @@ namespace GameEngine.components
         {
             if (activeGameObject == null)
             {
-                Window.gl.ClearColor(1, 0, 0, 1);
+                WindowManger.gl.ClearColor(1, 0, 0, 1);
             }
             else
             {
-                Window.gl.ClearColor(1, 1, 1, 1);
+                WindowManger.gl.ClearColor(1, 1, 1, 1);
             }
             if (activeGameObject != null)
             {

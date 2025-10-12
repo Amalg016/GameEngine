@@ -6,6 +6,7 @@ using GameEngine.Core.Utilities;
 using Newtonsoft.Json;
 using Silk.NET.OpenGL;
 using GameEngine.ECS;
+using GameEngine.Core.Application;
 
 namespace GameEngine.scenes
 {
@@ -15,7 +16,7 @@ namespace GameEngine.scenes
         public List<GameObject> sceneGameObjects = new List<GameObject>();
         // public Camera Camera;
         public Renderer renderer;
-        protected GL gl { get { return Window.gl; } }
+        protected GL gl { get { return WindowManger.gl; } }
         // protected bool LevelLoaded = false;
         sceneInitializer SceneInitializer;
         physics2D physics2D;

@@ -1,4 +1,5 @@
-﻿using Silk.NET.OpenGL;
+﻿using GameEngine.Core.Application;
+using Silk.NET.OpenGL;
 
 namespace GameEngine.Rendering.Core
 {
@@ -6,7 +7,7 @@ namespace GameEngine.Rendering.Core
     {
         private uint fboID;
         private uint rboID;
-        private GL gL = Window.gl;
+        private GL gL = WindowManger.gl;
         private Texture texture;
         private uint width, height;
 

@@ -1,4 +1,5 @@
-﻿using Silk.NET.OpenGL;
+﻿using GameEngine.Core.Application;
+using Silk.NET.OpenGL;
 
 namespace GameEngine.Rendering.Core
 {
@@ -7,7 +8,7 @@ namespace GameEngine.Rendering.Core
         public uint pickingTextureID;
         public uint fbo;
         private uint depthTexture;
-        private GL gL = Window.gl;
+        private GL gL = WindowManger.gl;
         private uint width, height;
         private bool initialized = false;
 

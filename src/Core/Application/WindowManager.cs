@@ -4,9 +4,9 @@ using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using WINDOW = Silk.NET.Windowing.Window;
 
-namespace GameEngine
+namespace GameEngine.Core.Application
 {
-    public class Window
+    public class WindowManger
     {
         public static IWindow window = null;
         public static IInputContext input;

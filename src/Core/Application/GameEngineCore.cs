@@ -25,12 +25,12 @@ namespace GameEngine.Core.Application
         GUISystem guiSystem;
         RenderSystem renderSystem;
 
-        Window window;
+        WindowManger window;
 
         public void Start()
         {
             EventSystem.addObserver(this);
-            window = new Window();
+            window = new WindowManger();
             window.OnLoad += OnWindowLoad;
             window.OnUpdate += OnWindowUpdate;
             window.OnClosing += OnWindowClosed;
@@ -42,14 +42,14 @@ namespace GameEngine.Core.Application
             Console.WriteLine("Loaded");
             timeManager.Initialize();
 
-            InputManager.onLoad(Window.input);
-            AssetPool assetPool = new AssetPool(Window.gl);
+            InputManager.onLoad(WindowManger.input);
+            AssetPool assetPool = new AssetPool(WindowManger.gl);
             renderSystem = new RenderSystem();
-            renderSystem.Initialize(Window.gl, Window.Width, Window.Height);
+            renderSystem.Initialize(WindowManger.gl, WindowManger.Width, WindowManger.Height);
 
             //Camera = Camera.Main;
 
-            guiSystem = new GUISystem(Window.gl, Window.window, Window.input, RenderSystem.PickingTexture);
+            guiSystem = new GUISystem(WindowManger.gl, WindowManger.window, WindowManger.input, RenderSystem.PickingTexture);
             sceneManager.ChangeScene(new LevelEditorSceneInitializer());
         }
 

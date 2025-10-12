@@ -7,6 +7,7 @@ using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using System.Numerics;
+using GameEngine.Core.Application;
 
 namespace GameEngine.Editor
 {
@@ -51,7 +52,7 @@ namespace GameEngine.Editor
             ImGuiWindowFlags s = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
 
             ImGui.SetNextWindowPos(new Vector2(0, 0));
-            ImGui.SetNextWindowSize(new Vector2(GameEngine.Window.Width, GameEngine.Window.Height));
+            ImGui.SetNextWindowSize(new Vector2(WindowManger.Width, WindowManger.Height));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
             s |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;

@@ -1,4 +1,5 @@
-﻿using GameEngine.Core.Math;
+﻿using GameEngine.Core.Application;
+using GameEngine.Core.Math;
 using GameEngine.Core.Utilities;
 using Silk.NET.OpenGL;
 using System.Numerics;
@@ -18,7 +19,7 @@ namespace GameEngine.Rendering.Core
         public static VertexArrayObject<float, uint> Vao;
 
         private static bool started = false;
-        public static GL gL = Window.gl;
+        public static GL gL = WindowManger.gl;
         public static void start()
         {
             Vbo = new BufferObject<float>(gL, vertexArray, BufferTargetARB.ArrayBuffer);
