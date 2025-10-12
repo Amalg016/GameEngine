@@ -106,7 +106,6 @@ namespace GameEngine.editor
             {
                 aspectHeight = windowSize.Y;
                 aspectWidth = (aspectHeight) * targetAspect;
-                // Console.WriteLine(aspectHeight + "H   " + aspectWidth + "W");
             }
 
             Window.pickingTexture?.Resize((uint)aspectWidth, (uint)aspectHeight);
