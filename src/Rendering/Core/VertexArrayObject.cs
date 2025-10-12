@@ -1,7 +1,6 @@
-﻿using System;
-using Silk.NET.OpenGL;
+﻿using Silk.NET.OpenGL;
 
-namespace GameEngine
+namespace GameEngine.Rendering.Core
 {
     public class VertexArrayObject<TVertexType, TIndexType> : IDisposable
         where TVertexType : unmanaged
@@ -21,7 +20,7 @@ namespace GameEngine
             _handle = _gl.GenVertexArray();
             Bind();
             vbo.Bind();
-            if(ebo != null)
+            if (ebo != null)
             {
                 ebo.Bind();
             }
@@ -47,7 +46,7 @@ namespace GameEngine
             //Binding the vertex array.
             _gl.BindVertexArray(0);
         }
-     
+
 
 
         public void Dispose()

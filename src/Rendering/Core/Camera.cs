@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace GameEngine
+namespace GameEngine.Rendering.Core
 {
     public class Camera
     {

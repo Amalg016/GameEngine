@@ -1,8 +1,6 @@
-﻿using System;
-using Silk.NET.OpenGL;
-using Silk.NET.Vulkan;
+﻿using Silk.NET.OpenGL;
 
-namespace GameEngine
+namespace GameEngine.Rendering.Core
 {
     public class BufferObject<TDataType> : IDisposable
         where TDataType : unmanaged
@@ -12,7 +10,7 @@ namespace GameEngine
         private uint _handle;
         private BufferTargetARB _bufferType;
         private GL _gl;
-        
+
         public unsafe BufferObject(GL gl, Span<TDataType> data, BufferTargetARB bufferType)
         {
             //Setting the gl instance and storing our buffer type.
@@ -38,19 +36,19 @@ namespace GameEngine
             //Binding the buffer object, with the correct buffer type.
             _gl.BindBuffer(_bufferType, 0);
         }
- 
+
         public unsafe void BindBuffer(Span<TDataType> data)
         {
-            fixed(void * d = data)
+            fixed (void* d = data)
             {
-                _gl.BufferSubData(BufferTargetARB.ArrayBuffer,0 , (uint)(data.Length * sizeof(TDataType)), d);
+                _gl.BufferSubData(BufferTargetARB.ArrayBuffer, 0, (uint)(data.Length * sizeof(TDataType)), d);
             }
         }
         public unsafe void BindBuffer2(ReadOnlySpan<TDataType> data)
-        {        
-            _gl.BufferSubData(BufferTargetARB.ArrayBuffer,0 , data);
+        {
+            _gl.BufferSubData(BufferTargetARB.ArrayBuffer, 0, data);
         }
-            
+
         public void Dispose()
         {
             //Remember to delete our buffer.

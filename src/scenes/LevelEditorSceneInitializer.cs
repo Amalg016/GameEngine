@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using GameEngine.components;
 using GameEngine.Core.Utilities;
+using GameEngine.Rendering.Core;
 using ImGuiNET;
 using Shader = GameEngine.Rendering.Core.Shader;
 using Texture = GameEngine.Rendering.Core.Texture;
