@@ -4,21 +4,24 @@ using ImGuiNET;
 
 namespace GameEngine.editor
 {
-    public class ContentBrowserWindow
+    public class ContentBrowserWindow : IEditorWindow
     {
         string Path = "Assets";
         public DirectoryInfo directoryInfo;
         string currentPath;
         DirectoryInfo currentInfo;
+
+        public string Title => "Content Browser";
+
         public ContentBrowserWindow()
         {
             directoryInfo = new DirectoryInfo(Path);
             currentInfo = directoryInfo;
             //   Directory.SetCurrentDirectory(directoryInfo.FullName);
         }
-        public unsafe void imgui()
+        public unsafe void Render()
         {
-            ImGui.Begin("Content Browser");
+            ImGui.Begin(Title);
             //  var files = from file in
             //   Directory.EnumerateFiles(Path)
             //              select file;
@@ -95,8 +98,6 @@ namespace GameEngine.editor
             ImGui.Columns(1);
             ImGui.End();
         }
-
-
 
     }
 

@@ -6,14 +6,16 @@ using System.Numerics;
 
 namespace GameEngine.editor
 {
-    public static class GameViewWindow
+    public class GameViewWindow : IEditorWindow
     {
         private static float leftX;
         private static float rightX;
         private static float topY;
         private static float bottomY;
         private static bool isPlaying = false;
-        public unsafe static void imgui()
+        string IEditorWindow.Title => "Game View";
+
+        unsafe void IEditorWindow.Render()
         {
             ImGui.Begin("Game View", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse | ImGuiWindowFlags.MenuBar);
 
@@ -63,6 +65,7 @@ namespace GameEngine.editor
                 }
             }
             ImGui.End();
+
         }
 
         public static bool getWantCapture()
@@ -125,5 +128,6 @@ namespace GameEngine.editor
 
             return new Vector2(viewPortX + ImGui.GetCursorPosX(), viewPortY + ImGui.GetCursorPosY());
         }
+
     }
 }

@@ -3,13 +3,15 @@ using ImGuiNET;
 
 namespace GameEngine.editor
 {
-    public class SceneHierarchyWindow
+    public class SceneHierarchyWindow : IEditorWindow
     {
         List<GameObject> list = new List<GameObject>();
-        string Name = "Scene Heirachy";
-        public void imgui()
+
+        public string Title => "Scene Heirarchy";
+
+        public void Render()
         {
-            ImGui.Begin("Scene Hierarchy");
+            ImGui.Begin(Title);
             if (SceneManager.CurrentScene == null)
             {
                 ImGui.End();
@@ -41,6 +43,7 @@ namespace GameEngine.editor
 
             ImGui.End();
         }
+
         private unsafe bool doTreeNode(GameObject obj, int index)
         {
             int i = index;
@@ -53,7 +56,7 @@ namespace GameEngine.editor
             ImGui.PopID();
             if (ImGui.BeginDragDropSource())
             {
-                ImGui.SetDragDropPayload(Name, (IntPtr)(&i), sizeof(int));
+                ImGui.SetDragDropPayload(Title, (IntPtr)(&i), sizeof(int));
 
                 ImGui.Text(obj.name);
                 ImGui.EndDragDropSource();
@@ -61,7 +64,7 @@ namespace GameEngine.editor
             }
             if (ImGui.BeginDragDropTarget())
             {
-                ImGuiPayloadPtr payload = ImGui.AcceptDragDropPayload(Name);
+                ImGuiPayloadPtr payload = ImGui.AcceptDragDropPayload(Title);
                 if (payload.NativePtr != null)
                 {
                     var dataPtr = (int*)payload.Data;

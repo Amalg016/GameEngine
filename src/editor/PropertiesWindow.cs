@@ -6,11 +6,14 @@ using ImGuiNET;
 
 namespace GameEngine.editor
 {
-    public class PropertiesWindow
+    public class PropertiesWindow : IEditorWindow
     {
         protected GameObject activeGameobject = null;
         private PickingTexture pickingTexture;
         public static PropertiesWindow window;
+
+        public string Title => "Inspector";
+
         public PropertiesWindow(PickingTexture pickingTexture)
         {
             this.pickingTexture = pickingTexture;
@@ -36,11 +39,22 @@ namespace GameEngine.editor
                 }
             }
         }
-        public void imgui()
+
+        public GameObject getActiveGameObject()
+        {
+            return activeGameobject;
+        }
+
+        public void setActiveGameObject(GameObject go)
+        {
+            activeGameobject = go;
+        }
+
+        public void Render()
         {
             if (activeGameobject != null)
             {
-                ImGui.Begin("Inspector");
+                ImGui.Begin(this.Title);
 
 
                 //   ImGui.Text($"Name  {this.activeGameobject.name}");
@@ -90,16 +104,6 @@ namespace GameEngine.editor
                 ImGui.End();
             }
 
-        }
-
-        public GameObject getActiveGameObject()
-        {
-            return activeGameobject;
-        }
-
-        public void setActiveGameObject(GameObject go)
-        {
-            activeGameobject = go;
         }
     }
 }

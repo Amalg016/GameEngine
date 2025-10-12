@@ -4,13 +4,16 @@ using ImGuiNET;
 
 namespace GameEngine.editor
 {
-    public class MenuBar
+    public class MenuBar : IEditorWindow
     {
         string files;
-        public void imgui()
+
+        public string Title => "File";
+
+        public void Render()
         {
             ImGui.BeginMenuBar();
-            if (ImGui.BeginMenu("File"))
+            if (ImGui.BeginMenu(Title))
             {
                 if (ImGui.MenuItem("Save", "Ctrl+S"))
                 {

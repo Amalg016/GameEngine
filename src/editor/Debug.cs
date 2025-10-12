@@ -3,12 +3,15 @@ using System.Numerics;
 
 namespace GameEngine.editor
 {
-    public class Debug
+    public class Debug : IEditorWindow
     {
         static List<string> logs = new List<string>();
-        public void imgui()
+
+        public string Title => "Console";
+
+        public void Render()
         {
-            ImGui.Begin("Console");
+            ImGui.Begin(Title);
             if (ImGui.Button("Clear"))
             {
                 logs.Clear();
@@ -18,7 +21,6 @@ namespace GameEngine.editor
 
             ImGui.End();
         }
-
 
         public static void Log(string log)
         {
@@ -48,5 +50,6 @@ namespace GameEngine.editor
         {
             logs.Add(obj.ToString());
         }
+
     }
 }

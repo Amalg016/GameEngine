@@ -8,7 +8,7 @@ using ImGuiWindowFlags = ImGuiNET.ImGuiWindowFlags;
 
 namespace GameEngine.editor
 {
-    public class AnimationWindow
+    public class AnimationWindow : IEditorWindow
     {
         private GameObject activeGameobject;
         public void Update()
@@ -21,16 +21,19 @@ namespace GameEngine.editor
         string Name = "default";
         Animation anim;
         int d = 0;
+
+        public string Title => "Animations";
+
         public AnimationWindow()
         {
             // spritesheet = AssetPool.spritesheets.ElementAt(0).Value;
         }
         bool create = false;
         Vector2 uV0 = new Vector2(), uV1 = new Vector2(); int k = 0;
-        public unsafe void imgui()
+        public unsafe void Render()
         {
 
-            ImGui.Begin("Animations", ImGuiWindowFlags.HorizontalScrollbar);
+            ImGui.Begin(Title, ImGuiWindowFlags.HorizontalScrollbar);
 
             string[] names = GetNames(AssetPool.spritesheets);
 
@@ -383,6 +386,8 @@ namespace GameEngine.editor
         AnimationController currentController;
         AnimationState currentState;
         List<Animation> allAnimations = new List<Animation>();
+
+
         void AddingAnimation()
         {
 
@@ -546,6 +551,7 @@ namespace GameEngine.editor
 
             return treeNodeOpen;
         }
+
     }
 
 }

@@ -15,64 +15,52 @@ namespace GameEngine
         GL GL;
         IWindow window;
         IInputContext input;
-        //    ImGuiController controller;
-
+        private List<IEditorWindow> _editorWindows = new();
         private GL _gl;
         private IView _view;
         private IInputContext _input;
         public bool _frameBegun;
-        private readonly List<char> _pressedChars = new List<char>();
+        private readonly List<char> _pressedChars = new();
         private IKeyboard _keyboard;
         public IntPtr Context;
         private PropertiesWindow propertiesWindow;
-        private MenuBar menuBar;
-        private SceneHierarchyWindow hierarchyWindow;
-        private AnimationWindow animationWindow;
-        private ContentBrowserWindow contentBrowser;
-        private Debug debugWindow;
+        ImGuiLayer controller;
+
         public GUISystem(GL gL, IWindow w, IInputContext inputContext, PickingTexture pickingTexture)
         {
             GL = gL;
             window = w;
             input = inputContext;
             this.propertiesWindow = new PropertiesWindow(pickingTexture);
-            this.menuBar = new MenuBar();
-            this.hierarchyWindow = new SceneHierarchyWindow();
-            this.animationWindow = new AnimationWindow();
-            this.contentBrowser = new ContentBrowserWindow();
-            this.debugWindow = new Debug();
+            this._editorWindows.Add(new GameViewWindow());
+            this._editorWindows.Add(this.propertiesWindow);
+            this._editorWindows.Add(new SceneHierarchyWindow());
+            this._editorWindows.Add(new ContentBrowserWindow());
+            this._editorWindows.Add(new AnimationWindow());
+            this._editorWindows.Add(new Debug());
+            this._editorWindows.Add(new MenuBar());
         }
 
 
-        ImGuiLayer controller;
         public void Load(Scene currentScene)
         {
-
-            // controller = new ImGuiController(GL, window, input);
             controller = new ImGuiLayer(GL, window, input);
         }
         public void Update(Scene currentScene)
         {
             controller.Update(Time.deltaTime);
             SetUpDockSpace();
+            foreach (var window in _editorWindows)
+            {
+                window.Render();
+            }
             currentScene?.Gui();
-            GameViewWindow.imgui();
-            //ImGui.ShowDemoWindow();
             propertiesWindow.update(currentScene);
-            propertiesWindow.imgui();
-            hierarchyWindow.imgui();
-            animationWindow.imgui();
-            contentBrowser.imgui();
-            debugWindow.imgui();
-            //ImGui.End();
             controller.Render();
-
         }
         public void Exit()
         {
-
             controller.Dispose();
-            //  Dispose();
         }
 
 
@@ -92,8 +80,6 @@ namespace GameEngine
 
             //DockSpace
             ImGui.DockSpace(ImGui.GetID("Dockspace"));
-            menuBar.imgui();
-
         }
         public PropertiesWindow GetPropertiesWindow()
         {
