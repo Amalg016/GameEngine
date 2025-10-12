@@ -67,7 +67,29 @@ namespace GameEngine.editor
 
         public static bool getWantCapture()
         {
-            return InputManager.GetX() >= leftX && InputManager.GetX() <= rightX && InputManager.GetY() >= bottomY && InputManager.GetY() <= topY;
+            // return InputManager.GetX() >= leftX && InputManager.GetX() <= rightX && InputManager.GetY() >= bottomY && InputManager.GetY() <= topY;
+            // Console.WriteLine("Inputx: " + pos.X + ", InputY: " + pos.Y + ", " + leftX + ", " + rightX + ", " + bottomY + ", " + topY);
+            // return pos.X >= leftX && pos.X <= rightX && pos.Y >= bottomY && pos.Y <= topY;
+            return InputManager.mouseX >= leftX && InputManager.mouseX <= rightX && InputManager.mouseY >= bottomY && InputManager.mouseY <= topY;
+        }
+
+
+        public static Vector2 GetFramebufferMousePos()
+        {
+            Vector2 screenMouse = new Vector2(InputManager.mouseX, InputManager.mouseY);
+
+            // Convert to normalized [0,1] in our viewport
+            float normX = (screenMouse.X - leftX) / (rightX - leftX);
+            float normY = (screenMouse.Y - bottomY) / (topY - bottomY);
+
+            // Flip Y
+            // normY = 1.0f - normY;
+
+            // Convert to framebuffer coordinates
+            float fbX = normX * Window.getFrameBuffer().GetWidth();
+            float fbY = normY * Window.getFrameBuffer().GetHeight();
+
+            return new Vector2(fbX, fbY);
         }
 
         private static Vector2 getLargestSizeForViewport()
@@ -77,15 +99,18 @@ namespace GameEngine.editor
             windowSize.X -= ImGui.GetScrollX();
             windowSize.Y -= ImGui.GetScrollY();
 
-
+            float targetAspect = 16.0f / 9.0f; // Or get from framebuffer
             float aspectWidth = windowSize.X;
-            float aspectHeight = (aspectWidth) / (16 / 9);
+            float aspectHeight = (aspectWidth) / targetAspect;
             if (aspectHeight > windowSize.Y)
             {
                 aspectHeight = windowSize.Y;
-                aspectWidth = (aspectHeight) * 16 / 9;
+                aspectWidth = (aspectHeight) * targetAspect;
                 // Console.WriteLine(aspectHeight + "H   " + aspectWidth + "W");
             }
+
+            Window.pickingTexture?.Resize((uint)aspectWidth, (uint)aspectHeight);
+            Window.getFrameBuffer().Resize((uint)aspectWidth, (uint)aspectHeight);
 
             return new Vector2(aspectWidth, aspectHeight);
         }
