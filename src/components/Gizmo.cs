@@ -66,7 +66,7 @@ namespace GameEngine.components
                 return;
             }
 
-            this.activeGameObject = this.propertiesWindow.getActiveGameObject();
+            this.activeGameObject = PropertiesWindow.getActiveGameObject();
 
             //Refactor later
             if (activeGameObject != null)
@@ -76,14 +76,14 @@ namespace GameEngine.components
                     GameObject newObj = this.activeGameObject.Copy();
                     SceneManager.CurrentScene.addGameObjectToScene(newObj);
                     newObj.transform.position += new Vector2(0.1f, 0.1f);
-                    this.propertiesWindow.setActiveGameObject(newObj);
+                    PropertiesWindow.setActiveGameObject(newObj);
                     return;
                 }
                 else if (InputManager.delete)
                 {
                     activeGameObject.Destroy();
                     this.setInactive();
-                    this.propertiesWindow.setActiveGameObject(null);
+                    PropertiesWindow.setActiveGameObject(null);
                 }
             }
 

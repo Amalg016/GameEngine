@@ -1,6 +1,6 @@
 using GameEngine.observers.events;
 using GameEngine.components;
-
+using GameEngine.editor;
 namespace GameEngine.scenes
 {
     public class SceneManager
@@ -17,7 +17,7 @@ namespace GameEngine.scenes
         {
             _currentScene?.Destroy();
             Component.ID_Counter = 0;
-
+            PropertiesWindow.setActiveGameObject(null);
             _currentScene = new Scene(sceneInitializer);
             _currentScene.init();
             _currentScene.LoadLevelResources(_scenePath.FullName);

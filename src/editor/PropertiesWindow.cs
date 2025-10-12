@@ -8,7 +8,7 @@ namespace GameEngine.editor
 {
     public class PropertiesWindow : IEditorWindow
     {
-        protected GameObject activeGameobject = null;
+        private static GameObject activeGameobject = null;
         private PickingTexture pickingTexture;
         public static PropertiesWindow window;
 
@@ -23,12 +23,12 @@ namespace GameEngine.editor
         {
         }
 
-        public GameObject getActiveGameObject()
+        public static GameObject getActiveGameObject()
         {
             return activeGameobject;
         }
 
-        public void setActiveGameObject(GameObject go)
+        public static void setActiveGameObject(GameObject go)
         {
             activeGameobject = go;
         }

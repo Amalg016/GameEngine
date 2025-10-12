@@ -5,13 +5,11 @@ namespace GameEngine.components
     public class TranslateGizmo : Gizmo
     {
 
-
-
-        public TranslateGizmo(Sprite sprite, PropertiesWindow properties) : base( sprite,  properties)
+        public TranslateGizmo(Sprite sprite, PropertiesWindow properties) : base(sprite, properties)
         {
-             
+
         }
-       
+
         public override void Load()
         {
             base.Load();
@@ -19,7 +17,7 @@ namespace GameEngine.components
 
         public override void EditorUpdate()
         {
-            if(activeGameObject == null)
+            if (activeGameObject == null)
             {
                 Window.gl.ClearColor(1, 0, 0, 1);
             }
@@ -27,7 +25,7 @@ namespace GameEngine.components
             {
                 Window.gl.ClearColor(1, 1, 1, 1);
             }
-            if(activeGameObject!= null)
+            if (activeGameObject != null)
             {
                 if (xAxisActive && !yAxisActive)
                 {

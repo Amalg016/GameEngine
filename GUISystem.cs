@@ -39,13 +39,9 @@ namespace GameEngine
             this._editorWindows.Add(new AnimationWindow());
             this._editorWindows.Add(new Debug());
             this._editorWindows.Add(new MenuBar());
+            this.controller = new ImGuiLayer(GL, window, input);
         }
 
-
-        public void Load(Scene currentScene)
-        {
-            controller = new ImGuiLayer(GL, window, input);
-        }
         public void Update(Scene currentScene)
         {
             controller.Update(Time.deltaTime);

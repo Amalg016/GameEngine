@@ -1,11 +1,6 @@
 ﻿using GameEngine.util;
 using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameEngine.renderer
 {
@@ -13,33 +8,26 @@ namespace GameEngine.renderer
     {
         private static int Max_Lines = 5000;
 
-        private static List<Line2D> Lines=new List<Line2D>();   
+        private static List<Line2D> Lines = new List<Line2D>();
 
-        private static float[] vertexArray=new float[Max_Lines*6*2];
-        private static Shader shader=AssetPool.getShader("Assets/Shader/DebugLine.vert", "Assets/Shader/DebugLine.frag", "DebugDrawShader");
+        private static float[] vertexArray = new float[Max_Lines * 6 * 2];
+        private static Shader shader = AssetPool.getShader("Assets/Shader/DebugLine.vert", "Assets/Shader/DebugLine.frag", "DebugDrawShader");
 
         public static BufferObject<float> Vbo;
         public static VertexArrayObject<float, uint> Vao;
 
-        private static bool started=false;
-        public static  GL gL=Window.gl;
+        private static bool started = false;
+        public static GL gL = Window.gl;
         public static void start()
         {
-            //  vaoID = gL.GenVertexArray();
-            //  gL.BindVertexArray(vaoID);
-            //
-            //  vboID=gL.GenVertexArray();
-            //  gL.BindBuffer(GLEnum.ArrayBuffer, vboID);
-            //  gL.BufferData(GLEnum.ArrayBuffer,vertexArray.Length * sizeof(float),null,BufferUsageARB.DynamicDraw);
-
             Vbo = new BufferObject<float>(gL, vertexArray, BufferTargetARB.ArrayBuffer);
-            Vao = new VertexArrayObject<float, uint>(gL, Vbo,null);
+            Vao = new VertexArrayObject<float, uint>(gL, Vbo, null);
 
-               Vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 6, 0);
-              Vao.VertexAttributePointer(1, 3, VertexAttribPointerType.Float, 6, 3);
-        
-        // Set Line Width
-        gL.LineWidth(5);
+            Vao.VertexAttributePointer(0, 3, VertexAttribPointerType.Float, 6, 0);
+            Vao.VertexAttributePointer(1, 3, VertexAttribPointerType.Float, 6, 3);
+
+            // Set Line Width
+            gL.LineWidth(5);
         }
 
         public static void beginFrame()
@@ -47,7 +35,7 @@ namespace GameEngine.renderer
             if (!started)
             {
                 start();
-                started=true;
+                started = true;
             }
             //Remove Dead Line
             for (int i = 0; i < Lines.Count; i++)
@@ -55,50 +43,50 @@ namespace GameEngine.renderer
                 if (Lines[i].beginFrame() <= 0)
                 {
                     Lines.Remove(Lines[i]);
-                    i--;    
+                    i--;
                 }
             }
 
         }
         public static void Draw()
         {
-           if(Lines.Count == 0)return;
+            if (Lines.Count == 0) return;
             int index = 0;
             foreach (var item in Lines)
             {
                 for (int i = 0; i < 2; i++)
                 {
                     Vector2 position;
-                    if( i == 0)
+                    if (i == 0)
                     {
 
-                        position= item.getFrom();
+                        position = item.getFrom();
                     }
                     else
                     {
-                        position=item.getto();
+                        position = item.getto();
                     }
-                    Vector3 color=item.getColor();
+                    Vector3 color = item.getColor();
 
                     //Loading position
                     vertexArray[index] = position.X;
-                    vertexArray[index+1] = position.Y;
+                    vertexArray[index + 1] = position.Y;
                     vertexArray[index + 2] = -10;
 
                     //Loading color
-                    vertexArray[index + 3] = color.X ;
-                    vertexArray[index + 4] = color.Y ;
-                    vertexArray[index + 5] = color.Z ;
+                    vertexArray[index + 3] = color.X;
+                    vertexArray[index + 4] = color.Y;
+                    vertexArray[index + 5] = color.Z;
 
-                    index+=6;
+                    index += 6;
                 }
             }
             Vbo.Bind();
             //float[] g=new float[];
             //Console.WriteLine(g[0]);
-             float[] g = vertexArray;
-             Array.Resize(ref g, Lines.Count * 6 * 2);
-           //  Vao.Bind();
+            float[] g = vertexArray;
+            Array.Resize(ref g, Lines.Count * 6 * 2);
+            //  Vao.Bind();
             Vbo.BindBuffer2(g);
             // Vbo.BindBuffer(vertexArray);
             shader.Use();
@@ -110,7 +98,7 @@ namespace GameEngine.renderer
             gL.EnableVertexAttribArray(0);
             gL.EnableVertexAttribArray(1);
 
-            gL.DrawArrays(PrimitiveType.Lines, 0, (uint)Lines.Count *6* 2);
+            gL.DrawArrays(PrimitiveType.Lines, 0, (uint)Lines.Count * 6 * 2);
 
 
             gL.DisableVertexAttribArray(0);
@@ -119,30 +107,30 @@ namespace GameEngine.renderer
             Vbo.UnBind();
             shader.detach();
 
-         //   for (int i = 0; i < vertexArray.Length; i++)
-         //   {
-         //       vertexArray[i] = 0;
-         //   }
+            //   for (int i = 0; i < vertexArray.Length; i++)
+            //   {
+            //       vertexArray[i] = 0;
+            //   }
         }
 
-        public static void addLine2D(Vector2 from,Vector2 to)
+        public static void addLine2D(Vector2 from, Vector2 to)
         {
-          DebugDraw.addLine2D(from, to, new Vector3(0, 0, 0), 1);
+            DebugDraw.addLine2D(from, to, new Vector3(0, 0, 0), 1);
         }
-        public static void addLine2D(Vector2 from,Vector2 to,Vector3 color)
+        public static void addLine2D(Vector2 from, Vector2 to, Vector3 color)
         {
-          DebugDraw.addLine2D(from, to,color, 2);
+            DebugDraw.addLine2D(from, to, color, 2);
         }
-        public static void addLine2D(Vector2 from,Vector2 to,Vector3 color,int lifetime)
+        public static void addLine2D(Vector2 from, Vector2 to, Vector3 color, int lifetime)
         {
             if (Lines.Count >= Max_Lines) return;
-            DebugDraw.Lines.Add(new Line2D(from, to, color, lifetime)); 
+            DebugDraw.Lines.Add(new Line2D(from, to, color, lifetime));
         }
         public static void addBox2D(Vector2 center, Vector2 dimensions, float Rotation)
         {
             addBox2D(center, dimensions, Rotation, new Vector3(0, 1, 0), 2);
         }
-        public static void addBox2D(Vector2 center,Vector2 dimensions,float Rotation,Vector3 color,int lifetime)
+        public static void addBox2D(Vector2 center, Vector2 dimensions, float Rotation, Vector3 color, int lifetime)
         {
             Vector2 min = center - (dimensions * 0.5f);
             Vector2 max = center + (dimensions * 0.5f);
@@ -153,11 +141,12 @@ namespace GameEngine.renderer
                 new Vector2(max.X,max.Y),new Vector2(max.X,min.Y)
             };
 
-            if (Rotation != 0) {
-                
+            if (Rotation != 0)
+            {
+
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    vertices[i]= Mathf.RotateAboutOrigin(vertices[i], center, Rotation);
+                    vertices[i] = Mathf.RotateAboutOrigin(vertices[i], center, Rotation);
                 }
 
             }
@@ -169,25 +158,25 @@ namespace GameEngine.renderer
         public static void addCircle2D(Vector2 center, float Radius, Vector3 color, int lifetime)
         {
             Vector2[] points = new Vector2[20];
-            int increment=360/points.Length;
+            int increment = 360 / points.Length;
             int currentAngle = 0;
 
             for (int i = 0; i < points.Length; i++)
             {
                 Vector2 tmp = new Vector2(0, Radius);
-              tmp=  Mathf.RotateAboutOrigin(tmp, new Vector2(), currentAngle);
-                points[i] = tmp+center;
+                tmp = Mathf.RotateAboutOrigin(tmp, new Vector2(), currentAngle);
+                points[i] = tmp + center;
                 if (i > 0)
                 {
-                    addLine2D(points[i-1], points[i], color, lifetime);
+                    addLine2D(points[i - 1], points[i], color, lifetime);
                 }
-                currentAngle+=increment;
-            //    Console.WriteLine(points[i].X + "Y" + points[i].Y);
+                currentAngle += increment;
+                //    Console.WriteLine(points[i].X + "Y" + points[i].Y);
             }
             addLine2D(points[points.Length - 1], points[0], color, lifetime);
         }
-        
-            public static void OnExit()
+
+        public static void OnExit()
         {
             shader.Dispose();
             Vbo.Dispose();

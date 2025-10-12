@@ -375,7 +375,7 @@ namespace GameEngine.editor
 
                 }
 
-                activeGameobject = PropertiesWindow.window.getActiveGameObject();
+                activeGameobject = PropertiesWindow.getActiveGameObject();
                 ImGui.EndTabBar();
             }
             ImGui.End();

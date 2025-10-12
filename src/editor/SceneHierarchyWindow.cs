@@ -28,9 +28,9 @@ namespace GameEngine.editor
                 bool treeNodeOpen = doTreeNode(item, index);
                 if (ImGui.IsItemActive())
                 {
-                    if (PropertiesWindow.window.getActiveGameObject() != item)
+                    if (PropertiesWindow.getActiveGameObject() != item)
                     {
-                        PropertiesWindow.window.setActiveGameObject(item);
+                        PropertiesWindow.setActiveGameObject(item);
                     }
                 }
                 if (treeNodeOpen)

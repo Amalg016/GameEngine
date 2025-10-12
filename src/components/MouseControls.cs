@@ -1,7 +1,7 @@
 ﻿using GameEngine.scenes;
 using GameEngine.util;
 using System.Numerics;
-
+using GameEngine.editor;
 namespace GameEngine.components
 {
     public class MouseControls : Component
@@ -57,7 +57,7 @@ namespace GameEngine.components
                 }
                 if (InputManager.isKeyPressed(Silk.NET.Input.Key.Escape))
                 {
-                    Window.GetGUISystem().GetPropertiesWindow().setActiveGameObject(null);
+                    PropertiesWindow.setActiveGameObject(null);
                     holdingObject.Destroy();
                     holdingObject = null;
                 }
