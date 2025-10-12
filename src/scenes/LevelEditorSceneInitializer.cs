@@ -2,8 +2,8 @@
 using GameEngine.components;
 using GameEngine.util;
 using ImGuiNET;
-using Shader = GameEngine.renderer.Shader;
-using Texture = GameEngine.renderer.Texture;
+using Shader = GameEngine.Rendering.Shader;
+using Texture = GameEngine.Rendering.Texture;
 
 
 

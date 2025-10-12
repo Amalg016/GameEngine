@@ -1,29 +1,29 @@
-﻿using GameEngine.renderer;
+﻿using GameEngine.Rendering;
 using Newtonsoft.Json;
 using System.Numerics;
 
 namespace GameEngine.components
 {
-  //  [JsonObject(MemberSerialization.OptIn)]
+    //  [JsonObject(MemberSerialization.OptIn)]
     [System.Serializable]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class SpriteRenderer : Component
     {
 
-      //  [JsonRequired]
-      [JsonRequired]  public Sprite sprite;
-       // [JsonRequired]
-        private Transform lastTransform=new Transform();
+        //  [JsonRequired]
+        [JsonRequired] public Sprite sprite;
+        // [JsonRequired]
+        private Transform lastTransform = new Transform();
         [NonSerialized]
-        public bool IsDirty=true;
-      
+        public bool IsDirty = true;
+
         [JsonRequired] private Vector4 color;
 
         public SpriteRenderer()
-        {   
+        {
             IsDirty = true;
         }
-        
+
         public void init(Sprite sprite)
         {
             this.sprite = sprite;
@@ -61,13 +61,13 @@ namespace GameEngine.components
             return sprite.getTexture();
         }
         public Vector2[] GetTexCoords()
-        {       
+        {
             return sprite.getTexCoords();
         }
 
         public void setSprite(Sprite sprite)
         {
-            this.sprite=sprite;
+            this.sprite = sprite;
 
             IsDirty = true;
         }
@@ -75,8 +75,8 @@ namespace GameEngine.components
         {
             if (!this.color.Equals(color))
             {
-               IsDirty = true;
-               this.color= color;
+                IsDirty = true;
+                this.color = color;
             }
         }
 
@@ -86,13 +86,13 @@ namespace GameEngine.components
         }
         public void setDirty()
         {
-             IsDirty=true;
+            IsDirty = true;
         }
 
         public void setClean()
         {
-            IsDirty=false;
-        }  
-          
+            IsDirty = false;
+        }
+
     }
 }

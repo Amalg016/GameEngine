@@ -1,4 +1,4 @@
-﻿using GameEngine.renderer;
+﻿using GameEngine.Rendering;
 using System.Numerics;
 
 namespace GameEngine.components
@@ -8,19 +8,19 @@ namespace GameEngine.components
         private Texture texture;
         List<Sprite> sprites = new List<Sprite>();
         public string Name;
-        public Spritesheet(Texture texture,string name ,float spriteWidth,float spriteHeight,int numSprites,int spacing)
+        public Spritesheet(Texture texture, string name, float spriteWidth, float spriteHeight, int numSprites, int spacing)
         {
             Name = name;
             this.texture = texture;
             float currentX = 0;
-           // int currentY = texture.getHeight()-spriteHeight;
+            // int currentY = texture.getHeight()-spriteHeight;
             float currentY = 0;
             for (int i = 0; i < numSprites; i++)
             {
-                float topY = (currentY+spriteHeight)/(float)texture.getHeight();
-                float bottomY = currentY/(float)texture.getHeight();
-                float rightX = (currentX+spriteWidth)/(float)texture.getWidth();
-                float leftX = currentX/(float)texture.getWidth();
+                float topY = (currentY + spriteHeight) / (float)texture.getHeight();
+                float bottomY = currentY / (float)texture.getHeight();
+                float rightX = (currentX + spriteWidth) / (float)texture.getWidth();
+                float leftX = currentX / (float)texture.getWidth();
 
                 Vector2[] texCoords = {
                 new Vector2(rightX, bottomY),
@@ -28,7 +28,7 @@ namespace GameEngine.components
                 new Vector2(leftX, topY),
                 new Vector2(leftX, bottomY),
         };
-              
+
 
 
                 Sprite sprite = new Sprite();
@@ -48,15 +48,15 @@ namespace GameEngine.components
                     currentY += spriteHeight + spacing;
                 }
             }
-             
+
         }
         public Sprite GetSprite(int index)
         {
-            return this.sprites[index]; 
+            return this.sprites[index];
         }
         public int size()
         {
-            return sprites.Count;   
+            return sprites.Count;
         }
     }
 }

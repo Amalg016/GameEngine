@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class Texture : IDisposable
     {
@@ -59,14 +59,14 @@ namespace GameEngine.renderer
             textureID = _gl.GenTexture();
             _gl.BindTexture(GLEnum.Texture2D, textureID);
 
-              _gl.TexParameter(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GLEnum.Linear);
-              _gl.TexParameter(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GLEnum.Linear);
-          //  _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)GLEnum.Nearest);
-          //  _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)GLEnum.Nearest);
+            _gl.TexParameter(GLEnum.Texture2D, GLEnum.TextureMinFilter, (int)GLEnum.Linear);
+            _gl.TexParameter(GLEnum.Texture2D, GLEnum.TextureMagFilter, (int)GLEnum.Linear);
+            //  _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)GLEnum.Nearest);
+            //  _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)GLEnum.Nearest);
             _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)GLEnum.Repeat);
             _gl.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)GLEnum.Repeat);
 
-            _gl.TexImage2D(GLEnum.Texture2D, 0, InternalFormat.Rgb, width , height, 0, GLEnum.Rgb, GLEnum.UnsignedByte, null);
+            _gl.TexImage2D(GLEnum.Texture2D, 0, InternalFormat.Rgb, width, height, 0, GLEnum.Rgb, GLEnum.UnsignedByte, null);
 
         }
         public int getWidth()

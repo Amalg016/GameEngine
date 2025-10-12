@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class Line2D
     {
@@ -36,7 +31,7 @@ namespace GameEngine.renderer
         }
         public int getLifetime()
         {
-            return lifetime;    
+            return lifetime;
         }
 
         public int beginFrame()

@@ -1,12 +1,7 @@
 ﻿using GameEngine.components;
 using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class Renderer
     {
@@ -14,7 +9,7 @@ namespace GameEngine.renderer
         public List<RenderBatch> batches = new List<RenderBatch>();
         GL GL;
         private static Shader shader;
-      
+
         public Renderer(GL gl)
         {
             GL = gl;
@@ -32,23 +27,23 @@ namespace GameEngine.renderer
         void Add(SpriteRenderer sprite)
         {
             bool added = false;
-            
-                foreach (RenderBatch batch in batches)
+
+            foreach (RenderBatch batch in batches)
+            {
+                if (batch.HasRoom() && batch.zIndex() == sprite.gameObject.zIndex())
                 {
-                    if (batch.HasRoom()&& batch.zIndex()==sprite.gameObject.zIndex())
+                    Texture tex = sprite.GetTexture();
+                    if (tex == null && (batch.hasTexture(tex) || batch.hasTextureRoom()))
                     {
-                        Texture tex = sprite.GetTexture();
-                        if (tex == null && (batch.hasTexture(tex) || batch.hasTextureRoom()))
-                        {
-                          batch.AddSprite(sprite);
-                          added = true;
-                          break;
-                        }
+                        batch.AddSprite(sprite);
+                        added = true;
+                        break;
                     }
                 }
+            }
             if (!added)
-            { 
-                RenderBatch newBatch = new RenderBatch(GL, MaxBatchSize,sprite.gameObject.zIndex(),this);
+            {
+                RenderBatch newBatch = new RenderBatch(GL, MaxBatchSize, sprite.gameObject.zIndex(), this);
                 newBatch.Start();
                 batches.Add(newBatch);
                 newBatch.AddSprite(sprite);

@@ -1,6 +1,6 @@
 ﻿using GameEngine.components;
 using GameEngine.Physics2D.components;
-using GameEngine.renderer;
+using GameEngine.Rendering;
 using GameEngine.scenes;
 using ImGuiNET;
 

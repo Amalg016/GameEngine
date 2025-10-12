@@ -1,7 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using System;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class FrameBuffer : IDisposable
     {

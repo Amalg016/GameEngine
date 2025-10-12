@@ -1,6 +1,6 @@
 ﻿using Silk.NET.OpenGL;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class PickingTexture : IDisposable
     {

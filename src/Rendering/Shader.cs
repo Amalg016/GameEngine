@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Numerics;
+﻿using System.Numerics;
 using Silk.NET.OpenGL;
-using Silk.NET.Maths;
 
-namespace GameEngine.renderer
+namespace GameEngine.Rendering
 {
     public class Shader : IDisposable
     {
@@ -46,7 +43,7 @@ namespace GameEngine.renderer
             //Using the program
             _gl.UseProgram(shaderID);
         }
-        
+
         public void detach()
         {
             //Using the program
