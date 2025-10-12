@@ -1,7 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Numerics;
 using ImGuiNET;
 using Silk.NET.Input;
@@ -10,7 +7,6 @@ using Silk.NET.Maths;
 using Silk.NET.Windowing;
 using Silk.NET.OpenGL;
 using Silk.NET.OpenGL.Extensions.ImGui;
-using GameEngine.editor;
 
 namespace GameEngine.IMGUI
 {
