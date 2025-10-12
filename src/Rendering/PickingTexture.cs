@@ -21,6 +21,16 @@ namespace GameEngine.renderer
             }
         }
 
+        public PickingTexture(GL gl, uint width, uint height)
+        {
+            this.width = width;
+            this.height = height;
+            this.gL = gl;
+            if (!Initialize(width, height))
+            {
+                throw new Exception("Failed to initialize PickingTexture");
+            }
+        }
         private unsafe bool Initialize(uint width, uint height)
         {
             this.width = width;

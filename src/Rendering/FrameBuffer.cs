@@ -17,6 +17,13 @@ namespace GameEngine.renderer
             this.height = height;
             Initialize(width, height);
         }
+        public FrameBuffer(GL gl, uint width, uint height)
+        {
+            this.width = width;
+            this.height = height;
+            this.gL = gl;
+            Initialize(width, height);
+        }
 
         private void Initialize(uint width, uint height)
         {
