@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace GameEngine.Rendering
+namespace GameEngine.Rendering.Core
 {
     public class Texture : IDisposable
     {

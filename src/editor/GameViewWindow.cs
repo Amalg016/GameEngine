@@ -1,6 +1,6 @@
 ﻿using GameEngine.observers;
 using GameEngine.observers.events;
-using GameEngine.Rendering;
+using GameEngine.Rendering.Core;
 using GameEngine.scenes;
 using ImGuiNET;
 using System.Numerics;

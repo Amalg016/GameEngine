@@ -2,7 +2,7 @@ using GameEngine.scenes;
 using GameEngine.Core.Utilities;
 using Silk.NET.OpenGL;
 
-namespace GameEngine.Rendering
+namespace GameEngine.Rendering.Core
 {
     public class RenderSystem
     {

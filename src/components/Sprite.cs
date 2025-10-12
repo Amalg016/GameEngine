@@ -1,4 +1,4 @@
-﻿using GameEngine.Rendering;
+﻿using GameEngine.Rendering.Core;
 using Newtonsoft.Json;
 using System.Numerics;
 

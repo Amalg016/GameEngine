@@ -1,6 +1,6 @@
 ﻿using GameEngine.editor;
 using GameEngine.IMGUI;
-using GameEngine.Rendering;
+using GameEngine.Rendering.Core;
 using GameEngine.scenes;
 using ImGuiNET;
 using Silk.NET.Input;

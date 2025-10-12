@@ -9,7 +9,7 @@ using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;
 using WINDOW = Silk.NET.Windowing.Window;
-using GameEngine.Rendering;
+using GameEngine.Rendering.Core;
 
 namespace GameEngine
 {

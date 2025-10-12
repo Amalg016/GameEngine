@@ -2,7 +2,7 @@
 using Silk.NET.OpenGL;
 using System.Numerics;
 
-namespace GameEngine.Rendering
+namespace GameEngine.Rendering.Core
 {
     public class RenderBatch
     {

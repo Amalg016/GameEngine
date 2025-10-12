@@ -1,6 +1,6 @@
 ﻿using Silk.NET.OpenGL;
-using Shader = GameEngine.Rendering.Shader;
-using Texture = GameEngine.Rendering.Texture;
+using Shader = GameEngine.Rendering.Core.Shader;
+using Texture = GameEngine.Rendering.Core.Texture;
 using GameEngine.components;
 using Newtonsoft.Json;
 using GameEngine.components.Animations;

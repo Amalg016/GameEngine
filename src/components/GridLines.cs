@@ -1,4 +1,4 @@
-﻿using GameEngine.Rendering;
+﻿using GameEngine.Rendering.Core;
 using GameEngine.Core.Utilities;
 using System.Numerics;
 

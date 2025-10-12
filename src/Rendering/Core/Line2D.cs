@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace GameEngine.Rendering
+namespace GameEngine.Rendering.Core
 {
     public class Line2D
     {
