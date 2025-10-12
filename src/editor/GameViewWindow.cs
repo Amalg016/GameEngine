@@ -1,5 +1,6 @@
 ﻿using GameEngine.observers;
 using GameEngine.observers.events;
+using GameEngine.Rendering;
 using GameEngine.scenes;
 using ImGuiNET;
 using System.Numerics;
@@ -44,7 +45,7 @@ namespace GameEngine.editor
             bottomY = topLeft.Y;
             rightX = topLeft.X + windowSize.X;
             topY = topLeft.Y + windowSize.Y;
-            uint textureid = Window.getFrameBuffer().getTextureID();
+            uint textureid = RenderSystem.FrameBuffer.getTextureID();
             ImGui.Image((IntPtr)textureid, windowSize, new Vector2(0, 1f), new Vector2(1f, 0));
 
             InputManager.setGameViewPos(new Vector2(topLeft.X, topLeft.Y));
@@ -89,8 +90,8 @@ namespace GameEngine.editor
             // normY = 1.0f - normY;
 
             // Convert to framebuffer coordinates
-            float fbX = normX * Window.getFrameBuffer().GetWidth();
-            float fbY = normY * Window.getFrameBuffer().GetHeight();
+            float fbX = normX * RenderSystem.FrameBuffer.GetWidth();
+            float fbY = normY * RenderSystem.FrameBuffer.GetHeight();
 
             return new Vector2(fbX, fbY);
         }
@@ -111,8 +112,8 @@ namespace GameEngine.editor
                 aspectWidth = (aspectHeight) * targetAspect;
             }
 
-            Window.pickingTexture?.Resize((uint)aspectWidth, (uint)aspectHeight);
-            Window.getFrameBuffer().Resize((uint)aspectWidth, (uint)aspectHeight);
+            RenderSystem.PickingTexture?.Resize((uint)aspectWidth, (uint)aspectHeight);
+            RenderSystem.FrameBuffer?.Resize((uint)aspectWidth, (uint)aspectHeight);
 
             return new Vector2(aspectWidth, aspectHeight);
         }

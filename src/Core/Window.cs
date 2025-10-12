@@ -5,14 +5,11 @@ using Silk.NET.Maths;
 using Silk.NET.OpenGL;
 using System.Diagnostics;
 using GameEngine.util;
-using GameEngine.renderer;
-using Shader = GameEngine.renderer.Shader;
-using Texture = GameEngine.renderer.Texture;
-using FrameBuffer = GameEngine.renderer.FrameBuffer;
 using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.scenes;
 using WINDOW = Silk.NET.Windowing.Window;
+using GameEngine.Rendering;
 
 namespace GameEngine
 {
@@ -24,16 +21,12 @@ namespace GameEngine
         static uint program;
         static GUISystem guicontroller;
         public static int Height = 1080, Width = 1920;
-        private static FrameBuffer framebuffer;
-        public static PickingTexture pickingTexture;
         private static SceneManager sceneManager;
 
         static Stopwatch stopwatch;
         static float BeginTime;
-        static Shader defaultShader;
-        static Shader pickingShader;
-        static Texture texture;
         public static Camera camera;
+        static RenderSystem renderSystem;
 
         public void Init(params string[] args)
         {
@@ -60,24 +53,12 @@ namespace GameEngine
         {
             Height = obj.Y;
             Width = obj.X;
-
-            // Resize framebuffer and picking texture
-            // framebuffer?.Resize((uint)Width, (uint)Height);
-            // pickingTexture?.Resize((uint)Width, (uint)Height);
-
             // Update viewport
             gl.Viewport(0, 0, (uint)Width, (uint)Height);
         }
 
-
-        // public static void ChangeScene(sceneInitializer sceneInitializer)
-        // {
-        //     guicontroller.GetPropertiesWindow().setActiveGameObject(null);
-        // }
-
         private static void OnWindowLoad()
         {
-
             stopwatch = new Stopwatch();
             stopwatch.Start();
             BeginTime = 0;
@@ -86,72 +67,30 @@ namespace GameEngine
 
             InputManager.onLoad(input);
             AssetPool assetPool = new AssetPool(gl);
-            gl.ClearColor(1, 1, 1, 1);
-
-
-            gl.Enable(GLEnum.Blend);
-            gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
-
-            defaultShader = AssetPool.getShader("Assets/Shader/shader.vert", "Assets/Shader/shader.frag", "DefaultShader");
+            renderSystem = new RenderSystem();
+            renderSystem.Initialize(gl, Width, Height);
 
             camera = new Camera(new Vector3(0, 0, 0), 1);
             //Camera = Camera.Main;
-            framebuffer = new FrameBuffer((uint)Width, (uint)Height);
-            pickingTexture = new PickingTexture((uint)Width, (uint)Height);
-            //     gl.Viewport(0, 0, 1920, 1080);
-            guicontroller = new GUISystem(gl, window, input, pickingTexture);
+
+            guicontroller = new GUISystem(gl, window, input, RenderSystem.PickingTexture);
             sceneManager.ChangeScene(new LevelEditorSceneInitializer());
-
-            guicontroller.Load(SceneManager.CurrentScene);
-            pickingShader = AssetPool.getShader("Assets/Shader/pickingShader.vert", "Assets/Shader/pickingShader.frag", "pickingShader");
-
         }
 
 
         private static void OnWindowUpdate(double obj)
         {
             InputManager.Update();
-            gl.Disable(GLEnum.Blend);
-            pickingTexture.enableWriting();
+            renderSystem.RenderFrame(SceneManager.CurrentScene, SceneManager.RuntimePlaying);
 
-            //  gl.Viewport(0, 0, 1920, 1100);
-            //   gl.ClearColor(0, 0, 0, 0);
-            gl.Clear((uint)GLEnum.ColorBufferBit | (uint)GLEnum.DepthBufferBit);
-
-            // bind shader
-            Renderer.bindShader(pickingShader);
-            if (SceneManager.CurrentScene != null)
+            if (SceneManager.RuntimePlaying)
             {
-                SceneManager.CurrentScene.Render();
+                SceneManager.CurrentScene?.Update();
             }
-
-
-
-            pickingTexture.disableWriting();
-            gl.Enable(GLEnum.Blend);
-
-            DebugDraw.beginFrame();
-            framebuffer.Bind();
-            gl.ClearColor(1, 1, 1, 1);
-            gl.Clear(ClearBufferMask.ColorBufferBit);
-            if (SceneManager.CurrentScene != null)
+            else
             {
-
-
-                DebugDraw.Draw();
-                Renderer.bindShader(defaultShader);
-                if (SceneManager.RuntimePlaying)
-                {
-                    SceneManager.CurrentScene.Update();
-                }
-                else
-                {
-                    SceneManager.CurrentScene.EditorUpdate();
-                }
-                SceneManager.CurrentScene.Render();
+                SceneManager.CurrentScene?.EditorUpdate();
             }
-
-            framebuffer.UnBind();
             guicontroller.Update(SceneManager.CurrentScene);
             Time.time = (float)stopwatch.Elapsed.TotalSeconds;
             Time.deltaTime = Time.time - BeginTime;
@@ -163,18 +102,14 @@ namespace GameEngine
             guicontroller.Exit();
             sceneManager.ExitScene();
             AssetPool.SaveResources();
-            DebugDraw.OnExit();
-            gl?.Dispose();
+            renderSystem.OnExit();
         }
 
-        public static FrameBuffer getFrameBuffer()
-        {
-            return framebuffer;
-        }
         public static float getTargetAspectRatio()
         {
             return 16 / 9;
         }
+
         public static GUISystem GetGUISystem()
         {
             return guicontroller;
