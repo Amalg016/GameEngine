@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using Silk.NET.Input;
 
-namespace GameEngine
+namespace GameEngine.Core.Platform
 {
     public static class InputManager
     {

@@ -1,4 +1,6 @@
-﻿namespace GameEngine.components
+﻿using GameEngine.Core.Platform;
+
+namespace GameEngine.components
 {
     public class GizmoSystem : Component
     {
@@ -8,8 +10,8 @@
         public GizmoSystem(Spritesheet gizmos)
         {
             this.gizmos = gizmos;
-         //   gameObject.AddComponent(new Rigidbody());
-            }
+            //   gameObject.AddComponent(new Rigidbody());
+        }
 
         public override void Load()
         {
@@ -18,7 +20,7 @@
 
         public override void EditorUpdate()
         {
-            if(usingGizmo==0)
+            if (usingGizmo == 0)
             {
                 gameObject.GetComponent<TranslateGizmo>().setUsing();
                 gameObject.GetComponent<ScaleGizmo>().setNotUsing();

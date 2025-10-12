@@ -1,4 +1,5 @@
-﻿using GameEngine.editor;
+﻿using GameEngine.Core.Platform;
+using GameEngine.editor;
 
 namespace GameEngine.components
 {
@@ -13,7 +14,8 @@ namespace GameEngine.components
         }
         public override void EditorUpdate()
         {
-            if (activeGameObject != null){
+            if (activeGameObject != null)
+            {
                 if (xAxisActive && !yAxisActive)
                 {
                     activeGameObject.transform.scale.X += InputManager.getWorldDx();

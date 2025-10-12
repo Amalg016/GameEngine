@@ -1,4 +1,5 @@
-﻿using GameEngine.observers;
+﻿using GameEngine.Core.Platform;
+using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.Rendering.Core;
 using GameEngine.scenes;

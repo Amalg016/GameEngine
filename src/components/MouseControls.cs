@@ -2,6 +2,7 @@
 using GameEngine.Core.Utilities;
 using System.Numerics;
 using GameEngine.editor;
+using GameEngine.Core.Platform;
 namespace GameEngine.components
 {
     public class MouseControls : Component
