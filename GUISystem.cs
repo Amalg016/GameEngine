@@ -1,5 +1,5 @@
 ﻿using GameEngine.editor;
-using GameEngine.IMGUI;
+using GameEngine.Rendering.IMGUI;
 using GameEngine.Rendering.Core;
 using GameEngine.scenes;
 using ImGuiNET;

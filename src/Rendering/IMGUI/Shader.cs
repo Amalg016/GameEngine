@@ -1,10 +1,7 @@
 ﻿using Silk.NET.OpenGL;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Silk.NET.OpenGL.Extensions.ImGui;
-namespace GameEngine.IMGUI
+namespace GameEngine.Rendering.IMGUI
 {
 
     struct UniformFieldInfo

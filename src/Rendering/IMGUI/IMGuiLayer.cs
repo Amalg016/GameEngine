@@ -8,7 +8,7 @@ using Silk.NET.Windowing;
 using Silk.NET.OpenGL;
 using Silk.NET.OpenGL.Extensions.ImGui;
 
-namespace GameEngine.IMGUI
+namespace GameEngine.Rendering.IMGUI
 {
     public class ImGuiLayer : IDisposable
     {
