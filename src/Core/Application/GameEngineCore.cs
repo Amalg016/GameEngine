@@ -15,11 +15,13 @@ namespace GameEngine.Core.Application
         public static GameEngineCore Instance => _instance ??= new GameEngineCore();
         private SceneManager sceneManager;
         private TimeManager timeManager;
+        private InputManager inputManager;
 
         private GameEngineCore()
         {
             sceneManager = new SceneManager();
             timeManager = new TimeManager();
+            inputManager = new InputManager();
         }
 
         GUISystem guiSystem;
@@ -42,7 +44,7 @@ namespace GameEngine.Core.Application
             Console.WriteLine("Loaded");
             timeManager.Initialize();
 
-            InputManager.onLoad(WindowManger.input);
+            inputManager.onLoad(WindowManger.input);
             AssetPool assetPool = new AssetPool(WindowManger.gl);
             renderSystem = new RenderSystem();
             renderSystem.Initialize(WindowManger.gl, WindowManger.Width, WindowManger.Height);
@@ -55,7 +57,7 @@ namespace GameEngine.Core.Application
 
         private void OnWindowUpdate(double obj)
         {
-            InputManager.Update();
+            inputManager.Update();
             renderSystem.RenderFrame(SceneManager.CurrentScene, SceneManager.RuntimePlaying);
 
             if (SceneManager.RuntimePlaying)

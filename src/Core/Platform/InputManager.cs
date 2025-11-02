@@ -3,7 +3,7 @@ using Silk.NET.Input;
 
 namespace GameEngine.Core.Platform
 {
-    public static class InputManager
+    public class InputManager
     {
         public static IKeyboard keyboard;
         public static IMouse mouse;
@@ -44,7 +44,7 @@ namespace GameEngine.Core.Platform
         public static bool[] keyPressed = new bool[350];
         public static bool[] keyBeginPressed = new bool[350];
 
-        public static void onLoad(IInputContext input)
+        public void onLoad(IInputContext input)
         {
             keyboard = input.Keyboards.FirstOrDefault();
             mouse = input.Mice.FirstOrDefault();
@@ -65,7 +65,7 @@ namespace GameEngine.Core.Platform
             keyBeginPressed[(int)arg2] = keyboard.IsKeyPressed(arg2) ? true : false;
         }
 
-        public static void Update()
+        public void Update()
         {
             LMisPressed = false;
             duplPressed = false;
