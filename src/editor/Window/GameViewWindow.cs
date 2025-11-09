@@ -1,4 +1,5 @@
-﻿using GameEngine.Core.Platform;
+﻿using GameEngine.Core.Application;
+using GameEngine.Core.Platform;
 using GameEngine.observers;
 using GameEngine.observers.events;
 using GameEngine.Rendering.Core;
@@ -104,7 +105,7 @@ namespace GameEngine.Editor.Window
             windowSize.X -= ImGui.GetScrollX();
             windowSize.Y -= ImGui.GetScrollY();
 
-            float targetAspect = 16.0f / 9.0f; // Or get from framebuffer
+            float targetAspect = getTargetAspectRatio();
             float aspectWidth = windowSize.X;
             float aspectHeight = (aspectWidth) / targetAspect;
             if (aspectHeight > windowSize.Y)
@@ -133,5 +134,9 @@ namespace GameEngine.Editor.Window
             return new Vector2(viewPortX + ImGui.GetCursorPosX(), viewPortY + ImGui.GetCursorPosY());
         }
 
+        public static float getTargetAspectRatio()
+        {
+            return (float)RenderSystem.Width / (float)RenderSystem.Height;
+        }
     }
 }

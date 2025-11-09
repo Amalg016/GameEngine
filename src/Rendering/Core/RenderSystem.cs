@@ -17,14 +17,17 @@ namespace GameEngine.Rendering.Core
         public static FrameBuffer FrameBuffer => _frameBuffer;
         public static PickingTexture PickingTexture => _pickingTexture;
         public static Camera MainCamera => _mainCamera;
+        public static int Width, Height;
 
         public void Initialize(GL gl, int width, int height)
         {
             this.gl = gl;
+            Width = width;
+            Height = height;
             gl.ClearColor(1, 1, 1, 1);
             gl.Enable(GLEnum.Blend);
             gl.BlendFunc(GLEnum.SrcAlpha, GLEnum.OneMinusSrcAlpha);
-            _mainCamera = new Camera(new Vector3(0, 0, 0), 1);
+            _mainCamera = new Camera(new Vector3(0, 0, 0));
             _frameBuffer = new FrameBuffer(gl, (uint)width, (uint)height);
             _pickingTexture = new PickingTexture(gl, (uint)width, (uint)height);
 
@@ -35,8 +38,13 @@ namespace GameEngine.Rendering.Core
 
         public static void Resize(uint width, uint height)
         {
-            _frameBuffer?.Resize(width, height);
-            _pickingTexture?.Resize(width, height);
+            if (Height != (int)height || Width != (int)width)
+            {
+                Height = (int)height;
+                Width = (int)width;
+                _frameBuffer?.Resize(width, height);
+                _pickingTexture?.Resize(width, height);
+            }
         }
 
         public void RenderFrame(Scene currentScene, bool runtimePlaying)

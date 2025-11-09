@@ -1,5 +1,7 @@
 ﻿using System.Numerics;
+using GameEngine.Core.Application;
 using GameEngine.Core.Math;
+using GameEngine.Editor.Window;
 
 namespace GameEngine.Rendering.Core
 {
@@ -7,7 +9,6 @@ namespace GameEngine.Rendering.Core
     {
         public Vector3 Position;// { get { return new Vector3(gameObject.transform.position.X, gameObject.transform.position.Y, 0); } set {gameObject.transform.position.X=value.X;gameObject.transform.position.Y = value.Y; } }
                                 //  public Vector2 position { get { return new Vector2(Position.X, position.Y); } set; }
-        public float AspectRatio = 1;
 
         public float Yaw { get; set; } = -90f;
         public float Pitch { get; set; }
@@ -22,15 +23,6 @@ namespace GameEngine.Rendering.Core
         Matrix4x4 viewMatrix = new Matrix4x4();
         Matrix4x4 InverseProjMatrix = new Matrix4x4();
         Matrix4x4 InverseViewMatrix = new Matrix4x4();
-
-
-        public Camera(Vector3 position, float aspectRatio)
-        {
-            Position = position;
-            AspectRatio = aspectRatio;
-            Main = this;
-        }
-
 
         public Camera(Vector3 position)
         {
@@ -71,20 +63,28 @@ namespace GameEngine.Rendering.Core
         //
         //       Front = Vector3.Normalize(cameraDirection);
         //   }
-
         public Matrix4x4 GetProjectionMatrix()
         {
+            var AspectRatio = GameViewWindow.getTargetAspectRatio();
             if (Orthographic)
             {
+                float zoomedWidth = projectionSize.X * Zoom;
+                float zoomedHeight = projectionSize.Y * Zoom;
 
-                projectionMatrix = Matrix4x4.CreateOrthographicOffCenter(0, projectionSize.X * Zoom, 0, projectionSize.Y * Zoom, 0.5f, 100);
+                // Adjust for aspect ratio to prevent stretching
+                float aspectAdjustedWidth = zoomedWidth * AspectRatio;
+
+                projectionMatrix = Matrix4x4.CreateOrthographicOffCenter(
+                    0, aspectAdjustedWidth,
+                    0, zoomedHeight,
+                    0.5f, 100
+                );
+
                 Matrix4x4.Invert(projectionMatrix, out InverseProjMatrix);
                 return projectionMatrix;
-                //   return Matrix4x4.CreateOrthographic(Mathf.DegreesToRadians(Zoom+400+100), Mathf.DegreesToRadians(Zoom+400), 0f, 100.0f);
             }
             return Matrix4x4.CreatePerspectiveFieldOfView(Mathf.DegreesToRadians(Zoom), AspectRatio, 0.1f, 100.0f);
         }
-
         public void adjustProjection()
         {
             projectionMatrix = Matrix4x4.CreateOrthographicOffCenter(0, 32 * 40, 0, 32 * 21, 0, 100);
