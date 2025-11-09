@@ -21,6 +21,11 @@ namespace GameEngine.Core.Application
             var options = WindowOptions.Default;
             options.Title = "AJEngine";
             options.Size = new Vector2D<int>(Width, Height);
+            options.WindowBorder = WindowBorder.Resizable;
+
+            options.IsVisible = true;
+            options.ShouldSwapAutomatically = true;
+
             options.API = GraphicsAPI.Default;
             window = WINDOW.Create(options);
 

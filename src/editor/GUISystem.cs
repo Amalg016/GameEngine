@@ -16,6 +16,7 @@ namespace GameEngine.Editor
         private List<IEditorWindow> _editorWindows = new();
         private PropertiesWindow _propertiesWindow;
         ImGuiLayer _imGuiLayer;
+        MenuBar menuBar;
 
         public GUISystem(GL gL, IWindow w, IInputContext inputContext, PickingTexture pickingTexture)
         {
@@ -26,7 +27,8 @@ namespace GameEngine.Editor
             this._editorWindows.Add(new ContentBrowserWindow());
             this._editorWindows.Add(new AnimationWindow());
             this._editorWindows.Add(new Debug());
-            this._editorWindows.Add(new MenuBar());
+            this.menuBar = new MenuBar();
+            // this._editorWindows.Add(new MenuBar());
             this._imGuiLayer = new ImGuiLayer(gL, w, inputContext);
         }
 
@@ -49,19 +51,25 @@ namespace GameEngine.Editor
 
         private void SetUpDockSpace()
         {
-            ImGuiWindowFlags s = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
 
             ImGui.SetNextWindowPos(new Vector2(0, 0));
             ImGui.SetNextWindowSize(new Vector2(WindowManger.Width, WindowManger.Height));
             ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 0);
             ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
-            s |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+            ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0.0f, 0.0f));
 
-            ImGui.Begin("dockSpace", s);
-            ImGui.PopStyleVar(2);
+            ImGuiWindowFlags windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+
+            ImGui.Begin("dockSpace", windowFlags);
+            menuBar.Render();
+
+            Vector2 dockSpaceSize = new Vector2(0.0f, 0.0f);
+            dockSpaceSize.Y = ImGui.GetContentRegionAvail().Y; // Available space after menu bar
 
             //DockSpace
             ImGui.DockSpace(ImGui.GetID("Dockspace"));
+            ImGui.End();
+            ImGui.PopStyleVar(3);
         }
 
         public PropertiesWindow GetPropertiesWindow()
