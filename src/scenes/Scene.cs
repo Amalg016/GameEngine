@@ -238,17 +238,30 @@ namespace GameEngine.scenes
             }
             // sceneGameObjects.Clear();   
         }
-        public GameObject getGameObject(int v)
+        public GameObject getGameObject(int id)
         {
             foreach (GameObject go in sceneGameObjects)
             {
-                if (go.getUid() == v)
+                if (go.getUid() == id)
                 {
                     return go;
                 }
             }
             return null;
             //throw new Exception("null GameObject with that id");
+        }
+
+        public GameObject getGameObject(String name)
+        {
+
+            foreach (GameObject go in sceneGameObjects)
+            {
+                if (go.name == name)
+                {
+                    return go;
+                }
+            }
+            return null;
         }
     }
 
