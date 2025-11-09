@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using GameEngine.Core.Application;
 using GameEngine.Core.Math;
 using GameEngine.Core.Platform;
 using GameEngine.Rendering.Core;
@@ -25,41 +26,32 @@ namespace GameEngine.components
         }
         public override void Update()
         {
-            updateOrthoX();
-            updateOrthoY();
+            updateOrtho();
         }
 
-        public void updateOrthoX()
+        public void updateOrtho()
         {
             float currentX = InputManager.mouseX - InputManager.gameViewPosX;
-            //   Console.WriteLine(gameViewPos.X+"y is"+gameViewPos.Y);  
-            // currentX = (currentX / (float)Program.Width)*2f -1;
-            currentX = (currentX / InputManager.gameViewSizeX) * 2.0f - 1.0f;
-            Vector4 tmp = new Vector4(currentX, 0, 0, 1);
-            Matrix4x4 viewProjection = new Matrix4x4();
-
-            viewProjection = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
-            tmp = Mathf.Multiply(viewProjection, tmp);
-            InputManager.setOrthoX(tmp.X);
-        }
-
-        public void updateOrthoY()
-        {
             float currentY = InputManager.mouseY - InputManager.gameViewPosY;
-            currentY = -((currentY / InputManager.gameViewPosY) * 2.0f - 1.0f);
-            Vector4 tmp = new Vector4(0, currentY, 0, 1);
 
-            Matrix4x4 viewProjection = new Matrix4x4();
-            viewProjection = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
-            tmp = Mathf.Multiply(viewProjection, tmp);
-            InputManager.setOrthoY(tmp.Y);
+            // Convert to NDC
+            float ndcX = (currentX / InputManager.gameViewSizeX) * 2.0f - 1.0f;
+            float ndcY = 1.0f - (currentY / InputManager.gameViewSizeY) * 2.0f;
+            // Use a single point for both coordinates
+
+            Vector4 ndcPos = new Vector4(ndcX, ndcY, 0, 1);
+            Matrix4x4 inverseViewProj = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
+            Vector4 worldPos = Mathf.Multiply(inverseViewProj, ndcPos);
+
+            InputManager.setOrthoX(worldPos.X);
+            InputManager.setOrthoY(worldPos.Y);
         }
 
         public override void EditorUpdate()
         {
 
-            updateOrthoX();
-            updateOrthoY();
+            updateOrtho();
+            // updateOrthoY();
             if (InputManager.RMouse && dragDebounce > 0)
             {
                 this.clickOrgin = new Vector2(InputManager.GetOrthoX(), InputManager.GetOrthoY());
