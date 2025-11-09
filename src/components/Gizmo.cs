@@ -21,7 +21,6 @@ namespace GameEngine.components
         private GameObject yAxisObject;
         private SpriteRenderer xAxisSprite;
         private SpriteRenderer yAxisSprite;
-        protected GameObject activeGameObject = null;
 
         private float gizmoWidth = 16 / 80f;
         private float gizmoHeight = 48 / 80f;
@@ -66,14 +65,14 @@ namespace GameEngine.components
                 return;
             }
 
-            this.activeGameObject = PropertiesWindow.getActiveGameObject();
+            GameObject activeGameObject = PropertiesWindow.getActiveGameObject();
 
             //Refactor later
             if (activeGameObject != null)
             {
                 if (InputManager.duplPressed)
                 {
-                    GameObject newObj = this.activeGameObject.Copy();
+                    GameObject newObj = activeGameObject.Copy();
                     SceneManager.CurrentScene.addGameObjectToScene(newObj);
                     newObj.transform.position += new Vector2(0.1f, 0.1f);
                     PropertiesWindow.setActiveGameObject(newObj);
@@ -87,7 +86,7 @@ namespace GameEngine.components
                 }
             }
 
-            if (this.activeGameObject != null)
+            if (activeGameObject != null)
             {
                 this.setActive();
             }
@@ -99,7 +98,7 @@ namespace GameEngine.components
 
             bool xAxisHot = CheckXhoverState();
             bool yAxisHot = CheckYhoverState();
-
+            Console.WriteLine(InputManager.isDragging);
             if ((xAxisHot || xAxisActive) && InputManager.isDragging)
             {
                 xAxisActive = true;
@@ -118,11 +117,11 @@ namespace GameEngine.components
 
             if (activeGameObject != null)
             {
-                this.yAxisObject.transform.position.X = this.activeGameObject.transform.position.X;
-                this.yAxisObject.transform.position.Y = this.activeGameObject.transform.position.Y;
+                this.yAxisObject.transform.position.X = activeGameObject.transform.position.X;
+                this.yAxisObject.transform.position.Y = activeGameObject.transform.position.Y;
                 yAxisObject.transform.position += yAxisOffset;
-                this.xAxixObject.transform.position.X = this.activeGameObject.transform.position.X;
-                this.xAxixObject.transform.position.Y = this.activeGameObject.transform.position.Y;
+                this.xAxixObject.transform.position.X = activeGameObject.transform.position.X;
+                this.xAxixObject.transform.position.Y = activeGameObject.transform.position.Y;
                 xAxixObject.transform.position += xAxisOffset;
             }
 
@@ -162,7 +161,6 @@ namespace GameEngine.components
 
         private void setInactive()
         {
-            activeGameObject = null;
             xAxisSprite.setColor(new Vector4(0, 0, 0, 0));
             yAxisSprite.setColor(new Vector4(0, 0, 0, 0));
         }

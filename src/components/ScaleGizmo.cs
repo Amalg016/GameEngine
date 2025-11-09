@@ -1,4 +1,5 @@
 ﻿using GameEngine.Core.Platform;
+using GameEngine.Editor.Window;
 
 namespace GameEngine.components
 {
@@ -13,6 +14,7 @@ namespace GameEngine.components
         }
         public override void EditorUpdate()
         {
+            var activeGameObject = PropertiesWindow.getActiveGameObject();
             if (activeGameObject != null)
             {
                 if (xAxisActive && !yAxisActive)

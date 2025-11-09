@@ -1,5 +1,6 @@
 ﻿using GameEngine.Core.Application;
 using GameEngine.Core.Platform;
+using GameEngine.Editor.Window;
 
 namespace GameEngine.components
 {
@@ -18,6 +19,7 @@ namespace GameEngine.components
 
         public override void EditorUpdate()
         {
+            var activeGameObject = PropertiesWindow.getActiveGameObject();
             if (activeGameObject == null)
             {
                 WindowManger.gl.ClearColor(1, 0, 0, 1);
