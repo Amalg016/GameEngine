@@ -93,11 +93,13 @@ namespace GameEngine.Rendering.Core
         public void Bind()
         {
             gL.BindFramebuffer(FramebufferTarget.Framebuffer, fboID);
+            gL.Viewport(0, 0, width, height);
         }
 
         public void UnBind()
         {
             gL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            gL.Viewport(0, 0, (uint)GameEngine.Core.Application.WindowManger.Width, (uint)GameEngine.Core.Application.WindowManger.Height);
         }
 
         public void Dispose()

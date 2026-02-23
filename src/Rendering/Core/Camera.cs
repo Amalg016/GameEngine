@@ -72,7 +72,7 @@ namespace GameEngine.Rendering.Core
                 float zoomedHeight = projectionSize.Y * Zoom;
 
                 // Adjust for aspect ratio to prevent stretching
-                float aspectAdjustedWidth = zoomedWidth * AspectRatio;
+                float aspectAdjustedWidth = zoomedHeight * AspectRatio;
 
                 projectionMatrix = Matrix4x4.CreateOrthographicOffCenter(
                     0, aspectAdjustedWidth,

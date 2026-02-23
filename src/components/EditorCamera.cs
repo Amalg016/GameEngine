@@ -2,6 +2,7 @@
 using GameEngine.Core.Application;
 using GameEngine.Core.Math;
 using GameEngine.Core.Platform;
+using GameEngine.Editor.Window;
 using GameEngine.Rendering.Core;
 
 namespace GameEngine.components
@@ -34,17 +35,26 @@ namespace GameEngine.components
             float currentX = InputManager.mouseX - InputManager.gameViewPosX;
             float currentY = InputManager.mouseY - InputManager.gameViewPosY;
 
-            // Convert to NDC
-            float ndcX = (currentX / InputManager.gameViewSizeX) * 2.0f - 1.0f;
-            float ndcY = 1.0f - (currentY / InputManager.gameViewSizeY) * 2.0f;
-            // Use a single point for both coordinates
+            // Normalize to [0, 1] within the game viewport
+            float normX = currentX / InputManager.gameViewSizeX;
+            float normY = currentY / InputManager.gameViewSizeY;
 
-            Vector4 ndcPos = new Vector4(ndcX, ndcY, 0, 1);
-            Matrix4x4 inverseViewProj = levelEditorCamera.GetInverseProj() * levelEditorCamera.GetInverseView();
-            Vector4 worldPos = Mathf.Multiply(inverseViewProj, ndcPos);
+            // Flip Y: screen Y goes down, world Y goes up
+            normY = 1.0f - normY;
 
-            InputManager.setOrthoX(worldPos.X);
-            InputManager.setOrthoY(worldPos.Y);
+            // Compute the world-space dimensions visible by the camera
+            Vector2 projSize = levelEditorCamera.getProjectionSize();
+            float zoom = levelEditorCamera.getZoom();
+            float aspectRatio = GameViewWindow.getTargetAspectRatio();
+            float worldWidth = projSize.X * zoom * aspectRatio;
+            float worldHeight = projSize.Y * zoom;
+
+            // Map [0,1] to [0, worldWidth/Height] and add camera position
+            float worldX = normX * worldWidth + levelEditorCamera.Position.X;
+            float worldY = normY * worldHeight + levelEditorCamera.Position.Y;
+
+            InputManager.setOrthoX(worldX);
+            InputManager.setOrthoY(worldY);
         }
 
         public override void EditorUpdate()
