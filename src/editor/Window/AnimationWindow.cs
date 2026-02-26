@@ -177,7 +177,7 @@ namespace GameEngine.Editor.Window
                         ImGui.BeginChild("##Child2", new Vector2(0.5f * WindowSpace.X, 0.5f * WindowSpace.Y), true);
                         ImGui.TextUnformatted("Viewer");
                         ImGui.NewLine();
-                        if (spritesheet != null)
+                        if (spritesheet != null && anim != null)
                         {
                             int count = anim.frames.Count;
                             if (count > d)
@@ -198,7 +198,7 @@ namespace GameEngine.Editor.Window
                         ImGui.EndChild();
 
                         ImGui.BeginChild("##Child3", new Vector2(0, 0.5f * WindowSpace.Y), true);
-                        if (spritesheet != null)
+                        if (spritesheet != null && anim != null)
                         {
                             int count = anim.frames.Count;
                             if (count > k)
@@ -253,8 +253,8 @@ namespace GameEngine.Editor.Window
                                 }
                             }
 
-                            ImGui.EndChild();
                         }
+                        ImGui.EndChild();
 
                         ImGui.EndTabItem();
                     }

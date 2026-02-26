@@ -101,18 +101,15 @@ namespace GameEngine.Core.Utilities
             return sprite;
         }
 
-        private static void LoadAnimations(String fileName)
+        private static void LoadAnimations(string filePath)
         {
-            string serializedInfo = null;
             try
             {
-                serializedInfo = File.ReadAllText("Assets.json");
-                if (serializedInfo != "")
+                string serializedInfo = File.ReadAllText(filePath);
+                if (!string.IsNullOrEmpty(serializedInfo))
                 {
-                    Console.WriteLine(serializedInfo);
-
                     List<Animation> animations = JsonConvert.DeserializeObject<List<Animation>>(serializedInfo, new AssetDeserializer());
-                    if (animations.Count > 0)
+                    if (animations != null && animations.Count > 0)
                     {
                         allAnimations = animations;
                     }
@@ -120,39 +117,88 @@ namespace GameEngine.Core.Utilities
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("Error loading animations: " + ex.ToString());
             }
         }
 
+        private static void LoadControllers(string filePath)
+        {
+            try
+            {
+                string serializedInfo = File.ReadAllText(filePath);
+                if (!string.IsNullOrEmpty(serializedInfo))
+                {
+                    List<AnimationController> controllers = JsonConvert.DeserializeObject<List<AnimationController>>(
+                        serializedInfo, new AnimationControllerDeserializer());
+                    if (controllers != null && controllers.Count > 0)
+                    {
+                        animationControllers = controllers;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error loading animation controllers: " + ex.ToString());
+            }
+        }
 
         public static void LoadResources()
         {
             string folderPath = "Assets/Animations";
-            if (Directory.Exists(folderPath))
+            if (!Directory.Exists(folderPath))
             {
-                // Get only JSON files in the folder
-                string[] jsonFiles = Directory.GetFiles(folderPath, "*.json");
-
-                // Display the list of JSON files
-                Console.WriteLine("JSON files in the folder:");
-                foreach (string jsonFile in jsonFiles)
-                {
-                    Console.WriteLine(jsonFile);
-                    LoadAnimations(folderPath + "/" + jsonFile);
-                }
+                Directory.CreateDirectory(folderPath);
+                Console.WriteLine("Created folder: " + folderPath);
+                return;
             }
-            else
+
+            // Load animations first (controllers reference them by name)
+            string animationsFile = Path.Combine(folderPath, "animations.json");
+            if (File.Exists(animationsFile))
             {
-                Console.WriteLine("Folder does not exist: " + folderPath);
+                Console.WriteLine("Loading animations from: " + animationsFile);
+                LoadAnimations(animationsFile);
+            }
+
+            // Load controllers after animations are available
+            string controllersFile = Path.Combine(folderPath, "controllers.json");
+            if (File.Exists(controllersFile))
+            {
+                Console.WriteLine("Loading controllers from: " + controllersFile);
+                LoadControllers(controllersFile);
             }
         }
 
         public static void SaveResources()
         {
-            string serializedInfo = null;
-            serializedInfo = JsonConvert.SerializeObject(allAnimations);
-            // Write JSON to file
-            File.WriteAllText("Assets.json", serializedInfo);
+            string folderPath = "Assets/Animations";
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            var settings = new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                Formatting = Formatting.Indented
+            };
+
+            try
+            {
+                // Save animations
+                string animJson = JsonConvert.SerializeObject(allAnimations, settings);
+                File.WriteAllText(Path.Combine(folderPath, "animations.json"), animJson);
+
+                // Save controllers
+                string controllerJson = JsonConvert.SerializeObject(animationControllers, settings);
+                File.WriteAllText(Path.Combine(folderPath, "controllers.json"), controllerJson);
+
+                Console.WriteLine("Animation resources saved successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error saving animation resources: " + ex.ToString());
+            }
         }
 
     }
