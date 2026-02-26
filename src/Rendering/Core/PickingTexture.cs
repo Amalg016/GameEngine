@@ -114,11 +114,13 @@ namespace GameEngine.Rendering.Core
         {
             if (!initialized) return;
             gL.BindFramebuffer(GLEnum.DrawFramebuffer, fbo);
+            gL.Viewport(0, 0, width, height);
         }
 
         public void disableWriting()
         {
             gL.BindFramebuffer(GLEnum.DrawFramebuffer, 0);
+            gL.Viewport(0, 0, (uint)GameEngine.Core.Application.WindowManger.Width, (uint)GameEngine.Core.Application.WindowManger.Height);
         }
 
         public unsafe int readPixel(int x, int y)
