@@ -282,12 +282,19 @@ namespace GameEngine.Editor.Window
                         int d = 0;
                         if (controllers.Count > 0)
                         {
+                            if (currentController == null)
+                            {
+                                currentController = controllers[0];
+                            }
                             d = indexof(currentController.Name, AnimNames);
                         }
 
                         if (ImGui.Combo("Controller", ref d, AnimNames, AnimNames.Length))
                         {
-                            currentController = controllers[d];
+                            if (controllers.Count > 0)
+                            {
+                                currentController = controllers[d];
+                            }
                         }
 
                         ImGui.SameLine();

@@ -46,18 +46,29 @@ namespace GameEngine.components
         public override void gui()
         {
             List<AnimationController> allControllers = AssetPool.animationControllers;
+            if (allControllers == null) return;
 
             string[] names = GetNames(allControllers);
             int index = 0;
 
             if (allControllers.Count > 0)
             {
-                controller = allControllers[index];
-                index = indexof(controller.Name, names);
+                if (controller != null)
+                {
+                    index = indexof(controller.Name, names);
+                }
+                else
+                {
+                    controller = allControllers[0];
+                }
             }
+
             if (ImGui.Combo("animations", ref index, names, names.Length))
             {
-                controller = allControllers[index];
+                if (allControllers.Count > 0)
+                {
+                    controller = allControllers[index];
+                }
             }
         }
         private int indexof(string enumType, string[] enumValues)

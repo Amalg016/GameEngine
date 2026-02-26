@@ -1,5 +1,6 @@
 ﻿using GameEngine.ECS;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GameEngine.components.Animations
 {
@@ -12,6 +13,7 @@ namespace GameEngine.components.Animations
         public AnimationState currentState;
         [JsonRequired] public List<AnimationState> States = new List<AnimationState>();
         bool started = false;
+        
         public void Update(GameObject go)
         {
             if (!started)
@@ -20,18 +22,33 @@ namespace GameEngine.components.Animations
                 started = true;
             }
             if (currentState == null) return;
+            
             currentState.Update(go);
-            if (!currentState.CheckForValidity())
+            
+            int nextStateIndex = currentState.GetValidTransition();
+            if (nextStateIndex >= 0 && nextStateIndex < States.Count)
             {
-                currentState = States[currentState.nextState];
+                currentState = States[nextStateIndex];
+                if (currentState.animation != null)
+                {
+                    currentState.animation.Play();
+                }
             }
         }
 
         private void Load()
         {
+            foreach (var state in States)
+            {
+                state.Init(this);
+            }
             if (States.Count > 0)
             {
                 currentState = States[0];
+                if (currentState.animation != null)
+                {
+                    currentState.animation.Play();
+                }
             }
         }
 
@@ -40,8 +57,11 @@ namespace GameEngine.components.Animations
             if (nextState != null)
             {
                 currentState = nextState;
+                if (currentState.animation != null)
+                {
+                    currentState.animation.Play();
+                }
             }
         }
-
     }
 }

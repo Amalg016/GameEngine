@@ -1,13 +1,13 @@
 ﻿using GameEngine.Core.Utilities;
 using GameEngine.ECS;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GameEngine.components
 {
     public class Animation
     {
         public string Name = "default";
-        //  public Dictionary<Sprite,float> frames=new Dictionary<Sprite, float>();
         [JsonRequired] public List<Frame> frames = new List<Frame>();
         [JsonRequired] float speed = 1;
         public bool Loop = true;
@@ -42,24 +42,49 @@ namespace GameEngine.components
             frames.Add(frame);
         }
 
+        public void Play()
+        {
+            currentIndex = 0;
+            timeTracker = 0;
+            currentSprite = null;
+        }
+
         public void Update(GameObject obj)
         {
+            if (frames.Count == 0 || speed == 0) return;
+
             timeTracker -= Time.deltaTime * speed;
             if (timeTracker <= 0)
             {
-                if (currentIndex < frames.Count - 1)
+                if (currentSprite == null)
                 {
-                    currentIndex++;
+                    // first frame, don't advance the index
                 }
-                else if (currentIndex == frames.Count - 1 || Loop)
+                else
                 {
-                    currentIndex = (currentIndex + 1) % frames.Count;
+                    if (currentIndex < frames.Count - 1)
+                    {
+                        currentIndex++;
+                    }
+                    else if (Loop)
+                    {
+                        currentIndex = 0;
+                    }
+                    else
+                    {
+                        return; // Reached end, do nothing
+                    }
                 }
 
                 var s = frames[currentIndex];
                 timeTracker = s.frameRate;
                 currentSprite = s.sprite;
-                obj.GetComponent<SpriteRenderer>().setSprite(currentSprite);
+                
+                var renderer = obj.GetComponent<SpriteRenderer>();
+                if (renderer != null)
+                {
+                    renderer.setSprite(currentSprite);
+                }
             }
         }
 
