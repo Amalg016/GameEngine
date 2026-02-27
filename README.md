@@ -102,6 +102,23 @@ dotnet MyGame.dll
 
 > **Note:** Make sure the `Assets/` folder (shaders, textures) is available in the working directory where you run the game. Copy them from `Data/Assets/` or set up a `CopyAssets` target in your `.csproj` — see [SampleGame.csproj](SampleGame/SampleGame.csproj) for reference.
 
+## Registering Custom Components
+
+To save/load custom game components from scene files, register them at startup:
+
+```csharp
+using GameEngine.Serialization;
+
+// Option 1: Register individual types
+ComponentRegistry.Register<PlayerController>();
+ComponentRegistry.Register<EnemyAI>();
+
+// Option 2: Auto-discover all components in your assembly
+ComponentRegistry.RegisterAllFromAssembly(typeof(Program).Assembly);
+```
+
+This lets the `ComponentDeserializer` handle your types when loading scenes.
+
 ## Running the Sample Game
 
 ```bash

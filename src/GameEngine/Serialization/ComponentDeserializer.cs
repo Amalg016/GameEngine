@@ -91,9 +91,16 @@ namespace GameEngine.Serialization
                     transform.rotation = rot;
                     return transform;
                 default:
-                    throw new Exception("new component serialization not added");
+                    // Try the component registry for custom/game component types
+                    string typeName = jo["Name"].Value<string>();
+                    Type registeredType = ComponentRegistry.Resolve(typeName);
+                    if (registeredType != null)
+                    {
+                        return JsonConvert.DeserializeObject(jo.ToString(), registeredType, serializerSettings) as Component;
+                    }
+                    Console.WriteLine($"Warning: Unknown component type '{typeName}', skipping.");
+                    return null;
             }
-            throw new Exception("Exception from component deserialization");
         }
         public override bool CanWrite
         {
