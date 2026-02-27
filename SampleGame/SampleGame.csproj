@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>SampleGame</RootNamespace>
+      
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DefineConstants>DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DefineConstants>RELEASE</DefineConstants>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\src\GameEngine\GameEngine.csproj" />
+    </ItemGroup>
+
+    <Target Name="CopyAssets" AfterTargets="Build">
+        <!-- Copy Assets -->
+        <ItemGroup>
+            <AssetFiles Include="$(MSBuildThisFileDirectory)../Data/Assets/**/*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AssetFiles)" 
+              DestinationFiles="@(AssetFiles->'$(TargetDir)Assets\%(RecursiveDir)%(Filename)%(Extension)')" 
+              SkipUnchangedFiles="true" />
+        
+        <!-- Copy AssetPool -->
+        <ItemGroup>
+            <AssetPoolFiles Include="$(MSBuildThisFileDirectory)../Data/AssetPool/**/*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AssetPoolFiles)" 
+              DestinationFiles="@(AssetPoolFiles->'$(TargetDir)%(RecursiveDir)%(Filename)%(Extension)')" 
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>

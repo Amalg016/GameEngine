@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <RootNamespace>GameEngine</RootNamespace>
+        <AssemblyName>GameEngine</AssemblyName>
+      
+        <Configurations>Debug;Release</Configurations>
+        <Platforms>x64</Platforms>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <DefineConstants>DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+        <DefineConstants>RELEASE</DefineConstants>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="7.0.0" />
+        <PackageReference Include="Aether.Physics2D" Version="2.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="Silk.NET" Version="2.19.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.0" />
+    </ItemGroup>
+
+    <Target Name="CopyAssets" AfterTargets="Build">
+        <!-- Copy Assets -->
+        <ItemGroup>
+            <AssetFiles Include="$(MSBuildThisFileDirectory)../../Data/Assets/**/*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AssetFiles)" 
+              DestinationFiles="@(AssetFiles->'$(TargetDir)Assets\%(RecursiveDir)%(Filename)%(Extension)')" 
+              SkipUnchangedFiles="true" />
+        
+        <!-- Copy AssetPool -->
+        <ItemGroup>
+            <AssetPoolFiles Include="$(MSBuildThisFileDirectory)../../Data/AssetPool/**/*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(AssetPoolFiles)" 
+              DestinationFiles="@(AssetPoolFiles->'$(TargetDir)%(RecursiveDir)%(Filename)%(Extension)')" 
+              SkipUnchangedFiles="true" />
+    </Target>
+
+</Project>
