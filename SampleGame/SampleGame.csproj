@@ -23,6 +23,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\src\GameEngine\GameEngine.csproj" />
+        <ProjectReference Include="..\Scripts\Scripts.csproj" />
     </ItemGroup>
 
     <Target Name="CopyAssets" AfterTargets="Build">

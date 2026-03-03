@@ -1,8 +1,12 @@
 using GameEngine.Core.Application;
 using GameEngine.Core.Utilities;
+using GameEngine.ECS;
+using GameEngine.components;
 using GameEngine.scenes;
+using GameEngine.Serialization;
 using GameEngine.observers.events;
 using GameEngine.observers;
+using System.Numerics;
 
 namespace SampleGame
 {
@@ -14,8 +18,19 @@ namespace SampleGame
     {
         public override void Init(Scene scene)
         {
-            // Add game objects here
+            // Create a player with a sprite and the controller
+            Spritesheet sheet = AssetPool.TryFindSpriteSheet("sheet1");
+            GameObject player = new GameObject();
+            player.Load("Player", 0);
+            player.transform.position = new Vector2(0, 0);
+            player.transform.scale = new Vector2(1f, 1f);
 
+            SpriteRenderer renderer = new SpriteRenderer();
+            renderer.init(sheet.GetSprite(0));
+            player.AddComponent(renderer);
+            player.AddComponent(new PlayerController());
+
+            scene.addGameObjectToScene(player);
         }
 
         public override void loadResources(Scene scene)
@@ -51,6 +66,9 @@ namespace SampleGame
         {
             SceneManager.SceneInitializerFactory = () => new GameSceneInitializer();
             GameEngine.Rendering.Core.RenderSystem.UseFramebuffer = false;
+
+            // Register all game components so they can be serialized/deserialized
+            ComponentRegistry.RegisterAllFromAssembly(typeof(GameCore).Assembly);
         }
 
         protected override sceneInitializer CreateInitialScene()

@@ -73,6 +73,18 @@ namespace GameEngine.ECS
 
         }
 
+        public Component GetComponent(Type type)
+        {
+            foreach (var component in components)
+            {
+                if (type.IsInstanceOfType(component))
+                {
+                    return component;
+                }
+            }
+            return null;
+        }
+
         public void RemoveComponent<T>()
         {
             foreach (var item in components)

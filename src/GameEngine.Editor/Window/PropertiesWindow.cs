@@ -5,6 +5,7 @@ using GameEngine.ECS;
 using GameEngine.Physics2D.components;
 using GameEngine.Rendering.Core;
 using GameEngine.scenes;
+using GameEngine.Serialization;
 using ImGuiNET;
 
 namespace GameEngine.Editor.Window
@@ -49,43 +50,23 @@ namespace GameEngine.Editor.Window
                 EditorInspector.DrawGameObject(activeGameobject);
                 if (ImGui.BeginPopupContextWindow("Component Adder"))
                 {
-                    if (ImGui.MenuItem("Add RigidBody"))
+                    foreach (var kvp in ComponentRegistry.GetAllRegistered())
                     {
-                        if (activeGameobject.GetComponent<Rigidbody2D>() == null)
-                        {
-                            activeGameobject.AddComponent(new Rigidbody2D());
-                        }
-                    }
-                    if (ImGui.MenuItem("Add Circle Collider"))
-                    {
-                        if (activeGameobject.GetComponent<CircleCollider>() == null)
-                        {
-                            activeGameobject.AddComponent(new CircleCollider());
-                        }
-                    }
-                    if (ImGui.MenuItem("Add 2dBox Collider"))
-                    {
-                        if (activeGameobject.GetComponent<Box2DCollider>() == null && activeGameobject.GetComponent<CircleCollider>() == null)
-                        {
-                            activeGameobject.AddComponent(new Box2DCollider());
-                        }
-                    }
-                    if (ImGui.MenuItem("Add Animator"))
-                    {
-                        if (activeGameobject.GetComponent<Animator>() == null)
-                        {
-                            activeGameobject.AddComponent(new Animator());
-                        }
-                    }
+                        string displayName = kvp.Key.Contains('.') 
+                            ? kvp.Key.Substring(kvp.Key.LastIndexOf('.') + 1) 
+                            : kvp.Key;
 
-                    //        if (ImGui.MenuItem("Add to Prefabs"))
-                    //        {
-                    //            if (!activeGameobject.isPrefab)
-                    //            {
-                    //                activeGameobject.isPrefab=true;
-                    //                AssetPool.Prefabs.Add(activeGameobject.getUid());    
-                    //            }
-                    //        }
+                        if (ImGui.MenuItem("Add " + displayName))
+                        {
+                            // Only add if the component isn't already on the object
+                            var existing = activeGameobject.GetComponent(kvp.Value);
+                            if (existing == null)
+                            {
+                                var component = (Component)Activator.CreateInstance(kvp.Value);
+                                activeGameobject.AddComponent(component);
+                            }
+                        }
+                    }
                     ImGui.EndPopup();
                 }
                 ImGui.End();

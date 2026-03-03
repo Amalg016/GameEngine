@@ -40,6 +40,14 @@ namespace GameEngine.Serialization
         }
 
         /// <summary>
+        /// Get all registered component types (for editor UI).
+        /// </summary>
+        public static IReadOnlyDictionary<string, Type> GetAllRegistered()
+        {
+            return _registry;
+        }
+
+        /// <summary>
         /// Auto-register all Component subclasses found in the given assemblies.
         /// </summary>
         public static void RegisterAllFromAssembly(System.Reflection.Assembly assembly)
