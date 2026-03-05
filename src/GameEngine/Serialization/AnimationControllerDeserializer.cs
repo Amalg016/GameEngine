@@ -5,6 +5,7 @@ using GameEngine.components;
 using GameEngine.components.Animations;
 using GameEngine.Core.Utilities;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace GameEngine.Serialization
 {
@@ -49,6 +50,14 @@ namespace GameEngine.Serialization
                 {
                     AnimationState state = new AnimationState();
                     state.Name = stateToken["Name"]?.Value<string>() ?? "default";
+
+                    // Deserialize editor position
+                    if (stateToken["EditorPosition"] != null)
+                    {
+                        float posX = stateToken["EditorPosition"]?["X"]?.Value<float>() ?? 0f;
+                        float posY = stateToken["EditorPosition"]?["Y"]?.Value<float>() ?? 0f;
+                        state.EditorPosition = new Vector2(posX, posY);
+                    }
 
                     // Link animation by name
                     string animName = stateToken["animation"]?["Name"]?.Value<string>();

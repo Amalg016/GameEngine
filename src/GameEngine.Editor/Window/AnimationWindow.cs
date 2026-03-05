@@ -12,6 +12,7 @@ namespace GameEngine.Editor.Window
     public class AnimationWindow : IEditorWindow
     {
         private GameObject activeGameobject;
+        private AnimationControllerGraphRenderer _graphRenderer = new AnimationControllerGraphRenderer();
         public void Update()
         {
         }
@@ -261,23 +262,14 @@ namespace GameEngine.Editor.Window
                 }
 
 
-                //Animation Controller
+                //Animation Controller - Visual Node Graph
 
                 if (ImGui.BeginTabItem("AnimationController"))
                 {
-                    Vector2 WindowPos = ImGui.GetWindowPos();
-                    Vector2 WindowSize = ImGui.GetWindowSize();
-                    Vector2 WindowMin = WindowPos + ImGui.GetCursorPos();
-                    Vector2 WindowMax = WindowPos + WindowSize;
-                    Vector2 WindowSpace = WindowMax - WindowMin;
-
-
-                    ImGui.BeginChild("##Child4", new Vector2(0, 0.2f * WindowSpace.Y), true);
+                    // ── Controller selector bar ──
                     List<AnimationController> controllers = AssetPool.animationControllers;
                     if (controllers != null)
                     {
-
-
                         string[] AnimNames = GetNames(controllers);
                         int d = 0;
                         if (controllers.Count > 0)
@@ -289,6 +281,7 @@ namespace GameEngine.Editor.Window
                             d = indexof(currentController.Name, AnimNames);
                         }
 
+                        ImGui.SetNextItemWidth(200);
                         if (ImGui.Combo("Controller", ref d, AnimNames, AnimNames.Length))
                         {
                             if (controllers.Count > 0)
@@ -305,82 +298,25 @@ namespace GameEngine.Editor.Window
                             currentController = c;
                         }
 
-                        //       ImGui.PopID();
+                        ImGui.SameLine();
                         if (currentController != null)
                         {
-                            currentController.Name = AJGui.inputText("Controller Name", currentController.Name);
+                            string cName = currentController.Name;
+                            ImGui.SetNextItemWidth(150);
+                            if (ImGui.InputText("##ControllerName", ref cName, 64))
+                            {
+                                currentController.Name = cName;
+                            }
                         }
                     }
 
-                    ImGui.EndChild();
+                    ImGui.Spacing();
 
-                    //   if (activeGameobject != null)
-                    //   {
-                    //       Animator animator = activeGameobject.GetComponent<Animator>();
-                    //       if (animator != null)
-                    //       {
-                    //           if (animator.controller != null)
-                    //           {
-                    //               currentController = animator.controller;
-                    //           }
-                    //       }                       
-                    //   }
-                    ImGui.BeginChild("##Child5", new Vector2(0.5f * WindowSpace.X, 0.5f * WindowSpace.Y), true);
-                    if (currentController != null)
-                    {
-                        List<AnimationState> states = currentController.States;
-                        int j = 0;
-                        string[] stateNames = GetNames(states);
-                        if (states.Count > 0)
-                        {
-                            if (states.Count == 1)
-                            {
-                                currentState = states[0];
-                            }
-
-                            j = indexof(currentState.Name, stateNames);
-                        }
-                        // ImGui.Separator();
-
-                        //  ImGui.Unindent();
-                        if (ImGui.Combo("States", ref j, stateNames, stateNames.Length))
-                        {
-                            currentState = states[j];
-                        }
-
-                        ImGui.SameLine();
-                        //   ImGui.PushID(add);
-                        if (ImGui.Button("+"))
-                        {
-                            currentState = new AnimationState();
-                            if (currentState == null)
-                            {
-                                throw new Exception();
-                            }
-
-                            currentController.States.Add(currentState);
-                        }
-
-                        //  ImGui.PopID(); 
-                        ImGui.EndChild();
-                        ImGui.SameLine();
-                        ImGui.BeginChild("##Child6", new Vector2(0.5f * WindowSpace.X, 0.5f * WindowSpace.Y), true);
-                        /// States Editor 
-                        if (currentState != null)
-                        {
-                            currentState.Name = AJGui.inputText("State Name", currentState.Name);
-                            AddingAnimation();
-                        }
-
-
-                        // ImGui.PopID();
-                        //  Debug.Log(k);
-                        ImGui.EndChild();
-                    }
-
+                    // ── Visual Node Graph ──
+                    _graphRenderer.SetController(currentController);
+                    _graphRenderer.Render();
 
                     ImGui.EndTabItem();
-
                 }
 
                 activeGameobject = PropertiesWindow.getActiveGameObject();

@@ -1,6 +1,7 @@
 ﻿using GameEngine.ECS;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace GameEngine.components.Animations
 {
@@ -9,6 +10,11 @@ namespace GameEngine.components.Animations
         public string Name = "default";
         public Animation animation;
         public Guid guid = new Guid();
+        
+        /// <summary>
+        /// Position of this state node in the editor graph canvas.
+        /// </summary>
+        public Vector2 EditorPosition = Vector2.Zero;
         
         public List<StateTransition> Transitions = new List<StateTransition>();
 
